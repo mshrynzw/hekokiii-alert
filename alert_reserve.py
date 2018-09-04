@@ -20,6 +20,6 @@ while True:
         str_url_tmp = r'http://live.nicovideo.jp/gate/lv'
         if str_url.startswith(str_url_tmp):
             lv_id = str_url.lstrip(str_url_tmp)
-                if lv_id in list_str
-                    list_str.append(lv_id)
-                    alert_tweet_reserve(lv_id)
+            if lv_id in list_str:
+                list_str.append(lv_id)
+                alert_tweet_reserve(lv_id)
