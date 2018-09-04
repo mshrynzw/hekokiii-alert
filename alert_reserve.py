@@ -3,14 +3,16 @@
  
 import requests
 import bs4
+import os
 from time import sleep
 from alert_tweet_reserve import alert_tweet_reserve
 
 list_str = []
+community_id = os.environ["NICONICO_COMMUNITY_ID"]
 
 while True:
     sleep(300)
-    res = requests.get('https://com.nicovideo.jp/community/co2388471')
+    res = requests.get('https://com.nicovideo.jp/community/' + community_id)
     res.raise_for_status()
     soup = bs4.BeautifulSoup(res.text, "html.parser")
     elems = soup.select('.liveTitle')
