@@ -12,7 +12,7 @@ AT = os.environ["ACCESS_TOKEN"]
 ATS = os.environ["ACCESS_TOKEN_SECRET"]
 
 # ツイートのテンプレート
-tweet_tpl = os.environ["TWEET_CMT"]
+tweet_tpl = os.environ["TWEET_TPL_COMMENT"]
 
 def tweet_comment(bloadcast_id):
 
