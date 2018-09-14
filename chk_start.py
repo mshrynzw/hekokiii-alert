@@ -8,6 +8,7 @@ import socket
 import os
 import xmltodict
 from tw_start import tweet_start_live
+from chk_comment import check_comment
 
 def check_start_live():
 
@@ -49,3 +50,4 @@ def check_start_live():
 
             bloadcast_id = res.split(",")[0].split(">")[1]
             tweet_start_live(bloadcast_id)
+            check_comment(bloadcast_id)
