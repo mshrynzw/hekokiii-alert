@@ -81,7 +81,7 @@ def check_comment(bloadcast_id):
             
             #グラフの作成
             #★横軸に:を入れたい e.g. 00:00
-            if cmt_time.endswith("00") or cmt_time.endswith("10"):
+            if cmt_time.endswith("00") or cmt_time.endswith("30"):
                 # figure
                 fig = plt.figure()
                 ax = fig.add_subplot(1, 1, 1)
