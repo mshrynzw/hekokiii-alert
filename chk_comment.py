@@ -13,9 +13,9 @@ from datetime import datetime, time
 from time import sleep
 from tw_comment import tweet_comment
 
-def check_comment():
 
-    bloadcast_id = "lv315616777"
+def check_comment(bloadcast_id):
+
     # ニコニコ動画のアカウント設定
     mail = os.environ["NICONICO_MAIL"]
     password = os.environ["NICONICO_PASS"]
