@@ -36,7 +36,7 @@ def check_comment():
 
     # 放送番組の情報を取得
     res = session.get("http://watch.live.nicovideo.jp/api/getplayerstatus?v=" + LV)
-    soup = BeautifulSoup(res.text, "xml")
+    soup = BeautifulSoup(res.text, "lxml")
     try:
         print("OK1")
         addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
