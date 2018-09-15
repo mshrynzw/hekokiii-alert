@@ -38,7 +38,6 @@ def check_comment():
     res = session.get("http://watch.live.nicovideo.jp/api/getplayerstatus?v=" + LV)
     soup = BeautifulSoup(res.text, "lxml")
     try:
-        print("OK1")
         addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
         port = int(soup.getplayerstatus.ms.port.string)         # コメントサーバのポートを取得
         thread = int(soup.getplayerstatus.ms.thread.string)     # コメントサーバのスレッドIDを取得
@@ -49,6 +48,7 @@ def check_comment():
 
     # コメントサーバへ接続
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    print("OK1")
     client.connect((addr, port))
     client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
     # 最初にthreadノード受信
