@@ -107,7 +107,7 @@ def check_comment(bloadcast_id):
                 plt.gca().get_xaxis().set_major_locator(ticker.MaxNLocator(integer=True))
                 plt.gca().get_yaxis().set_major_locator(ticker.MaxNLocator(integer=True))
                 ax.plot(x, y, linestyle="--", color='#e46409')
-                plt.ylim(0, 100)
+                #plt.ylim(0, 100)
                 
                 ax.set_title("Comments")
 
@@ -116,7 +116,7 @@ def check_comment(bloadcast_id):
                 plt.savefig("./tmp/figure.jpg")
                 plt.close
 
-                tweet_comment("xxx")
+                tweet_comment(bloadcast_id)
                 dic_graph.clear()
 
             dic_graph[cmt_time] = 1
