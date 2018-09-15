@@ -12,7 +12,7 @@ AT = os.environ["ACCESS_TOKEN"]
 ATS = os.environ["ACCESS_TOKEN_SECRET"]
 
 # ツイートのテンプレート
-tweet_tpl = os.environ["TWEET_TPL_COMMENT"]
+tweet_tpl_cmt = os.environ["TWEET_TPL_COMMENT"]
 
 def tweet_comment(bloadcast_id):
 
@@ -36,7 +36,7 @@ def tweet_comment(bloadcast_id):
     print("Media ID: %d" % media_id)
 
     # post送信
-    tweet = tweet_tpl + bloadcast_id
+    tweet = tweet_tpl_cmt + bloadcast_id
     print(tweet)
     params = {"status": tweet, "media_ids": [media_id]}
     res = twitter.post(url, params=params)

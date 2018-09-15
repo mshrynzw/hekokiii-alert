@@ -40,7 +40,6 @@ def check_comment():
     for i in range(1, rty_connect_bloadcast_info + 1):
         try:
             res = session.get("http://watch.live.nicovideo.jp/api/getplayerstatus?v=" + LV)
-            sleep(15)
             soup = BeautifulSoup(res.text, "xml")
             try:
                 addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
@@ -60,7 +59,6 @@ def check_comment():
     for i in range(1,rty_connect_comment_server + 1):
         try:
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sleep(15)
             client.connect((addr, port))
             client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
             # 最初にthreadノード受信
