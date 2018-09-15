@@ -35,37 +35,24 @@ def check_comment():
     res = session.post(url_login, data=login_info)
 
     # 放送番組の情報を取得
-    rty_connect_bloadcast_info = 5
-    for i in range(1, rty_connect_bloadcast_info + 1):
-        try:
-            res = session.get("http://watch.live.nicovideo.jp/api/getplayerstatus?v=" + LV)
-            soup = BeautifulSoup(res.text, "xml")
-            try:
-                addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
-                port = int(soup.getplayerstatus.ms.port.string)         # コメントサーバのポートを取得
-                thread = int(soup.getplayerstatus.ms.thread.string)     # コメントサーバのスレッドIDを取得
-            except AttributeError as e:     #放送終了・ログイン不可の場合、例外発生
-                print("AttributeError")
-                print(e)
-                #★ここで処理終了にさせる
-        except:
-            i += 1
-        else:
-            break
+    res = session.get("http://watch.live.nicovideo.jp/api/getplayerstatus?v=" + LV)
+    soup = BeautifulSoup(res.text, "xml")
+    try:
+        print("OK1")
+        addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
+        port = int(soup.getplayerstatus.ms.port.string)         # コメントサーバのポートを取得
+        thread = int(soup.getplayerstatus.ms.thread.string)     # コメントサーバのスレッドIDを取得
+    except AttributeError as e:     #放送終了・ログイン不可の場合、例外発生
+        print("AttributeError")
+        print(e)
+        #★ここで処理終了にさせる
 
     # コメントサーバへ接続
-    rty_connect_comment_server = 5
-    for i in range(1,rty_connect_comment_server + 1):
-        try:
-            client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            client.connect((addr, port))
-            client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
-            # 最初にthreadノード受信
-            res = client.recv(2048)     # 一度に受信するデータは、最大でも bufsize （引数）で指定した量
-        except:
-            i += 1
-        else:
-            break
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.connect((addr, port))
+    client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
+    # 最初にthreadノード受信
+    res = client.recv(2048)     # 一度に受信するデータは、最大でも bufsize （引数）で指定した量
 
     # コメントカウント
     cnt_comment = 0
@@ -75,6 +62,7 @@ def check_comment():
     # 続けてchatノード（コメント）を受信
     while True:
         try:
+            print("OK2")
             res = client.recv(2048).decode('utf-8') #★絵文字などによりエンコードが失敗するので例外処理が必要
             bs = BeautifulSoup(res, "xml")
             chat = bs.find('chat')
