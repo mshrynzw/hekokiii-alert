@@ -48,7 +48,6 @@ def check_comment():
 
     # コメントサーバへ接続
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    print("OK1")
     client.connect((addr, port))
     client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
     # 最初にthreadノード受信
@@ -62,7 +61,6 @@ def check_comment():
     # 続けてchatノード（コメント）を受信
     while True:
         try:
-            print("OK2")
             res = client.recv(2048).decode('utf-8') #★絵文字などによりエンコードが失敗するので例外処理が必要
             bs = BeautifulSoup(res, "xml")
             chat = bs.find('chat')
@@ -99,7 +97,7 @@ def check_comment():
 
                 plt.gca().spines["right"].set_color("none")
                 plt.gca().spines["top"].set_color("none")
-                plt.savefig("./tmp/figure.jpg")
+                plt.savefig("./tmp/figure.png")
                 plt.close
 
                 tweet_comment(bloadcast_id)
