@@ -10,6 +10,7 @@ import requests
 import socket
 from bs4 import BeautifulSoup       # HTMLやXMLファイルからデータを取得するPythonのライブラリ
 from datetime import datetime, time
+from time import sleep
 from tw_comment import tweet_comment
 
 
@@ -34,28 +35,42 @@ def check_comment(bloadcast_id):
     res = session.post(url_login, data=login_info)
 
     # 放送番組の情報を取得
-    res = session.get("http://watch.live.nicovideo.jp/api/getplayerstatus?v=" + LV)
-    soup = BeautifulSoup(res.text, "xml")
-
-    try:
-        addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
-        port = int(soup.getplayerstatus.ms.port.string)         # コメントサーバのポートを取得
-        thread = int(soup.getplayerstatus.ms.thread.string)     # コメントサーバのスレッドIDを取得
-    except AttributeError as e:     #放送終了・ログイン不可の場合、例外発生
-        print("AttributeError")
-        print(e)
-        #★ここで処理終了にさせる
+    rty_connect_bloadcast_info = 5
+    for i in range(1, rty_connect_bloadcast_info + 1):
+        try:
+            res = session.get("http://watch.live.nicovideo.jp/api/getplayerstatus?v=" + LV)
+            sleep(15)
+            soup = BeautifulSoup(res.text, "xml")
+            try:
+                addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
+                port = int(soup.getplayerstatus.ms.port.string)         # コメントサーバのポートを取得
+                thread = int(soup.getplayerstatus.ms.thread.string)     # コメントサーバのスレッドIDを取得
+            except AttributeError as e:     #放送終了・ログイン不可の場合、例外発生
+                print("AttributeError")
+                print(e)
+                #★ここで処理終了にさせる
+        except:
+            i += 1
+        else:
+            break
 
     # コメントサーバへ接続
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect((addr, port))
-    client.sendall(
-        (('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
+    rty_connect_comment_server = 5
+    for i in range(1,rty_connect_comment_server + 1):
+        try:
+            client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sleep(15)
+            client.connect((addr, port))
+            client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
+            # 最初にthreadノード受信
+            res = client.recv(2048)     # 一度に受信するデータは、最大でも bufsize （引数）で指定した量
+        except:
+            i += 1
+        else:
+            break
 
-    # 最初にthreadノード受信
-    res = client.recv(2048)     # 一度に受信するデータは、最大でも bufsize （引数）で指定した量
-    cnt_comment = 0             # コメントカウント 
-
+    # コメントカウント
+    cnt_comment = 0
     #★グラフ用辞書型
     dic_graph = {}
 
@@ -107,7 +122,6 @@ def check_comment(bloadcast_id):
             dic_graph[cmt_time] = 1
 
         print(dic_graph)
-
 
         # 放送終了時に無限ループが終了
         if comment == u"/disconnect":
