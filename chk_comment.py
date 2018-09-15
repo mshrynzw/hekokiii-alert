@@ -13,7 +13,7 @@ from datetime import datetime, time
 from time import sleep
 from tw_comment import tweet_comment
 
-def chk_comment():
+def check_comment():
 
     bloadcast_id = "lv315616777"
     # ニコニコ動画のアカウント設定
