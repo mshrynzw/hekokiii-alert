@@ -18,7 +18,7 @@ def check_reserve_live():
     while True:
 
         sleep(90)
-        
+        print(listFinishedURL)
         #HTMLスクレビング
         res = requests.get(r"https://com.nicovideo.jp/community/" + community_id)
         res.raise_for_status()
@@ -43,7 +43,8 @@ def check_reserve_live():
                 date1 = listDate[i][0:10].translate(
                     str.maketrans({"年": "/", "月": "/"}))
                 date2 = datetime.strptime(date1, '%Y/%m/%d')
-                date3 = listDate[i][5:10].replace("月", "/") + "(" + yobi[date2.weekday()] + ")"
+                date3 = listDate[i][5:10].replace(
+                    "月", "/") + "(" + yobi[date2.weekday()] + ")" + listDate[i][12:16]
 
                 strTweet = "【開始日時：" + date3 + "】" + listURL[i]
                 tweet_reserve_live(strTweet)
