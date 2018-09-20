@@ -37,7 +37,7 @@ def check_reserve_live():
 
         for i in range(len(listDate)):
             #未ツイートの放送IDのみをツイートする。
-            if not listURL[i] in listFinishedURL:
+            if listURL[i] not in listFinishedURL:
                 listFinishedURL.append(listURL)
 
                 date1 = listDate[i][0:10].translate(
