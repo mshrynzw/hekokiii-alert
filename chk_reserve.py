@@ -17,8 +17,7 @@ def check_reserve_live():
 
     while True:
 
-        #3分毎に予約確認を実施
-        #sleep(180)
+        sleep(90)
         
         #HTMLスクレビング
         res = requests.get(r"https://com.nicovideo.jp/community/" + community_id)
@@ -48,3 +47,5 @@ def check_reserve_live():
 
                 strTweet = "【開始日時：" + date3 + "】" + listURL[i]
                 tweet_reserve_live(strTweet)
+
+        sleep(90)
