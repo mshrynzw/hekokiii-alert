@@ -50,3 +50,7 @@ def check_reserve_live():
                 tweet_reserve_live(strTweet)
 
         sleep(90)
+
+        for i in range(len(listFinishedURL)):
+            if listFinishedURL[i] not in listURL:
+                del listFinishedURL[i]
