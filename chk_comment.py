@@ -36,21 +36,18 @@ def check_comment(bloadcast_id):
     url_login = "https://secure.nicovideo.jp/secure/login?site=niconico"
     res = session.post(url_login, data=login_info)
 
-    print("OK1")
     # 大手放送の場合、放送番組の取得が即時できないため。
     sleep(20)
 
     # ニコニコ生放送のサーバへ接続し、放送番組の情報を取得
     for i in range(1, connectionRetry + 1):
         try:
-            print("OK1.5")
             res = session.get(
                 "http://watch.live.nicovideo.jp/api/getplayerstatus?v=" + bloadcast_id)
             soup = BeautifulSoup(res.text, "lxml")
             addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
             port = int(soup.getplayerstatus.ms.port.string)         # コメントサーバのポートを取得
             thread = int(soup.getplayerstatus.ms.thread.string)     # コメントサーバのスレッドIDを取得
-            print("OK2")
         except:     #放送終了・ログイン不可の場合、例外発生
             sleep(5)
         else:
@@ -59,16 +56,11 @@ def check_comment(bloadcast_id):
     for i in range(1, connectionRetry + 1):
         try:
             # コメントサーバへ接続
-            print("OK2.1")
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            print("OK2.2")
             client.connect((addr, port))
-            print("OK2.3")
             client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
             # 最初にthreadノード受信
-            print("OK2.4")
             res = client.recv(2048)     # 一度に受信するデータは、最大でも bufsize （引数）で指定した量
-            print("OK3")
         except:
             sleep(5)
         else:
@@ -100,7 +92,6 @@ def check_comment(bloadcast_id):
         except:
             continue
 
-        print("OK4")
         flgLabelTmp = datetime.fromtimestamp(cmt_date).time()   # 複数箇所で使用する変数
 
         # X軸用のラベルをすべて作成
