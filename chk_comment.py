@@ -177,8 +177,3 @@ def check_comment(bloadcast_id):
             break
 
         cnt_comment += 1
-
-
-if __name__ == '__main__':
-
-    check_comment("lv315743664")
