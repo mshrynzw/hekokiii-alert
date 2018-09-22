@@ -37,7 +37,7 @@ def check_comment(bloadcast_id):
     res = session.post(url_login, data=login_info)
 
     # 大手放送の場合、放送番組の取得が即時できないため。
-    sleep(60)
+    sleep(20)
 
     # ニコニコ生放送のサーバへ接続し、放送番組の情報を取得
     for i in range(1, connectionRetry + 1):
@@ -121,7 +121,7 @@ def check_comment(bloadcast_id):
 
         #cmt_time = datetime.fromtimestamp(cmt_date).time().strftime('%H%M')
 
-        #★グラフの値格納
+        #グラフの値格納
         tmpMinute = flgLabelTmp.strftime('%M')  # 　比較用の分変数
         if tmpMinute in listMinute:
             y[iY] += 1
@@ -147,11 +147,6 @@ def check_comment(bloadcast_id):
                 plt.gca().spines["top"].set_color("none")
                 plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(25))
                 plt.gca().yaxis.set_major_locator(ticker.MultipleLocator(5))
-
-                #for i in range(len(x)):
-                #    if x[i] % 5 != 0:
-                #        listMinute[i] = ""
-
                 plt.xticks(x, listLabel)
                 plt.title("Arena")
                 plt.xlabel("time")
@@ -160,7 +155,7 @@ def check_comment(bloadcast_id):
                 plt.savefig("./tmp/figure.png")
                 plt.close
 
-                #★tweet_comment(bloadcast_id)
+                tweet_comment(bloadcast_id)
 
                 #リストを初期化
                 y = [0] * intervalCreateGraph
