@@ -16,8 +16,6 @@ from tw_comment import tweet_comment
 
 def check_comment(bloadcast_id):
 
-    print("OK1")
-    
     # ニコニコ動画のアカウント設定
     mail = os.environ["NICONICO_MAIL"]
     password = os.environ["NICONICO_PASS"]
@@ -38,12 +36,14 @@ def check_comment(bloadcast_id):
     url_login = "https://secure.nicovideo.jp/secure/login?site=niconico"
     res = session.post(url_login, data=login_info)
 
+    print("OK1")
     # 大手放送の場合、放送番組の取得が即時できないため。
     sleep(20)
 
     # ニコニコ生放送のサーバへ接続し、放送番組の情報を取得
     for i in range(1, connectionRetry + 1):
         try:
+            print("OK1.5")
             res = session.get(
                 "http://watch.live.nicovideo.jp/api/getplayerstatus?v=" + bloadcast_id)
             soup = BeautifulSoup(res.text, "lxml")
