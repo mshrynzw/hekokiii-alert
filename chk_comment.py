@@ -16,6 +16,8 @@ from tw_comment import tweet_comment
 
 def check_comment(bloadcast_id):
 
+    print("OK")
+    
     # ニコニコ動画のアカウント設定
     mail = os.environ["NICONICO_MAIL"]
     password = os.environ["NICONICO_PASS"]
