@@ -40,10 +40,6 @@ def check_comment(bloadcast_id):
     # 大手放送の場合、放送番組の取得が即時できないため。
     sleep(20)
 
-    addr = ""
-    port = ""
-    thread = ""
-    
     # ニコニコ生放送のサーバへ接続し、放送番組の情報を取得
     for i in range(1, connectionRetry + 1):
         try:
@@ -63,10 +59,14 @@ def check_comment(bloadcast_id):
     for i in range(1, connectionRetry + 1):
         try:
             # コメントサーバへ接続
+            print("OK2.1")
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            print("OK2.2")
             client.connect((addr, port))
+            print("OK2.3")
             client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
             # 最初にthreadノード受信
+            print("OK2.4")
             res = client.recv(2048)     # 一度に受信するデータは、最大でも bufsize （引数）で指定した量
             print("OK3")
         except:
