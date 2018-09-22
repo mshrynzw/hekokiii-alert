@@ -42,7 +42,8 @@ def check_comment(bloadcast_id):
     # ニコニコ生放送のサーバへ接続し、放送番組の情報を取得
     for i in range(1, connectionRetry + 1):
         try:
-            res = session.get("http://watch.live.nicovideo.jp/api/getplayerstatus?v=" + bloadcast_id)
+            res = session.get(
+                "http://watch.live.nicovideo.jp/api/getplayerstatus?v=" + bloadcast_id)
             soup = BeautifulSoup(res.text, "lxml")
             addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
             port = int(soup.getplayerstatus.ms.port.string)         # コメントサーバのポートを取得
