@@ -16,7 +16,7 @@ from tw_comment import tweet_comment
 
 def check_comment(bloadcast_id):
 
-    print("OK")
+    print("OK1")
     
     # ニコニコ動画のアカウント設定
     mail = os.environ["NICONICO_MAIL"]
@@ -50,6 +50,7 @@ def check_comment(bloadcast_id):
             addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
             port = int(soup.getplayerstatus.ms.port.string)         # コメントサーバのポートを取得
             thread = int(soup.getplayerstatus.ms.thread.string)     # コメントサーバのスレッドIDを取得
+            print("OK2")
         except:     #放送終了・ログイン不可の場合、例外発生
             sleep(5)
         else:
@@ -63,6 +64,7 @@ def check_comment(bloadcast_id):
             client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
             # 最初にthreadノード受信
             res = client.recv(2048)     # 一度に受信するデータは、最大でも bufsize （引数）で指定した量
+            print("OK3")
         except:
             sleep(5)
         else:
@@ -94,6 +96,7 @@ def check_comment(bloadcast_id):
         except:
             continue
 
+        print("OK4")
         flgLabelTmp = datetime.fromtimestamp(cmt_date).time()   # 複数箇所で使用する変数
 
         # X軸用のラベルをすべて作成
