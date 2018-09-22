@@ -67,7 +67,7 @@ def check_comment(bloadcast_id):
             client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
             # 最初にthreadノード受信
             print("OK2.4")
-            res = client.recv(2048)     # 一度に受信するデータは、最大でも bufsize （引数）で指定した量
+            res = client.recv(1024)     # 一度に受信するデータは、最大でも bufsize （引数）で指定した量
             print("OK3")
         except:
             sleep(5)
