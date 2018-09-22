@@ -40,6 +40,10 @@ def check_comment(bloadcast_id):
     # 大手放送の場合、放送番組の取得が即時できないため。
     sleep(20)
 
+    addr = ""
+    port = ""
+    thread = ""
+    
     # ニコニコ生放送のサーバへ接続し、放送番組の情報を取得
     for i in range(1, connectionRetry + 1):
         try:
