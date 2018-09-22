@@ -1,6 +1,7 @@
 import threading
 from chk_start import check_start_live
 from chk_reserve import check_reserve_live
+from chk_comment import check_comment
 
 if __name__ == "__main__":
     thread_1 = threading.Thread(target=check_start_live)
