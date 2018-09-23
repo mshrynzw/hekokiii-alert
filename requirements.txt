@@ -3,3 +3,7 @@ xmltodict==0.11.0
 bs4
 matplotlib
 lxml
+redis
+rq
+worker
+bottle
