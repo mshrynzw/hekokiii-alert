@@ -50,4 +50,4 @@ def check_start_live():
 
             bloadcast_id = res.split(",")[0].split(">")[1]
             tweet_start_live(bloadcast_id)
-            check_comment(bloadcast_id)
+            # check_comment(bloadcast_id)
