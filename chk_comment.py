@@ -139,10 +139,11 @@ def check_comment(bloadcast_id):
             #グラフの作成
             if iY >= intervalCreateGraph:
 
+                plt.figure()
                 matplotlib.rcParams['axes.xmargin'] = 0
                 matplotlib.rcParams['axes.ymargin'] = 0
                 plt.plot(x, y, linestyle="-", color='#e46409')     # プロットと線を設定
-                plt.ylim(0, 75)                                     # Y軸の最大値を設定
+                plt.ylim(0, 50)                                     # Y軸の最大値を設定
                 plt.gca().spines["right"].set_color("none")
                 plt.gca().spines["top"].set_color("none")
                 plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(25))
@@ -160,6 +161,7 @@ def check_comment(bloadcast_id):
                 #リストを初期化
                 y = [0] * intervalCreateGraph
                 iY = 0
+                flgLabel = 0
                 listMinute = [""] * intervalCreateGraph
                 listLabel = [""] * intervalCreateGraph
 
