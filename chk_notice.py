@@ -44,8 +44,6 @@ def check_notice():
             if listNoticeText[i] not in listFinishedNoticeText:
 
                 date1 = listNoticeDate[i][0:10].translate(str.maketrans({"年": "/", "月": "/"}))
-                print(listNoticeDate[i][5:7])
-                print(listNoticeDate[i][8:10])
                 datetime1 = datetime(int(listNoticeDate[i][0:4]), int(listNoticeDate[i][5:7]), int(listNoticeDate[i][8:10]))
 
                 # お知らせ日時が3日以内のみをツイートする。
