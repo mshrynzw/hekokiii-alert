@@ -56,10 +56,11 @@ def check_notice():
                     date3 = listNoticeDate[i][5:10].replace(
                         "月", "/") + "(" + yobi[date2.weekday()] + ")" + listNoticeDate[i][12:17]
 
-                    strTweet =  "【お知らせ】 #世界の屁こき隊 がお知らせしました。\n" + \
-                                "　通知日時：" + date3 + "\n" + \
-                                "　タイトル：" + listNoticeTitle[i] + "\n" + \
-                                "　本文　　：" + listNoticeText[i] + "\n" + \
+                    strTweet =  "【お知らせ】 #世界の屁こき隊 がお知らせしました。【通知日時：" + date3 + "】\n" + \
+                                "[タイトル]" + "\n" + \
+                                listNoticeTitle[i] + "\n" + \
+                                "[本文]" + "\n" + \
+                                listNoticeText[i] + "\n" + \
                                 r"https://com.nicovideo.jp/community/" + community_id
                     tweet_notice(strTweet)
 
