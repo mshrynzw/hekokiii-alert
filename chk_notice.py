@@ -56,7 +56,7 @@ def check_notice():
                     date3 = listNoticeDate[i][5:10].replace(
                         "月", "/") + "(" + yobi[date2.weekday()] + ")" + listNoticeDate[i][12:17]
 
-                    strTweet =  "【お知らせ】 #世界の屁こき隊 がお知らせしました。【通知日時：" + date3 + "】\n" + \
+                    strTweet =  "【通知】 #世界の屁こき隊 がお知らせしました。【通知日時：" + date3 + "】\n" + \
                                 "[タイトル]" + "\n" + \
                                 listNoticeTitle[i] + "\n" + \
                                 "[本文]" + "\n" + \
