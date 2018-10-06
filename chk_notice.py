@@ -57,8 +57,8 @@ def check_notice():
                         "月", "/") + "(" + yobi[date2.weekday()] + ")" + listNoticeDate[i][12:17]
 
                     strTweet =  "【お知らせ】" + listNoticeTitle[i] + "【" + date3 + "】" + "\n" + \
-                                "--------------------------------------------------------------\n" + \
-                                listNoticeText[i]
+                                "　→　" + listNoticeText[i] + "\n" + \
+                                r"https://com.nicovideo.jp/community/" + community_id
                     tweet_notice(strTweet)
 
         sleep(30)
