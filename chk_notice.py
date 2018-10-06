@@ -58,7 +58,7 @@ def check_notice():
 
                     strTweet =  "【お知らせ】\n " + \
                                 listNoticeTitle[i] + "\n" + \
-                                date3 + "\n" + \
+                                "（" + date3 + "）" + "\n" + \
                                 "--------------------------------------------------------------\n" + \
                                 listNoticeText[i]
                     tweet_notice(strTweet)
