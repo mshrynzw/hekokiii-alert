@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import math
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -12,7 +13,7 @@ import socket
 from bs4 import BeautifulSoup
 from datetime import datetime, time
 from time import sleep
-from tw_comment import tweet_comment
+from tw_comment1 import tweet_comment
 
 
 def check_comment(bloadcast_id):
@@ -22,7 +23,7 @@ def check_comment(bloadcast_id):
         "mail_tel": os.environ["NICONICO_MAIL"],
         "password": os.environ["NICONICO_PASS"]
     }
-
+    
     # コネクションのリトライ数
     connectionRetry = 20
 
@@ -45,7 +46,6 @@ def check_comment(bloadcast_id):
             thread = int(soup.getplayerstatus.ms.thread.string)     # コメントサーバのスレッドIDを取得
         except:     #放送終了・ログイン不可の場合、例外発生
             sleep(5)
-        else:
             break
 
     for i in range(1, connectionRetry + 1):
@@ -62,15 +62,17 @@ def check_comment(bloadcast_id):
             break
 
     # グラフ作成の関数
-    cnt_comment = 0                             # コメントカウント
-    intervalCreateGraph = 15                    # グラフ作成の間隔（分）
-    intervalXAxis = 5                           # X軸の間隔（分）
-    x = list(range(intervalCreateGraph))        # X軸の個数（「グラフ作成の間隔」に準ずる）
-    y = [0] * intervalCreateGraph               # Y軸の初期設定（「グラフ作成の間隔」に準ずる）
-    listMinute = [""] * intervalCreateGraph     # コメントをカウントするためのリスト
-    listXLabel = [""] * intervalCreateGraph     # X軸ラベルを作成するためのリスト
-    flgLabel = 0                                # X軸ラベル用フラグ（開始ラベル -> 0:未作成/1:作成済み）
-    iY = -1                                     # リスト変数y用の変数
+    xAxisCount = 25                    # X軸の個数（15分毎 * 6時間 +1）
+    intervalXAxis = 4                  # X軸ラベルの間隔（1時間毎）
+    x = list(range(xAxisCount))        # X軸の個数（「グラフ作成の間隔」に準ずる）
+    y = [0] * xAxisCount               # Y軸の初期設定（「グラフ作成の間隔」に準ずる）
+    yOceanLeaf = [0] * xAxisCount      # 「海」のためのY軸の初期設定（「グラフ作成の間隔」に準ずる）
+    listXLabel = [""] * xAxisCount     # X軸ラベルを作成するためのリスト
+    isLabel = False                    # X軸ラベル用フラグ
+    stage15M = 0                       # 時刻0-14分の場合「0」、15-29分の場合「1」、30-44分の場合「2」、45-59分の場合「3」
+    isStage15M = False                 # 15分段階設定の完了フラグ
+    isEnd = False                      # 放送終了フラグ
+    iY = 1                             # リスト変数y用の変数
 
     # 続けてchatノード（コメント）を受信
     while True:
@@ -84,89 +86,77 @@ def check_comment(bloadcast_id):
         except:
             continue
 
+        tmpOcean = comment.count("海")                        # コメントから「海」の個数を検索
+        tmpLeaf = comment.count("w")                         # コメントから「w」の個数を検索
         tmpXLabel = datetime.fromtimestamp(cmt_date).time()   # X軸ラベル用の一時変数
 
+        tmpHourMinute = tmpXLabel.strftime('%H%M')
+        tmpMinute = int(tmpHourMinute[2:])
+
         # X軸用のラベルをすべて作成
-        if flgLabel != 1:
-            tmpHourMinute = tmpXLabel.strftime('%H%M')
-            labelHour = tmpHourMinute[:2]
-            labelMinute = tmpHourMinute[2:]
-            listXLabel[0] = labelHour + ":" + labelMinute
-            for i in range(1, intervalCreateGraph):
-                labelMinute = int(labelMinute) + 1
-                if labelMinute < 60:
-                    if labelMinute % intervalXAxis == 0:
-                        listXLabel[i] = labelHour + ":" + \
-                            str(labelMinute).zfill(2)
-                else:
-                    if labelMinute % intervalXAxis == 0:
-                        tmpHour = int(labelHour) + 1
-                        tmpMinute = labelMinute - 60
-                        if tmpHour < 24:
-                            listXLabel[i] = str(tmpHour) + \
-                                ":" + str(tmpMinute).zfill(2)
-                        else:
-                            tmpHour = 0
-                            listXLabel[i] = str(tmpHour) + ":" + str(tmpMinute)
+        if not isLabel:
+            tmpHour = tmpHourMinute[:2]
+            listXLabel[0] = tmpHour + ":" + str((tmpMinute // 15) * 15 ).zfill(2)
+            for i in range(intervalXAxis - tmpMinute // 15, xAxisCount, intervalXAxis):
+                tmpHour = int(tmpHour) + 1
+                listXLabel[i] = str(tmpHour) + ":00"
+                if i in (2, 3): # ラベルの重なり表示対策
+                    listXLabel[0] = ""
+            isLabel = True
+        
+        tmpStage15M = math.floor(tmpMinute / 15)
+        
+        # 初回コメント時に設定
+        if not isStage15M:
+            stage15M = tmpStage15M
+            isStage15M = True
+        
+        # グラフを作成する場合
+        if tmpStage15M != stage15M or comment == u"/disconnect":
 
-            flgLabel = 1
+            # 前処理
+            plt.figure()                                    # グラフを初期化
+            matplotlib.rcParams['axes.ymargin'] = 0         # Y軸の最小値を設定
 
-        # グラフの値格納
-        tmpMinute = tmpXLabel.strftime('%M')  # 比較用の変数（分）
-        # すでに同時刻（分）にコメントがある場合
-        if tmpMinute in listMinute:
-            y[iY] += 1
-        # すでに同時刻（分）にコメントがない場合
-        else:
-            # iYが「-1」ではなく、さらに直近時刻取得との差が1分より大きい場合、iYを1増加
-            if iY != -1:
-                diff = int(tmpMinute) - int(listMinute[iY])
-                if diff >= 1:
-                    for i in range(diff - 1):
-                        iY += 1
+            # 「海・草」数（Y軸右）を出力
+            fig, ax1 = plt.subplots()
+            ax1.bar(x, yOceanLeaf, color="#258d8d", width=0.5)    # 棒グラフのプロットを設定
+            ax1.set_ylabel("Ocean & Leaf", color="#258d8d")        # Y軸のラベルを設定
+            ax1.set_ylim(0, 60)                            # Y軸の最大値を設定
+            fig.gca().yaxis.set_major_locator(ticker.MultipleLocator(10))    # グリッド線設定
 
-            # グラフ作成の間隔がiYと同じ場合、グラフの作成
-            if iY == intervalCreateGraph:
-                # グラフ設定
-                plt.figure()                                        # グラフを初期化             
-                matplotlib.rcParams['axes.xmargin'] = 0             # X軸の最小値を設定
-                matplotlib.rcParams['axes.ymargin'] = 0             # Y軸の最小値を設定
-                plt.plot(x, y, linestyle="-", color='#e46409')      # プロットと線を設定
-                plt.ylim(0, 50)                                     # Y軸の最大値を設定
-                plt.gca().spines["right"].set_color("none")         # グラフ右の線を削除
-                plt.gca().spines["top"].set_color("none")           # グラフ上の線を削除
-                plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(25))   # グリッド線設定
-                plt.gca().yaxis.set_major_locator(ticker.MultipleLocator(5))    # グリッド線設定
-                plt.xticks(x, listXLabel)                           # X軸のラベルを設定
-                plt.title("Arena")                                  # グラフのタイトルを設定
-                plt.xlabel("time")                                  # X軸のラベルを設定
-                plt.ylabel("comments")                              # Y軸のラベルを設定
-                plt.grid(True)                                      # グリット線の表示を設定
-                # グラフを画像ファイルで出力 
-                plt.savefig("./tmp/figure.png")
-                # グラフオブジェクトを閉じる
-                plt.close
+            # コメント数（Y軸左）を出力
+            ax2 = ax1.twinx()
+            ax2.plot(x, y, color="#d9a300")     # 折れ線グラフのプロットと線を設定
+            ax2.set_ylabel("Comment", color="#d9a300")
+            ax2.set_ylim(0, 600)                        
+            fig.gca().yaxis.set_major_locator(ticker.MultipleLocator(100))    # グリッド線設定
 
-                # グラフの画像ファイルをツイート
-                tweet_comment(bloadcast_id)
+            # グラフ設定
+            fig.gca().spines["top"].set_color("none")       # グラフ上の線を削除
+            plt.xticks(x, listXLabel)                       # X軸のラベルを設定
+            plt.title("Arena")                              # グラフのタイトルを設定
+            plt.xlabel("time")                              # X軸のラベルを設定
+            plt.grid(True)                                  # グリット線の表示を設定
+            fig.savefig("./tmp/figure.png")                 # グラフを画像ファイルで出力
+            
+            # グラフオブジェクトを閉じる
+            plt.close()
 
-                #リストを初期化
-                y = [0] * intervalCreateGraph
-                iY = 0
-                flgLabel = 0
-                listMinute = [""] * intervalCreateGraph
-                listXLabel = [""] * intervalCreateGraph
+                        # 放送終了時に無限ループが終了
+            if comment == u"/disconnect":
+                isEnd = True
+                tweet_comment(bloadcast_id, isEnd)
+                break
 
-            # iYのコメント数を1増加
-            y[iY] += 1
-            listMinute[iY] = tmpMinute
+            # グラフの画像ファイルをツイート
+            tweet_comment(bloadcast_id, isEnd)
 
-        # コンソールに毎分コメント数を出力
-        print(str(listMinute[iY]) + "：" + str(y[iY]))
+            # インデックス増加
+            iY += 1
+            stage15M = tmpStage15M
 
-        # 放送終了時に無限ループが終了
-        if comment == u"/disconnect":
-            break
-
-        # 総コメント数を1増加
-        cnt_comment += 1
+        # iYのコメント数を1増加
+        y[iY] += 1
+        yOceanLeaf[iY] += tmpOcean
+        yOceanLeaf[iY] += tmpLeaf
