@@ -11,10 +11,14 @@ CS = os.environ["CONSUMER_SECRET"]
 AT = os.environ["ACCESS_TOKEN"]
 ATS = os.environ["ACCESS_TOKEN_SECRET"]
 
-# ツイートのテンプレート
-tweet_tpl_cmt = os.environ["TWEET_TPL_COMMENT"]
+def tweet_comment(bloadcast_id, isEnd):
 
-def tweet_comment(bloadcast_id):
+    # ツイートのテンプレート
+    # 放送終了判定
+    if (isEnd == True):
+        tweet_tpl_cmt = "【コメント推移】 #世界の屁こき隊 【終了】 http://live2.nicovideo.jp/watch/"
+    else:    
+        tweet_tpl_cmt = "【コメント推移】 #世界の屁こき隊 【放送中】 http://live2.nicovideo.jp/watch/"
 
     # 認証処理
     twitter = OAuth1Session(CK, CS, AT, ATS)
