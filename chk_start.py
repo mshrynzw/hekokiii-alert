@@ -22,9 +22,12 @@ def check_start_live():
         res = requests.get(r"https://com.nicovideo.jp/community/" + community_id)
         res.raise_for_status()
         soup = bs4.BeautifulSoup(res.text, "html.parser")
-        elemURL = soup.find("a", class_="now_live_inner").get("href").rstrip("?ref=community")
-        if elemURL not in listStartedURL:
-            listStartedURL.append(elemURL)
-            tweet_reserve_live(elemURL)
+        try:
+            elemURL = soup.find("a", class_="now_live_inner").get("href").rstrip("?ref=community")
+            if elemURL not in listStartedURL:
+                listStartedURL.append(elemURL)
+                tweet_reserve_live(elemURL)
+        except AttributeError:
+            pass
 
         sleep(15)
