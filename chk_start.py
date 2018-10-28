@@ -9,7 +9,7 @@ from datetime import datetime
 from time import sleep
 from tw_reserve import tweet_reserve_live
 
-def check_reserve_live():
+def check_start_live():
 
     community_id = os.environ["NICONICO_COMMUNITY_ID"]
     listStartedURL = []
