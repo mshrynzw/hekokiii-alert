@@ -1,53 +1,30 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
-import urllib.request
-import urllib.parse
-import http.cookiejar
-import socket
+ 
+import requests
+import bs4
 import os
-import xmltodict
-from tw_start import tweet_start_live
-from chk_comment import check_comment
+import re
+from datetime import datetime
+from time import sleep
+from tw_reserve import tweet_reserve_live
 
-def check_start_live():
+def check_reserve_live():
 
-    # ニコニコ動画のアカウント設定
-    mail = os.environ["NICONICO_MAIL"]
-    password = os.environ["NICONICO_PASS"]
     community_id = os.environ["NICONICO_COMMUNITY_ID"]
+    listStartedURL = []
 
-
-    # ログインAPIその1に接続
-    opener = urllib.request.build_opener(
-        urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
-    urllib.request.install_opener(opener)
-    res = urllib.request.urlopen("https://secure.nicovideo.jp/secure/login?site=nicolive_antenna",
-                                urllib.parse.urlencode({"mail": mail, "password": password}).encode('ascii'))
-    res_data = xmltodict.parse(res.read().decode('utf-8'))
-    ticket = res_data["nicovideo_user_response"]["ticket"]
-
-    # 認証APIその2に接続
-    res = urllib.request.urlopen("http://live.nicovideo.jp/api/getalertstatus",
-                                urllib.parse.urlencode({"ticket": ticket}).encode('ascii'))
-    res_data = xmltodict.parse(res.read().decode('utf-8'))
-
-    # コメントサーバーに接続
-    host = res_data["getalertstatus"]["ms"]["addr"]
-    port = int(res_data["getalertstatus"]["ms"]["port"])
-    thread = res_data["getalertstatus"]["ms"]["thread"]
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect((host, port))
-    client.sendall(
-        (('<thread thread="%s" version="20061206" res_form="-1"/>'+chr(0)) % thread).encode())
-
-    # 該当のコミュニティの放送開始を監視
     while True:
 
-        res = client.recv(1024).decode('utf-8')
+        sleep(15)
+        print(listStartedURL)
+        #HTMLスクレビング
+        res = requests.get(r"https://com.nicovideo.jp/community/" + community_id)
+        res.raise_for_status()
+        soup = bs4.BeautifulSoup(res.text, "html.parser")
+        elemURL = soup.find("a", class_="now_live_inner").get("href").rstrip("?ref=community")
+        if elemURL not in listStartedURL:
+            listStartedURL.append(elemURL)
+            tweet_reserve_live(elemURL)
 
-        if community_id in res:
-
-            bloadcast_id = res.split(",")[0].split(">")[1]
-            tweet_start_live(bloadcast_id)
-            check_comment(bloadcast_id)
+        sleep(15)

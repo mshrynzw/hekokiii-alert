@@ -14,14 +14,14 @@ ATS = os.environ["ACCESS_TOKEN_SECRET"]
 tweet_tpl = os.environ["TWEET_TPL"]
 
 
-def tweet_start_live(bloadcast_id):
+def tweet_start_live(bloadcast_url):
 
     # 認証処理
     twitter = OAuth1Session(CK, CS, AT, ATS)
     # ツイートポストエンドポイント
     url = "https://api.twitter.com/1.1/statuses/update.json"
     # post送信
-    tweet = tweet_tpl + bloadcast_id
+    tweet = tweet_tpl + bloadcast_url
     print(tweet)
     params = {"status": tweet}
     res = twitter.post(url, params=params)
