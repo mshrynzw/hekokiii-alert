@@ -7,7 +7,7 @@ import os
 import re
 from datetime import datetime
 from time import sleep
-from tw_reserve import tweet_reserve_live
+from tw_start import tweet_start_live
 
 def check_start_live():
 
@@ -26,7 +26,7 @@ def check_start_live():
             elemURL = soup.find("a", class_="now_live_inner").get("href").rstrip("?ref=community")
             if elemURL not in listStartedURL:
                 listStartedURL.append(elemURL)
-                tweet_reserve_live(elemURL)
+                tweet_start_live(elemURL)
         except AttributeError:
             pass
 
