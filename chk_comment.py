@@ -13,7 +13,7 @@ import socket
 from bs4 import BeautifulSoup
 from datetime import datetime, time
 from time import sleep
-from tw_comment1 import tweet_comment
+from tw_comment import tweet_comment
 
 
 def check_comment(bloadcast_id):
