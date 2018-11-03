@@ -17,7 +17,7 @@ def check_reserve_live():
 
     while True:
 
-        sleep(30)
+        sleep(5)
         print(listFinishedURL)
         #HTMLスクレビング
         res = requests.get(r"https://com.nicovideo.jp/community/" + community_id)
@@ -72,7 +72,7 @@ def check_reserve_live():
                 strTweet = "【予約】 #世界の屁こき隊 が5分後に放送開始します。【開始日時：" + date3 + "】" + listURL[i]
                 tweet_reserve_live(strTweet)
 
-        sleep(30)
+        sleep(5)
 
         for i in range(len(listFinishedURL)):
             if listFinishedURL[i] not in listURL:
