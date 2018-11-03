@@ -46,8 +46,8 @@ def check_notice():
                 date1 = listNoticeDate[i][0:10].translate(str.maketrans({"年": "/", "月": "/"}))
                 datetime1 = datetime(int(listNoticeDate[i][0:4]), int(listNoticeDate[i][5:7]), int(listNoticeDate[i][8:10]))
 
-                # お知らせ日時が3日以内のみをツイートする。
-                if datetime1 + timedelta(days=3) > datetime.now():
+                # お知らせ日時が1日以内のみをツイートする。
+                if datetime1 + timedelta(days=1) > datetime.now():
 
                     listFinishedNoticeTitle.append(listNoticeTitle[i])
                     listFinishedNoticeText.append(listNoticeText[i])
