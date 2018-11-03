@@ -10,18 +10,13 @@ CS = os.environ["CONSUMER_SECRET"]
 AT = os.environ["ACCESS_TOKEN"]
 ATS = os.environ["ACCESS_TOKEN_SECRET"]
 
-# ツイートのテンプレート
-tweet_tpl = os.environ["TWEET_TPL_RESERVE"]
-
-
-def tweet_reserve_live(bloadcast_id):
+def tweet_reserve_live(tweet):
 
     # 認証処理
     twitter = OAuth1Session(CK, CS, AT, ATS)
     # ツイートポストエンドポイント
     url = "https://api.twitter.com/1.1/statuses/update.json"
     # post送信
-    tweet = tweet_tpl + bloadcast_id
     print(tweet)
     params = {"status": tweet}
     res = twitter.post(url, params=params)
