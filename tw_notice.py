@@ -10,10 +10,6 @@ CS = os.environ["CONSUMER_SECRET"]
 AT = os.environ["ACCESS_TOKEN"]
 ATS = os.environ["ACCESS_TOKEN_SECRET"]
 
-# ツイートのテンプレート
-tweet_tpl = os.environ["TWEET_TPL_RESERVE"]
-
-
 def tweet_notice(tweet):
 
     # 認証処理
