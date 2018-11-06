@@ -52,7 +52,7 @@ def check_reserve_live():
             datetimeStart = datetime.datetime.strptime(strStart, '%Y-%m-%d %H:%M')
             datetimeNow = datetime.datetime.now()
             datetimeCompare = datetimeStart - datetimeNow
-            secondCompare = datetimeCompare.total_seconds
+            secondCompare = datetimeCompare.total_seconds()
             # 1時間前にツイート
             if secondCompare > 59 * 60 and secondCompare <= 60 * 60:
                 date1 = listDate[i][0:10].translate(
