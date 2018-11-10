@@ -45,7 +45,7 @@ def check_reserve_live():
                 date2 = datetime.datetime.strptime(date1, '%Y/%m/%d')
                 date3 = listDate[i][5:10].replace(
                     "月", "/") + "(" + yobi[date2.weekday()] + ")" + listDate[i][12:17]
-                strTweet = "【予約】 #世界の屁こき隊 が放送予約しました。【開始日時：" + date3 + "】" + listURL[i]
+                strTweet = "【予約】 #世界の屁こき隊 が放送予約しました。【開始日時：" + date3 + "】 #ニコニコ生放送 " + listURL[i]
                 tweet_reserve_live(strTweet)
 
             strStart =  listDate[i].translate(str.maketrans({'年':'-', '月':'-', '日':None})).replace(' -','')
@@ -60,7 +60,7 @@ def check_reserve_live():
                 date2 = datetime.datetime.strptime(date1, '%Y/%m/%d')
                 date3 = listDate[i][5:10].replace(
                     "月", "/") + "(" + yobi[date2.weekday()] + ")" + listDate[i][12:17]
-                strTweet = "【予約】 #世界の屁こき隊 が1時間後に放送開始します。【開始日時：" + date3 + "】" + listURL[i]
+                strTweet = "【予約】 #世界の屁こき隊 が1時間後に放送開始します。【開始日時：" + date3 + "】 #ニコニコ生放送 " + listURL[i]
                 tweet_reserve_live(strTweet)
             # 5分前にツイート
             elif secondCompare > 4 * 60 and secondCompare <= 5 * 60:
@@ -69,7 +69,7 @@ def check_reserve_live():
                 date2 = datetime.datetime.strptime(date1, '%Y/%m/%d')
                 date3 = listDate[i][5:10].replace(
                     "月", "/") + "(" + yobi[date2.weekday()] + ")" + listDate[i][12:17]
-                strTweet = "【予約】 #世界の屁こき隊 が5分後に放送開始します。【開始日時：" + date3 + "】" + listURL[i]
+                strTweet = "【予約】 #世界の屁こき隊 が5分後に放送開始します。【開始日時：" + date3 + "】 #ニコニコ生放送 " + listURL[i]
                 tweet_reserve_live(strTweet)
 
         sleep(20)
