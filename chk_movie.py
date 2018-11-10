@@ -37,7 +37,7 @@ def check_movie():
 
             if videoId not in listVideoId:
                 listVideoId.append(videoId)
-                strTweet = "【YouTube】「 #" + title + "」がアップロードされました。" + r"https://www.youtube.com/watch?v=" + videoId
+                strTweet = "【YouTube】「 #" + title + "」がアップロードされました。 #ニコニコ生放送 " + r"https://www.youtube.com/watch?v=" + videoId
                 tweet_reserve_live(strTweet)
 
         sleep(10)
