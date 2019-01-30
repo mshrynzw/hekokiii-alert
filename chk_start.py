@@ -6,6 +6,7 @@ import bs4
 import os
 import re
 from datetime import datetime
+from ichiba import proc_ichiba
 from time import sleep
 from tw_start import tweet_start_live
 
@@ -27,6 +28,7 @@ def check_start_live():
             if elemURL not in listStartedURL:
                 listStartedURL.append(elemURL)
                 tweet_start_live(elemURL)
+                proc_ichiba(elemURL)
         except AttributeError:
             pass
 

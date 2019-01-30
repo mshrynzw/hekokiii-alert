@@ -1,5 +1,6 @@
-requests-oauthlib==0.8.0
-xmltodict==0.11.0
 bs4
 matplotlib
 lxml
+requests-oauthlib==0.8.0
+selenium
+xmltodict==0.11.0
