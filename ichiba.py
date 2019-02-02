@@ -24,7 +24,7 @@ def proc_ichiba(bloadcast_url):
     # GUI起動OFF（=True）
     options.set_headless(True)
     # Chromeドライバを設定
-    driver = webdriver.Chrome(chrome_options=options, executable_path='/Users/Rippin_GHOST/Downloads/chromedriver')
+    driver = webdriver.Chrome(chrome_options=options)
 
     # ニコニコ動画のアカウント設定
     nicoMail = os.environ["NICONICO_MAIL"]
