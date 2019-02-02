@@ -50,7 +50,6 @@ def proc_ichiba(bloadcast_url):
                 driver.get(bloadcast_url)
             except Exception as e:
                 logging.info(e)
-                break
                 
             # 【市場編集を開く】
             while True:
