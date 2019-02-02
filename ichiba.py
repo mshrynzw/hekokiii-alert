@@ -3,6 +3,7 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.chrome.options import Options
 from time import sleep
 import logging
@@ -70,6 +71,7 @@ def proc_ichiba(bloadcast_url):
                         sleep(1)
                         logging.info("[DELETE]" + idItem)
                     except Exception as e:
+                        Alert(driver).accept()
                         logging.warning(e)
                     iTd -= 1
                 iTr -= 1
@@ -82,6 +84,7 @@ def proc_ichiba(bloadcast_url):
                     logging.info("[ADD]" + idItem)
                     sleep(1)
                 except Exception as e:
+                    Alert(driver).accept()
                     logging.warning(e)
             
 
