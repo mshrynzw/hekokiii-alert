@@ -21,7 +21,7 @@ def proc_ichiba(bloadcast_url):
 
     # オプション設定用
     options = Options()
-    # GUI起動OFF（=Ture）
+    # GUI起動OFF（=True）
     options.set_headless(True)
     # Chromeドライバを設定
     driver = webdriver.Chrome(chrome_options=options, executable_path='/Users/Rippin_GHOST/Downloads/chromedriver')
@@ -31,16 +31,19 @@ def proc_ichiba(bloadcast_url):
     nicoPW = os.environ["NICONICO_PASS"]
     
 
-    try:
+    while True:
+        try:
+            # 【ログイン】
+            driver.get("https://account.nicovideo.jp/login")
+            driver.find_element_by_id("input__mailtel").send_keys(nicoMail)
+            driver.find_element_by_id("input__password").send_keys(nicoPW)
+            driver.find_element_by_id("login__submit").click()
+            break
+        except Exception as e:
+            logging.warning(e)   
 
-        # 【ログイン】
-        driver.get("https://account.nicovideo.jp/login")
-        driver.find_element_by_id("input__mailtel").send_keys(nicoMail)
-        driver.find_element_by_id("input__password").send_keys(nicoPW)
-        driver.find_element_by_id("login__submit").click()
-
-        while True:
-        
+    while True:
+        try:
             # 【放送ページへ移動】
             # 視聴ページにアクセスできない場合は、「放送終了」として処理する。
             try:
@@ -48,8 +51,7 @@ def proc_ichiba(bloadcast_url):
             except Exception as e:
                 logging.info(e)
                 break
-
-
+                
             # 【市場編集を開く】
             while True:
                 try:
@@ -57,7 +59,6 @@ def proc_ichiba(bloadcast_url):
                     break
                 except Exception as e:
                     logging.warning(e)
-
 
             # 【不要な商品を削除】
             xPath = "//*[@id='bpn_display_big']/tbody/tr[{}]/td[{}]"
@@ -71,11 +72,13 @@ def proc_ichiba(bloadcast_url):
                         sleep(1)
                         logging.info("[DELETE]" + idItem)
                     except Exception as e:
-                        Alert(driver).accept()
+                        try:
+                            Alert(driver).accept()
+                        except Exception as e:
+                            logging.critical(e)
                         logging.warning(e)
                     iTd -= 1
                 iTr -= 1
-                    
 
             # 【必要な商品を登録】
             for idItem in listItems:
@@ -84,15 +87,26 @@ def proc_ichiba(bloadcast_url):
                     logging.info("[ADD]" + idItem)
                     sleep(1)
                 except Exception as e:
-                    Alert(driver).accept()
+                    try:
+                        Alert(driver).accept()
+                    except Exception as e:
+                        logging.critical(e)
                     logging.warning(e)
-            
 
             sleep(15)
 
-    except Exception as e:
-        logging.critical(e)
-
+        except Exception as e:
+            logging.critical(e) 
+            while True:
+                try:
+                    # 【ログイン】
+                    driver.get("https://account.nicovideo.jp/login")
+                    driver.find_element_by_id("input__mailtel").send_keys(nicoMail)
+                    driver.find_element_by_id("input__password").send_keys(nicoPW)
+                    driver.find_element_by_id("login__submit").click()
+                    break
+                except Exception as e:
+                    logging.warning(e)  
 
     # 【後処理】
     driver.close()
