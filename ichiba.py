@@ -74,8 +74,8 @@ def proc_ichiba(bloadcast_url):
                     except Exception as e:
                         try:
                             Alert(driver).accept()
-                        except Exception as e:
-                            logging.critical(e)
+                        except Exception as e1:
+                            logging.critical(e1)
                         logging.warning(e)
                     iTd -= 1
                 iTr -= 1
@@ -89,8 +89,8 @@ def proc_ichiba(bloadcast_url):
                 except Exception as e:
                     try:
                         Alert(driver).accept()
-                    except Exception as e:
-                        logging.critical(e)
+                    except Exception as e1:
+                        logging.critical(e1)
                     logging.warning(e)
 
             sleep(15)
