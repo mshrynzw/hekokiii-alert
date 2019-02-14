@@ -7,14 +7,25 @@ import os
 import re
 from datetime import datetime, timedelta
 from time import sleep
-from tw_notice import tweet_notice
+from tw import proc_tweet
+
+# テスト用フラグ（Trueの場合は、ツイートせずログのみ出力する。）
+FT = os.environ["FLG_TEST"]
+# 対象のコミュニティID
+if FT:
+    community_id = os.environ["NICONICO_COMMUNITY_ID_TEST"]
+else:
+    community_id = os.environ["NICONICO_COMMUNITY_ID"]
+
+# ツイートのテンプレート
+strTweet = os.environ["TWEET_TPL_NOTICE"]
+# 曜日の設定
+yobi = ["月", "火", "水", "木", "金", "土", "日"]
 
 def check_notice():
 
-    community_id = os.environ["NICONICO_COMMUNITY_ID"]
     listFinishedNoticeTitle = []
     listFinishedNoticeText = []
-    yobi = ["月", "火", "水", "木", "金", "土", "日"]
 
     while True:
 
@@ -56,13 +67,8 @@ def check_notice():
                     date3 = listNoticeDate[i][5:10].replace(
                         "月", "/") + "(" + yobi[date2.weekday()] + ")" + listNoticeDate[i][12:17]
 
-                    strTweet =  "【通知】 #世界の屁こき隊 がお知らせしました。【通知日時：" + date3 + "】\n" + \
-                                "[タイトル]" + "\n" + \
-                                listNoticeTitle[i] + "\n" + \
-                                "[本文]" + "\n" + \
-                                listNoticeText[i] + "\n" + \
-                                r"https://com.nicovideo.jp/community/" + community_id
-                    tweet_notice(strTweet)
+                    strTweet = strTweet.format(date3, listNoticeTitle[i], listNoticeText[i], community_id)
+                    proc_tweet(strTweet)
 
         sleep(30)
 

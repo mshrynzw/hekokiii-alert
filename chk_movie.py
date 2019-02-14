@@ -7,14 +7,17 @@ import os
 import requests
 from datetime import datetime, timedelta, timezone
 from time import sleep
-from tw_reserve import tweet_reserve_live
+from tw import proc_tweet
+
+# ツイートのテンプレート
+strTweet = os.environ["TWEET_TPL_MOVIE"]
+# YouTubeのチャンネルID
+channelId = os.environ["YOUTUBE_CHANNEL_ID"]
+# 「YouTube Data API (v3)」のAPIキー
+key = os.environ["YOUTUBE_DATA_API_KEY"]
 
 def check_movie():
 
-    # YouTubeのチャンネルID
-    channelId = os.environ["YOUTUBE_CHANNEL_ID"]
-    # 「YouTube Data API (v3)」のAPIキー
-    key = os.environ["YOUTUBE_DATA_API_KEY"]
 
     # 動画IDを格納
     listVideoId = []
@@ -37,7 +40,7 @@ def check_movie():
 
             if videoId not in listVideoId:
                 listVideoId.append(videoId)
-                strTweet = "【YouTube】「 #" + title + "」がアップロードされました。#ニコニコ生放送 " + r"https://www.youtube.com/watch?v=" + videoId
-                tweet_reserve_live(strTweet)
+                strTweet = strTweet.format(title, videoId)
+                proc_tweet(strTweet)
 
         sleep(10)

@@ -8,11 +8,21 @@ import re
 from datetime import datetime
 from ichiba import proc_ichiba
 from time import sleep
-from tw_start import tweet_start_live
+from tw import proc_tweet
+
+# テスト用フラグ（Trueの場合は、ツイートせずログのみ出力する。）
+FT = os.environ["FLG_TEST"]
+# 対象のコミュニティID
+if FT:
+    community_id = os.environ["NICONICO_COMMUNITY_ID_TEST"]
+else:
+    community_id = os.environ["NICONICO_COMMUNITY_ID"]
+
+# ツイートのテンプレート
+strTweet = os.environ["TWEET_TPL_START"]
 
 def check_start_live():
 
-    community_id = os.environ["NICONICO_COMMUNITY_ID"]
     listStartedURL = []
 
     while True:
@@ -27,7 +37,7 @@ def check_start_live():
             elemURL = soup.find("a", class_="now_live_inner").get("href").rstrip("?ref=community")
             if elemURL not in listStartedURL:
                 listStartedURL.append(elemURL)
-                tweet_start_live(elemURL)
+                proc_tweet(strTweet + elemURL)
                 proc_ichiba(elemURL)
         except AttributeError:
             pass
