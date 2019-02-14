@@ -38,7 +38,7 @@ def check_start_live():
             if elemURL not in listStartedURL:
                 listStartedURL.append(elemURL)
                 proc_tweet(strTweet + elemURL)
-                threadChkStart_1 = threading.Thread(target=proc_ichiba, args=(elemURL))
+                threadChkStart_1 = threading.Thread(target=proc_ichiba, args=(elemURL,))
                 threadChkStart_1.start()
                 print("ご注文はうさぎですか？")
         except AttributeError:
