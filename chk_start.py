@@ -43,5 +43,6 @@ def check_start_live():
                 print("ご注文はうさぎですか？")
         except AttributeError:
             pass
+        print("ご注文はうさぎですか？？")
 
         sleep(15)
