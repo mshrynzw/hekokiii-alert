@@ -16,6 +16,9 @@ listItems = ["azB01HR3DR20", "azB071JT7QVL", "azB01HR3DOMS", "azB01HR3DOSC", "az
 # ニコニコ動画のアカウント設定
 nicoMail = os.environ["NICONICO_MAIL"]
 nicoPW = os.environ["NICONICO_PASS"]
+# 処理の回数と期間
+ICHIBA_TIMES = os.environ["ICHIBA_TIMES"]
+ICHIBA_TERM_S = os.environ["ICHIBA_TERM_S"]
 
 def login(driver, mail, pw):
     driver.get("https://account.nicovideo.jp/login")
@@ -42,7 +45,10 @@ def proc_ichiba(bloadcast_url):
         except Exception as e:
             logging.warning(e)   
 
-    while True:
+    # 処理カウント用変数
+    procTimes = 0
+
+    while procTimes < ICHIBA_TIMES:
         try:
             # 【放送ページへ移動】
             # 視聴ページにアクセスできない場合は、「放送終了」として処理する。
@@ -93,7 +99,10 @@ def proc_ichiba(bloadcast_url):
                     logging.warning(e)
                     continue
 
-            sleep(15)
+            # 【スリープ】
+            sleep(ICHIBA_TERM_S)
+            # 処理カウント+1
+            procTimes +=1
 
         except Exception as e:
             logging.critical(e) 
