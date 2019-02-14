@@ -9,16 +9,24 @@ from time import sleep
 import logging
 import os
 
+# ログのフォーマットを定義
+logging.basicConfig(level=logging.INFO, format='%(levelname)s : %(asctime)s : %(message)s')
+# 特定の商品のセット
+listItems = ["azB01HR3DR20", "azB071JT7QVL", "azB01HR3DOMS", "azB01HR3DOSC", "azB01HR3DQZS", "azB0765TGLGH", "azB0765X7YKV", "azB0765TGLG1", "azB01HR3DOI2", "azB072K1M1TC", "azB079976RPB", "azB0765TGHLY", "azB0765W8XDV", "azB01HR3DR9S", "azB01HR3DOKA"]
+# ニコニコ動画のアカウント設定
+nicoMail = os.environ["NICONICO_MAIL"]
+nicoPW = os.environ["NICONICO_PASS"]
+
+def login(driver, mail, pw):
+    driver.get("https://account.nicovideo.jp/login")
+    driver.find_element_by_id("input__mailtel").send_keys(mail)
+    driver.find_element_by_id("input__password").send_keys(pw)
+    driver.find_element_by_id("login__submit").click()
+    return driver
 
 def proc_ichiba(bloadcast_url):
 
     # 【前処理】
-    # ログのフォーマットを定義
-    logging.basicConfig(level=logging.INFO, format='%(levelname)s : %(asctime)s : %(message)s')
-
-    # 特定の商品のセット
-    listItems = ["azB01HR3DR20", "azB071JT7QVL", "azB01HR3DOMS", "azB01HR3DOSC", "azB01HR3DQZS", "azB0765TGLGH", "azB0765X7YKV", "azB0765TGLG1", "azB01HR3DOI2", "azB072K1M1TC", "azB079976RPB", "azB0765TGHLY", "azB0765W8XDV", "azB01HR3DR9S", "azB01HR3DOKA"]
-
     # オプション設定用
     options = Options()
     # GUI起動OFF（=True）
@@ -26,18 +34,10 @@ def proc_ichiba(bloadcast_url):
     # Chromeドライバを設定
     driver = webdriver.Chrome(chrome_options=options)
 
-    # ニコニコ動画のアカウント設定
-    nicoMail = os.environ["NICONICO_MAIL"]
-    nicoPW = os.environ["NICONICO_PASS"]
-    
-
     while True:
         try:
             # 【ログイン】
-            driver.get("https://account.nicovideo.jp/login")
-            driver.find_element_by_id("input__mailtel").send_keys(nicoMail)
-            driver.find_element_by_id("input__password").send_keys(nicoPW)
-            driver.find_element_by_id("login__submit").click()
+            driver = login(driver, nicoMail, nicoPW)
             break
         except Exception as e:
             logging.warning(e)   
@@ -70,13 +70,14 @@ def proc_ichiba(bloadcast_url):
                         driver.execute_script("ichibaB.deleteItem('" + idItem + "');")
                         sleep(1)
                         logging.info("[DELETE]" + idItem)
+                        iTd -= 1
                     except Exception as e:
                         try:
                             Alert(driver).accept()
+                            iTd -= 1
                         except Exception as e1:
                             logging.critical(e1)
                         logging.warning(e)
-                    iTd -= 1
                 iTr -= 1
 
             # 【必要な商品を登録】
@@ -99,10 +100,7 @@ def proc_ichiba(bloadcast_url):
             while True:
                 try:
                     # 【ログイン】
-                    driver.get("https://account.nicovideo.jp/login")
-                    driver.find_element_by_id("input__mailtel").send_keys(nicoMail)
-                    driver.find_element_by_id("input__password").send_keys(nicoPW)
-                    driver.find_element_by_id("login__submit").click()
+                    driver = login(driver, nicoMail, nicoPW)
                     break
                 except Exception as e:
                     logging.warning(e)  
