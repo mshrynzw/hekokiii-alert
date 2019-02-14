@@ -43,7 +43,6 @@ def check_start_live():
             
             # DB（SELECT文）
             count = db_check(cur, dbName, elemURL)
-            print(count)
 
             if count == 0:
                 db_insert(cur, dbName, elemURL)
