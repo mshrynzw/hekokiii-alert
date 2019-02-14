@@ -28,7 +28,6 @@ def check_start_live():
     while True:
 
         sleep(15)
-        print(listStartedURL)
         #HTMLスクレビング
         res = requests.get(r"https://com.nicovideo.jp/community/" + community_id)
         res.raise_for_status()
