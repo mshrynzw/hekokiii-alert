@@ -13,10 +13,13 @@ CS = os.environ["CONSUMER_SECRET"]
 AT = os.environ["ACCESS_TOKEN"]
 ATS = os.environ["ACCESS_TOKEN_SECRET"]
 
+# ログのフォーマットを定義
+logging.basicConfig(level=os.environ["LOG_LEVEL"], format=os.environ["LOG_FORMAT"])
+
 def proc_tweet(strTweet):
 
     if FT:
-        logging.warning("[OK][TEST] : " + strTweet )
+        logging.info("[OK][TEST] : " + strTweet )
     else:
         # 認証処理
         twitter = OAuth1Session(CK, CS, AT, ATS)
