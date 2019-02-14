@@ -1,10 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
  
-import requests
 import bs4
 import os
 import re
+import requests
+import threading
 from datetime import datetime
 from ichiba import proc_ichiba
 from time import sleep
@@ -37,7 +38,9 @@ def check_start_live():
             if elemURL not in listStartedURL:
                 listStartedURL.append(elemURL)
                 proc_tweet(strTweet + elemURL)
-                proc_ichiba(elemURL)
+                threadChkStart_1 = threading.Thread(target=proc_ichiba, args=(elemURL))
+                threadChkStart_1.start()
+                print("ご注文はうさぎですか？")
         except AttributeError:
             pass
 
