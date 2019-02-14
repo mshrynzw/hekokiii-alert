@@ -37,8 +37,12 @@ def db_check(cur, tableName, urlValue):
     sql = "SELECT COUNT(*) FROM {0} WHERE  url = '{1}'".format(tableName, urlValue)
     cur.execute(sql)
     count = cur.fetchone()
-    count = count.strip("(")
-    count = count.strip(",)")
+    print("1")
+    print(count)
+    count = count.lstrip("(")
+    print(count)
+    count = count.rstrip(",)")
+    print(count)
     return count
 
 # INSERT文
