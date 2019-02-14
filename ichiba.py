@@ -98,7 +98,8 @@ def proc_ichiba(bloadcast_url):
                     except Exception as e1:
                         logging.critical(e1)
                     logging.warning(e)
-                    continue
+                    pass
+                    # continue
 
             # 【スリープ】
             sleep(ICHIBA_TERM_S)
