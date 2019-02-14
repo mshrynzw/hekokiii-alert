@@ -16,7 +16,7 @@ ATS = os.environ["ACCESS_TOKEN_SECRET"]
 def proc_tweet(strTweet):
 
     if FT:
-        logging.info("[OK][TEST] : " + strTweet )
+        logging.warning("[OK][TEST] : " + strTweet )
     else:
         # 認証処理
         twitter = OAuth1Session(CK, CS, AT, ATS)
