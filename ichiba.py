@@ -70,14 +70,13 @@ def proc_ichiba(bloadcast_url):
                         driver.execute_script("ichibaB.deleteItem('" + idItem + "');")
                         sleep(1)
                         logging.info("[DELETE]" + idItem)
-                        iTd -= 1
                     except Exception as e:
                         try:
                             Alert(driver).accept()
-                            iTd -= 1
                         except Exception as e1:
                             logging.critical(e1)
                         logging.warning(e)
+                    iTd -= 1
                 iTr -= 1
 
             # 【必要な商品を登録】
