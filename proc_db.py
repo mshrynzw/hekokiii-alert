@@ -39,11 +39,11 @@ def db_check(cur, tableName, urlValue):
     count = cur.fetchone()
     print("1")
     print(count)
-    count1 = count.lstrip("(")
-    print(count1)
-    count2 = count1.rstrip(",)")
-    print(count2)
-    return count2
+    count = str(count).lstrip("(")
+    print(count)
+    count = count.rstrip(",)")
+    print(count)
+    return count
 
 # INSERT文
 def db_insert(cur, tableName, urlValue):
