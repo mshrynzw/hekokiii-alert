@@ -34,7 +34,7 @@ def db_close(conn, cur):
 # SELECT文
 def db_check(cur, tableName, urlValue):
 
-    sql = "SELECT COUNT(*) FROM {0} WHERE  url = {1}".format(tableName, urlValue)
+    sql = "SELECT COUNT(*) FROM {0} WHERE  url = '{1}'".format(tableName, urlValue)
     cur.execute(sql)
     return cur
 
