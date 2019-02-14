@@ -14,7 +14,7 @@ AT = os.environ["ACCESS_TOKEN"]
 ATS = os.environ["ACCESS_TOKEN_SECRET"]
 
 # ログのフォーマットを定義
-logging.basicConfig(level=logging.DEBUG, format=os.environ["LOG_FORMAT"])
+logging.basicConfig(level=logging.INFO, format=os.environ["LOG_FORMAT"])
 
 def proc_tweet(strTweet):
 
