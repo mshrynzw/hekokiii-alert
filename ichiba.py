@@ -9,16 +9,28 @@ from time import sleep
 import logging
 import os
 
+# ログのフォーマットを定義
+logging.basicConfig(level=logging.INFO, format='%(levelname)s : %(asctime)s : %(message)s')
+# ニコニコ動画のアカウント設定
+nicoMail = os.environ["NICONICO_MAIL"]
+nicoPW = os.environ["NICONICO_PASS"]
+# 処理の回数と期間
+ICHIBA_TIMES = int(os.environ["ICHIBA_TIMES"])
+ICHIBA_TERM_S = int(os.environ["ICHIBA_TERM_S"])
+# 特定の商品を設定
+strItems = os.environ["ICHIBA_ITEMS"]
+listItems = strItems.split(",")
+
+def login(driver, mail, pw):
+    driver.get("https://account.nicovideo.jp/login")
+    driver.find_element_by_id("input__mailtel").send_keys(mail)
+    driver.find_element_by_id("input__password").send_keys(pw)
+    driver.find_element_by_id("login__submit").click()
+    return driver
 
 def proc_ichiba(bloadcast_url):
 
     # 【前処理】
-    # ログのフォーマットを定義
-    logging.basicConfig(level=logging.INFO, format='%(levelname)s : %(asctime)s : %(message)s')
-
-    # 特定の商品のセット
-    listItems = ["azB01HR3DR20", "azB071JT7QVL", "azB01HR3DOMS", "azB01HR3DOSC", "azB01HR3DQZS", "azB0765TGLGH", "azB0765X7YKV", "azB0765TGLG1", "azB01HR3DOI2", "azB072K1M1TC", "azB079976RPB", "azB0765TGHLY", "azB0765W8XDV", "azB01HR3DR9S", "azB01HR3DOKA"]
-
     # オプション設定用
     options = Options()
     # GUI起動OFF（=True）
@@ -26,23 +38,18 @@ def proc_ichiba(bloadcast_url):
     # Chromeドライバを設定
     driver = webdriver.Chrome(chrome_options=options)
 
-    # ニコニコ動画のアカウント設定
-    nicoMail = os.environ["NICONICO_MAIL"]
-    nicoPW = os.environ["NICONICO_PASS"]
-    
-
     while True:
         try:
             # 【ログイン】
-            driver.get("https://account.nicovideo.jp/login")
-            driver.find_element_by_id("input__mailtel").send_keys(nicoMail)
-            driver.find_element_by_id("input__password").send_keys(nicoPW)
-            driver.find_element_by_id("login__submit").click()
+            driver = login(driver, nicoMail, nicoPW)
             break
         except Exception as e:
             logging.warning(e)   
 
-    while True:
+    # 処理カウント用変数
+    procTimes = 0
+
+    while procTimes < ICHIBA_TIMES:
         try:
             # 【放送ページへ移動】
             # 視聴ページにアクセスできない場合は、「放送終了」として処理する。
@@ -74,7 +81,7 @@ def proc_ichiba(bloadcast_url):
                         try:
                             Alert(driver).accept()
                         except Exception as e1:
-                            logging.critical(e1)
+                            logging.warning(e1)
                         logging.warning(e)
                     iTd -= 1
                 iTr -= 1
@@ -91,18 +98,19 @@ def proc_ichiba(bloadcast_url):
                     except Exception as e1:
                         logging.critical(e1)
                     logging.warning(e)
+                    continue
 
-            sleep(15)
+            # 【スリープ】
+            sleep(ICHIBA_TERM_S)
+            # 処理カウント+1
+            procTimes +=1
 
         except Exception as e:
             logging.critical(e) 
             while True:
                 try:
                     # 【ログイン】
-                    driver.get("https://account.nicovideo.jp/login")
-                    driver.find_element_by_id("input__mailtel").send_keys(nicoMail)
-                    driver.find_element_by_id("input__password").send_keys(nicoPW)
-                    driver.find_element_by_id("login__submit").click()
+                    driver = login(driver, nicoMail, nicoPW)
                     break
                 except Exception as e:
                     logging.warning(e)  
