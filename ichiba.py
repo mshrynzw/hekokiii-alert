@@ -11,14 +11,15 @@ import os
 
 # ログのフォーマットを定義
 logging.basicConfig(level=logging.INFO, format='%(levelname)s : %(asctime)s : %(message)s')
-# 特定の商品のセット
-listItems = ["azB01HR3DR20", "azB071JT7QVL", "azB01HR3DOMS", "azB01HR3DOSC", "azB01HR3DQZS", "azB0765TGLGH", "azB0765X7YKV", "azB0765TGLG1", "azB01HR3DOI2", "azB072K1M1TC", "azB079976RPB", "azB0765TGHLY", "azB0765W8XDV", "azB01HR3DR9S", "azB01HR3DOKA"]
 # ニコニコ動画のアカウント設定
 nicoMail = os.environ["NICONICO_MAIL"]
 nicoPW = os.environ["NICONICO_PASS"]
 # 処理の回数と期間
-ICHIBA_TIMES = os.environ["ICHIBA_TIMES"]
-ICHIBA_TERM_S = os.environ["ICHIBA_TERM_S"]
+ICHIBA_TIMES = int(os.environ["ICHIBA_TIMES"])
+ICHIBA_TERM_S = int(os.environ["ICHIBA_TERM_S"])
+# 特定の商品を設定
+strItems = os.environ["ICHIBA_ITEMS"]
+listItems = strItems.split(",")
 
 def login(driver, mail, pw):
     driver.get("https://account.nicovideo.jp/login")
