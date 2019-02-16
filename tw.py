@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s : %(asctime)s : %(
 
 def proc_tweet(strTweet):
 
-    if FT:
+    if FT == "True":
         logging.info("[OK][TEST] : " + strTweet )
     else:
         # 認証処理
