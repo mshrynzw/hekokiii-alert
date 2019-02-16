@@ -15,7 +15,7 @@ from tw import proc_tweet
 # テスト用フラグ（Trueの場合は、ツイートせずログのみ出力する。）
 FT = os.environ["FLG_TEST"]
 # 対象のコミュニティID
-if FT:
+if FT == "True":
     community_id = os.environ["NICONICO_COMMUNITY_ID_TEST"]
 else:
     community_id = os.environ["NICONICO_COMMUNITY_ID"]
