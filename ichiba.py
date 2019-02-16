@@ -31,12 +31,15 @@ def login(driver, mail, pw):
 def proc_ichiba(bloadcast_url):
 
     # 【前処理】
-    # オプション設定用
-    options = Options()
-    # GUI起動OFF（=True）
-    options.set_headless(True)
-    # Chromeドライバを設定
-    driver = webdriver.Chrome(chrome_options=options)
+    ## オプション設定用
+    ## options = Options()
+    ## GUI起動OFF（=True）
+    ## options.set_headless(True)
+    ## Chromeドライバを設定
+    ## driver = webdriver.Chrome(chrome_options=options)
+    
+    # PhantomJSのドライバ設定
+    driver = webdriver.PhantomJS()
 
     while True:
         try:
@@ -61,7 +64,9 @@ def proc_ichiba(bloadcast_url):
             # 【市場編集を開く】
             while True:
                 try:
-                    driver.find_element_by_xpath("//*[@id='ichiba_edit_buttonB']/form/input").click()
+                    ## driver.find_element_by_xpath("//*[@id='ichiba_edit_buttonB']/form/input").click()
+                    driver.execute_script("ichibaB.showIchibaConsole('az');")
+                    sleep(5)
                     break
                 except Exception as e:
                     logging.warning(e)
@@ -75,7 +80,7 @@ def proc_ichiba(bloadcast_url):
                     try:
                         idItem = driver.find_element_by_xpath(xPath.format(iTr, iTd)).get_attribute("id")[11:]
                         driver.execute_script("ichibaB.deleteItem('" + idItem + "');")
-                        sleep(1)
+                        sleep(3)
                         logging.info("[DELETE]" + idItem)
                     except Exception as e:
                         try:
@@ -91,7 +96,7 @@ def proc_ichiba(bloadcast_url):
                 try:
                     driver.execute_script("ichibaB.addItem('" + idItem + "');")
                     logging.info("[ADD]" + idItem)
-                    sleep(1)
+                    sleep(3)
                 except Exception as e:
                     try:
                         Alert(driver).accept()
