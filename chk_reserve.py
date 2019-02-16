@@ -6,11 +6,12 @@ import bs4
 import os
 import re
 import datetime
+from distutils.util import strtobool
 from time import sleep
 from tw import proc_tweet
 
 # テスト用フラグ（Trueの場合は、ツイートせずログのみ出力する。）
-FT = os.environ["FLG_TEST"]
+FT = strtobool(os.environ["FLG_TEST"])
 # 対象のコミュニティID
 if FT:
     community_id = os.environ["NICONICO_COMMUNITY_ID_TEST"]

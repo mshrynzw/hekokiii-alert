@@ -7,15 +7,16 @@ import re
 import requests
 import threading
 from datetime import datetime
+from distutils.util import strtobool
 from ichiba import proc_ichiba
 from proc_db import db_connect, db_close,db_check, db_insert
 from time import sleep
 from tw import proc_tweet
 
 # テスト用フラグ（Trueの場合は、ツイートせずログのみ出力する。）
-FT = os.environ["FLG_TEST"]
+FT = strtobool(os.environ["FLG_TEST"])
 # 対象のコミュニティID
-if FT == "True":
+if FT:
     community_id = os.environ["NICONICO_COMMUNITY_ID_TEST"]
 else:
     community_id = os.environ["NICONICO_COMMUNITY_ID"]

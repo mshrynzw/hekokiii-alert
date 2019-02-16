@@ -3,10 +3,11 @@
 
 import logging
 import os
+from distutils.util import strtobool
 from requests_oauthlib import OAuth1Session
 
 # テスト用フラグ（Trueの場合は、ツイートせずログのみ出力する。）
-FT = os.environ["FLG_TEST"]
+FT = strtobool(os.environ["FLG_TEST"])
 # Twitter用の設定
 CK = os.environ["CONSUMER_KEY"]
 CS = os.environ["CONSUMER_SECRET"]
@@ -18,10 +19,7 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s : %(asctime)s : %(
 
 def proc_tweet(strTweet):
 
-    print(FT)
-    print(bool(FT))
-    print(type(FT))
-    if bool(FT):
+    if FT:
         logging.info("[OK] TEST : " + strTweet )
     else:
         # 認証処理
@@ -35,4 +33,4 @@ def proc_tweet(strTweet):
         if res.status_code == 200:  # 正常投稿出来た場合
             logging.info("[OK] Tweet : " + strTweet )
         else:                       # 正常投稿出来なかった場合
-            logging.warning("[ERR] TWEET : " + strTweet + "(" + res.status_code + ")")
+            logging.warning("[ERR] Tweet : " + strTweet + "(" + res.status_code + ")")
