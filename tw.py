@@ -18,8 +18,11 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s : %(asctime)s : %(
 
 def proc_tweet(strTweet):
 
+    print(FT)
+    print(bool(FT))
+    print(type(FT))
     if bool(FT):
-        logging.info("[OK][TEST] : " + strTweet )
+        logging.info("[OK] TEST : " + strTweet )
     else:
         # 認証処理
         twitter = OAuth1Session(CK, CS, AT, ATS)
@@ -32,4 +35,4 @@ def proc_tweet(strTweet):
         if res.status_code == 200:  # 正常投稿出来た場合
             logging.info("[OK] Tweet : " + strTweet )
         else:                       # 正常投稿出来なかった場合
-            logging.warning("[ERR]Tweet : " + strTweet + "(" + res.status_code + ")")
+            logging.warning("[ERR] TWEET : " + strTweet + "(" + res.status_code + ")")
