@@ -31,15 +31,15 @@ def login(driver, mail, pw):
 def proc_ichiba(bloadcast_url):
 
     # 【前処理】
-    ## オプション設定用
-    ## options = Options()
-    ## GUI起動OFF（=True）
-    ## options.set_headless(True)
+    # オプション設定用
+    options = Options()
+    # GUI起動OFF（=True）
+    options.set_headless(True)
     ## Chromeドライバを設定
-    ## driver = webdriver.Chrome(chrome_options=options)
+    driver = webdriver.Chrome(chrome_options=options)
     
-    # PhantomJSのドライバ設定
-    driver = webdriver.PhantomJS()
+    ## PhantomJSのドライバ設定
+    # driver = webdriver.PhantomJS()
 
     while True:
         try:
