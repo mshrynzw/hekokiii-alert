@@ -62,14 +62,14 @@ def proc_ichiba(bloadcast_url):
                 logging.info(e)
                 
             # 【市場編集を開く】
-            while True:
-                try:
-                    ## driver.find_element_by_xpath("//*[@id='ichiba_edit_buttonB']/form/input").click()
-                    driver.execute_script("ichibaB.showIchibaConsole('az');")
-                    sleep(5)
-                    break
-                except Exception as e:
-                    logging.warning(e)
+            # while True:
+            #     try:
+            #         ## driver.find_element_by_xpath("//*[@id='ichiba_edit_buttonB']/form/input").click()
+            #         driver.execute_script("ichibaB.showIchibaConsole('az');")
+            #         sleep(5)
+            #         break
+            #     except Exception as e:
+            #         logging.warning(e)
 
             # 【不要な商品を削除】
             xPath = "//*[@id='bpn_display_big']/tbody/tr[{}]/td[{}]"
