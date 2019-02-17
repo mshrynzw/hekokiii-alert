@@ -10,7 +10,7 @@ from time import sleep
 from tw import proc_tweet
 
 # ツイートのテンプレート
-strTweet = os.environ["TWEET_TPL_MOVIE"]
+strTmp = os.environ["TWEET_TPL_MOVIE"]
 # YouTubeのチャンネルID
 channelId = os.environ["YOUTUBE_CHANNEL_ID"]
 # 「YouTube Data API (v3)」のAPIキー
@@ -40,7 +40,7 @@ def check_movie():
 
             if videoId not in listVideoId:
                 listVideoId.append(videoId)
-                strTweet = strTweet.format(title, videoId)
+                strTweet = strTmp.format(title, videoId)
                 proc_tweet(strTweet)
 
         sleep(10)

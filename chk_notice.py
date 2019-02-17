@@ -19,7 +19,7 @@ else:
     community_id = os.environ["NICONICO_COMMUNITY_ID"]
 
 # ツイートのテンプレート
-strTweet = os.environ["TWEET_TPL_NOTICE"]
+strTmp = os.environ["TWEET_TPL_NOTICE"]
 # 曜日の設定
 yobi = ["月", "火", "水", "木", "金", "土", "日"]
 
@@ -68,7 +68,7 @@ def check_notice():
                     date3 = listNoticeDate[i][5:10].replace(
                         "月", "/") + "(" + yobi[date2.weekday()] + ")" + listNoticeDate[i][12:17]
 
-                    strTweet = strTweet.format(date3, listNoticeTitle[i], listNoticeText[i], community_id)
+                    strTweet = strTmp.format(date3, listNoticeTitle[i], listNoticeText[i], community_id)
                     proc_tweet(strTweet)
 
         sleep(30)
