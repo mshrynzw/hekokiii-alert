@@ -34,7 +34,6 @@ strTweet = os.environ["TWEET_TPL_COMMENT"]
 
 def check_comment(bloadcast_url):
     # テストの場合は放送IDを変更
-    print("★")
     if MODE_SETTING == "TEST2":
         bloadcast_id = os.environ["NICONICO_BLOADCAST_URL_TEST2"]
     # 放送URLから放送IDを抽出
@@ -57,6 +56,7 @@ def check_comment(bloadcast_url):
             addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
             port = int(soup.getplayerstatus.ms.port.string)         # コメントサーバのポートを取得
             thread = int(soup.getplayerstatus.ms.thread.string)     # コメントサーバのスレッドIDを取得
+            print("★")
         except:     #放送終了・ログイン不可の場合、例外発生
             sleep(5)
             break
