@@ -88,6 +88,7 @@ def check_comment(bloadcast_url):
     # 続けてchatノード（コメント）を受信
     while True:
         try:
+            print("★")
             res = client.recv(2048).decode('utf-8')
             bs = BeautifulSoup(res, "xml")
             chat = bs.find('chat')
