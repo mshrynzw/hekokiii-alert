@@ -56,7 +56,6 @@ def check_comment(bloadcast_url):
             addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
             port = int(soup.getplayerstatus.ms.port.string)         # コメントサーバのポートを取得
             thread = int(soup.getplayerstatus.ms.thread.string)     # コメントサーバのスレッドIDを取得
-            print("★1")
         except:     #放送終了・ログイン不可の場合、例外発生
             sleep(5)
         else:
@@ -65,15 +64,13 @@ def check_comment(bloadcast_url):
     # コメントサーバへ接続
     for i in range(1, CRT + 1):
         try:
-            print("★20")
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            print("★21")
             client.connect((addr, port))
-            print("★22")
             client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
             # 最初にthreadノード受信（一度に受信するデータは、最大でも bufsize （引数）で指定した量）
             print("★23")
-            res = client.recv(2048)
+            res = client.settimeout(3).recv(2048)
+            print("★1")
         except Exception as e:     # 放送終了・ログイン不可の場合、例外発生
             print(e)
             print("★24")
