@@ -74,9 +74,10 @@ def check_comment(bloadcast_url):
             # 最初にthreadノード受信（一度に受信するデータは、最大でも bufsize （引数）で指定した量）
             print("★23")
             res = client.recv(2048)
-        except:     # 放送終了・ログイン不可の場合、例外発生
-            sleep(5)
+        except Exception as e:     # 放送終了・ログイン不可の場合、例外発生
+            print(e)
             print("★24")
+            sleep(5)
         else:
             print("★25")
             break
