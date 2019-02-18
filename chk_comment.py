@@ -34,6 +34,7 @@ strTweet = os.environ["TWEET_TPL_COMMENT"]
 
 def check_comment(bloadcast_url):
     # テストの場合は放送IDを変更
+    print("★")
     if MODE_SETTING == "TEST2":
         bloadcast_id = os.environ["NICONICO_BLOADCAST_URL_TEST2"]
     # 放送URLから放送IDを抽出
@@ -88,7 +89,6 @@ def check_comment(bloadcast_url):
     # 続けてchatノード（コメント）を受信
     while True:
         try:
-            print("★")
             res = client.recv(2048).decode('utf-8')
             bs = BeautifulSoup(res, "xml")
             chat = bs.find('chat')
