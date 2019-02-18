@@ -34,6 +34,6 @@ def proc_tweet(strTweet):
         if res.status_code == 200:  # 正常投稿出来た場合
             logging.info("[OK] Tweet : " + strTweet )
         else:                       # 正常投稿出来なかった場合
-            logging.warning("[ERR] Tweet : " + strTweet + "(" + res.status_code + ")")
+            logging.warning("[ERR] Tweet : " + strTweet + "(" + str(res.status_code) + ")")
     else:
         logging.info("[OK] TEST : " + strTweet )
