@@ -56,6 +56,7 @@ def check_comment(bloadcast_url):
             addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
             port = int(soup.getplayerstatus.ms.port.string)         # コメントサーバのポートを取得
             thread = int(soup.getplayerstatus.ms.thread.string)     # コメントサーバのスレッドIDを取得
+            print("★1")
         except:     #放送終了・ログイン不可の場合、例外発生
             sleep(5)
         else:
@@ -69,6 +70,7 @@ def check_comment(bloadcast_url):
             client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
             # 最初にthreadノード受信（一度に受信するデータは、最大でも bufsize （引数）で指定した量）
             res = client.recv(2048)
+            print("★2")
         except:     # 放送終了・ログイン不可の場合、例外発生
             sleep(5)
         else:
