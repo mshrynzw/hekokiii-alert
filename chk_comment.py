@@ -22,7 +22,7 @@ from tw_comment import tweet_comment
 MODE_SETTING = os.environ["MODE_SETTING"]
 
 # コネクションのリトライ数
-CRT = os.environ["CONNECTION_RETRY_TIMES"]
+CRT = int(os.environ["CONNECTION_RETRY_TIMES"])
 # ニコニコ動画のアカウント設定
 LI = {
     "mail_tel": os.environ["NICONICO_MAIL"],
