@@ -56,10 +56,9 @@ def check_comment(bloadcast_url):
             addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
             port = int(soup.getplayerstatus.ms.port.string)         # コメントサーバのポートを取得
             thread = int(soup.getplayerstatus.ms.thread.string)     # コメントサーバのスレッドIDを取得
-            print("★")
+            break
         except:     #放送終了・ログイン不可の場合、例外発生
             sleep(5)
-            break
 
     for i in range(1, CRT + 1):
         try:
@@ -75,6 +74,7 @@ def check_comment(bloadcast_url):
             break
 
     # グラフ作成の関数
+    print("★")
     xAxisCount = 25                    # X軸の個数（15分毎 * 6時間 +1）
     intervalXAxis = 4                  # X軸ラベルの間隔（1時間毎）
     x = list(range(xAxisCount))        # X軸の個数（「グラフ作成の間隔」に準ずる）
