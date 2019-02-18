@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import logging
 import math
 import matplotlib
 matplotlib.use('Agg')
@@ -30,6 +31,8 @@ LI = {
 }
 # ツイートのテンプレート
 strTweet = os.environ["TWEET_TPL_COMMENT"]
+# ログのフォーマットを定義
+logging.basicConfig(level=logging.INFO, format='%(levelname)s : %(asctime)s : %(message)s')
 
 
 def check_comment(bloadcast_url):
@@ -56,8 +59,8 @@ def check_comment(bloadcast_url):
             addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
             port = int(soup.getplayerstatus.ms.port.string)         # コメントサーバのポートを取得
             thread = int(soup.getplayerstatus.ms.thread.string)     # コメントサーバのスレッドIDを取得
-        except:     #放送終了・ログイン不可の場合、例外発生
-            sleep(5)
+        except Exception as e:     # 放送終了・ログイン不可の場合、例外発生
+            logging.warning(e)
         else:
             break
 
@@ -68,15 +71,11 @@ def check_comment(bloadcast_url):
             client.connect((addr, port))
             client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
             # 最初にthreadノード受信（一度に受信するデータは、最大でも bufsize （引数）で指定した量）
-            print("★23")
-            res = client.settimeout(3).recv(2048)
-            print("★1")
+            res = client.recv(2048)
         except Exception as e:     # 放送終了・ログイン不可の場合、例外発生
-            print(e)
-            print("★24")
+            logging.warning(e)
             sleep(5)
         else:
-            print("★25")
             break
 
     # グラフ作成の関数
@@ -93,7 +92,6 @@ def check_comment(bloadcast_url):
 
     # 続けてchatノード（コメント）を受信
     while True:
-        print("★")
         try:
             res = client.recv(2048).decode('utf-8')
             bs = BeautifulSoup(res, "xml")
@@ -101,7 +99,8 @@ def check_comment(bloadcast_url):
             comment = chat.string                       # コメント内容を取得
             cmt_date = int(dict(chat.attrs)['date'])    # コメント日時を取得
 
-        except:
+        except Exception as e:
+            logging.warning(e)
             continue
 
         tmpOcean = comment.count("海")                        # コメントから「海」の個数を検索
