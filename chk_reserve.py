@@ -20,8 +20,6 @@ if MODE_SETTING == "PROD":
 else:
     community_id = os.environ["NICONICO_COMMUNITY_ID_TEST"]
 
-# ツイートのテンプレート
-strTweet = os.environ["TWEET_TPL_RESERVE"]
 # 曜日の設定
 yobi = ["月", "火", "水", "木", "金", "土", "日"]
 
@@ -33,6 +31,8 @@ def set_date(date_reserve):
 
 def check_reserve_live():
 
+    # ツイートのテンプレート
+    strTweet = os.environ["TWEET_TPL_RESERVE"]
     listFinishedURL = []
 
     while True:
