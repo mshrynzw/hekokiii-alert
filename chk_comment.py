@@ -72,8 +72,8 @@ def check_comment(bloadcast_url):
             print("★22")
             client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
             # 最初にthreadノード受信（一度に受信するデータは、最大でも bufsize （引数）で指定した量）
-            res = client.recv(2048)
             print("★23")
+            res = client.recv(2048)
         except:     # 放送終了・ログイン不可の場合、例外発生
             sleep(5)
             print("★24")
