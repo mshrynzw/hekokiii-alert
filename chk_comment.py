@@ -62,18 +62,23 @@ def check_comment(bloadcast_url):
         else:
             break
 
+    # コメントサーバへ接続
     for i in range(1, CRT + 1):
         try:
-            # コメントサーバへ接続
+            print("★20")
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            print("★21")
             client.connect((addr, port))
+            print("★22")
             client.sendall((('<thread thread="%s" version="20061206" res_form="-1000"/>'+chr(0)) % thread).encode())
             # 最初にthreadノード受信（一度に受信するデータは、最大でも bufsize （引数）で指定した量）
             res = client.recv(2048)
-            print("★2")
+            print("★23")
         except:     # 放送終了・ログイン不可の場合、例外発生
             sleep(5)
+            print("★24")
         else:
+            print("★25")
             break
 
     # グラフ作成の関数
