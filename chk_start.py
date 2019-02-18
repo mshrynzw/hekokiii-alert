@@ -33,6 +33,12 @@ strTweet = os.environ["TWEET_TPL_START"]
 def check_start_live():
     while True:
 
+        # chk_comment.pyのテストの場合はcheck_commentのみを処理する
+        if MODE_SETTING == "TEST2":
+            bloadcast_url = os.environ["NICONICO_BLOADCAST_URL_TEST2"]
+            check_comment(bloadcast_url)
+            break
+        
         sleep(15)
         #HTMLスクレビング
         res = requests.get(r"https://com.nicovideo.jp/community/" + community_id)
