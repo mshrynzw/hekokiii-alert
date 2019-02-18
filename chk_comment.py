@@ -74,7 +74,6 @@ def check_comment(bloadcast_url):
             break
 
     # グラフ作成の関数
-    print("★")
     xAxisCount = 25                    # X軸の個数（15分毎 * 6時間 +1）
     intervalXAxis = 4                  # X軸ラベルの間隔（1時間毎）
     x = list(range(xAxisCount))        # X軸の個数（「グラフ作成の間隔」に準ずる）
@@ -88,6 +87,7 @@ def check_comment(bloadcast_url):
 
     # 続けてchatノード（コメント）を受信
     while True:
+        print("★")
         try:
             res = client.recv(2048).decode('utf-8')
             bs = BeautifulSoup(res, "xml")
