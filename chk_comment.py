@@ -15,28 +15,40 @@ from datetime import datetime, time
 from time import sleep
 from tw_comment import tweet_comment
 
+# *** 運用モード ***
+# - PROD ：本番
+# - TEST1：テスト（chk_comment.py以外）
+# - TEST2：テスト（chk_comment.pyのみ）
+MODE_SETTING = os.environ["MODE_SETTING"]
 
-def check_comment(bloadcast_id):
+# コネクションのリトライ数
+CRT = os.environ["CONNECTION_RETRY_TIMES"]
+# ニコニコ動画のアカウント設定
+LI = {
+    "mail_tel": os.environ["NICONICO_MAIL"],
+    "password": os.environ["NICONICO_PASS"]
+}
+# ツイートのテンプレート
+strTweet = os.environ["TWEET_TPL_COMMENT"]
 
-    # ニコニコ動画のアカウント設定
-    login_info = {
-        "mail_tel": os.environ["NICONICO_MAIL"],
-        "password": os.environ["NICONICO_PASS"]
-    }
+
+def check_comment(bloadcast_url):
+    # テストの場合は放送IDを変更
+    if MODE_SETTING == "TEST2":
+        bloadcast_id = os.environ["NICONICO_BLOADCAST_URL_TEST2"]
+    # 放送URLから放送IDを抽出
+    bloadcast_id = bloadcast_url[32:]
     
-    # コネクションのリトライ数
-    connectionRetry = 20
-
     # セッションを開始
     session = requests.session()
     # ニコニコ動画のログイン画面に接続
     url_login = "https://secure.nicovideo.jp/secure/login?site=niconico"
-    res = session.post(url_login, data=login_info)
+    res = session.post(url_login, data=LI)
     # 大手放送の場合、放送番組の取得が即時できないため。
     sleep(20)
 
     # ニコニコ生放送のサーバへ接続し、放送番組の情報を取得
-    for i in range(1, connectionRetry + 1):
+    for i in range(1, CRT + 1):
         try:
             res = session.get(
                 "http://watch.live.nicovideo.jp/api/getplayerstatus?v=" + bloadcast_id)
@@ -48,7 +60,7 @@ def check_comment(bloadcast_id):
             sleep(5)
             break
 
-    for i in range(1, connectionRetry + 1):
+    for i in range(1, CRT + 1):
         try:
             # コメントサーバへ接続
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -71,7 +83,6 @@ def check_comment(bloadcast_id):
     isLabel = False                    # X軸ラベル用フラグ
     stage15M = 0                       # 時刻0-14分の場合「0」、15-29分の場合「1」、30-44分の場合「2」、45-59分の場合「3」
     isStage15M = False                 # 15分段階設定の完了フラグ
-    isEnd = False                      # 放送終了フラグ
     iY = 1                             # リスト変数y用の変数
 
     # 続けてchatノード（コメント）を受信
@@ -145,12 +156,11 @@ def check_comment(bloadcast_id):
 
                         # 放送終了時に無限ループが終了
             if comment == u"/disconnect":
-                isEnd = True
-                tweet_comment(bloadcast_id, isEnd)
+                tweet_comment(strTweet.format("放送終了", bloadcast_id))
                 break
 
             # グラフの画像ファイルをツイート
-            tweet_comment(bloadcast_id, isEnd)
+            tweet_comment(strTweet.format("放送中", bloadcast_id))
 
             # インデックス増加
             iY += 1

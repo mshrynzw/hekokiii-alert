@@ -6,17 +6,19 @@ import bs4
 import os
 import re
 from datetime import datetime, timedelta
-from distutils.util import strtobool
 from time import sleep
 from tw import proc_tweet
 
-# テスト用フラグ（Trueの場合は、ツイートせずログのみ出力する。）
-FT = strtobool(os.environ["FLG_TEST"])
+# *** 運用モード ***
+# - PROD ：本番
+# - TEST1：テスト（chk_comment.py以外）
+# - TEST2：テスト（chk_comment.pyのみ）
+MODE_SETTING = os.environ["MODE_SETTING"]
 # 対象のコミュニティID
-if FT:
-    community_id = os.environ["NICONICO_COMMUNITY_ID_TEST"]
-else:
+if MODE_SETTING == "PROD":
     community_id = os.environ["NICONICO_COMMUNITY_ID"]
+else:
+    community_id = os.environ["NICONICO_COMMUNITY_ID_TEST"]
 
 # ツイートのテンプレート
 strTmp = os.environ["TWEET_TPL_NOTICE"]
