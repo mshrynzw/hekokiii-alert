@@ -56,9 +56,10 @@ def check_comment(bloadcast_url):
             addr = soup.getplayerstatus.ms.addr.string              # コメントサーバのアドレスを取得
             port = int(soup.getplayerstatus.ms.port.string)         # コメントサーバのポートを取得
             thread = int(soup.getplayerstatus.ms.thread.string)     # コメントサーバのスレッドIDを取得
-            break
         except:     #放送終了・ログイン不可の場合、例外発生
             sleep(5)
+        else:
+            break
 
     for i in range(1, CRT + 1):
         try:
