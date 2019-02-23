@@ -1,4 +1,4 @@
-bs4
+beautifulsoup4
 matplotlib
 lxml
 requests-oauthlib==0.8.0
