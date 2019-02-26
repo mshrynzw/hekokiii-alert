@@ -58,10 +58,10 @@ def check_start_live():
             if count == 0:
                 db_insert(cur, dbName, bloadcast_url)
                 proc_tweet(strTweet + bloadcast_url)
-                threadChkStart_1 = threading.Thread(target=proc_ichiba, args=(bloadcast_url,))
-                threadChkStart_2 = threading.Thread(target=check_comment, args=(bloadcast_url,))
-                threadChkStart_1.start()
-                threadChkStart_2.start()
+                # threadChkStart_1 = threading.Thread(target=proc_ichiba, args=(bloadcast_url,))
+                # threadChkStart_2 = threading.Thread(target=check_comment, args=(bloadcast_url,))
+                # threadChkStart_1.start()
+                # threadChkStart_2.start()
             db_close(conn, cur)
 
         except AttributeError:
