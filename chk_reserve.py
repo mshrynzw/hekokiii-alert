@@ -69,14 +69,16 @@ def check_reserve_live():
             secondCompare = datetimeCompare.total_seconds()
 
             # 1時間前にツイート
-            if secondCompare > 59 * 60 and secondCompare <= 60 * 60:
+            if secondCompare > 59 * 60 and secondCompare <= 62 * 60:
                 strTweet = strTweet.format("1時間後に放送開始します。", set_date(listDate[i]), listURL[i]) 
                 proc_tweet(strTweet)
+                sleep(180)
             # 5分前にツイート
-            elif secondCompare > 4 * 60 and secondCompare <= 5 * 60:
+            elif secondCompare > 4 * 60 and secondCompare <= 7 * 60:
                 strTweet = strTweet.format("5分後に放送開始します。", set_date(listDate[i]), listURL[i]) 
                 proc_tweet(strTweet)
-
+                sleep(180)
+                
         sleep(20)
 
         for i in range(len(listFinishedURL)):
