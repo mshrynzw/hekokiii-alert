@@ -40,7 +40,7 @@ def check_reserve_live():
             sleep(20)
             #HTMLスクレビング
             res = requests.get(r"https://com.nicovideo.jp/community/" + community_id)
-            res.raise_for_status()
+            # res.raise_for_status()
             soup = bs4.BeautifulSoup(res.text, "html.parser")
             elemsDate = soup.find_all("span", class_="liveDate", text=re.compile("20.*-"))
             elemsURL = soup.find_all("a", class_="liveTitle", href=re.compile(
