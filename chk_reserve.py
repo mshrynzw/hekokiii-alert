@@ -36,56 +36,52 @@ def check_reserve_live():
     listFinishedURL = []
 
     while True:
+        try:
+            sleep(20)
+            #HTMLスクレビング
+            res = requests.get(r"https://com.nicovideo.jp/community/" + community_id)
+            res.raise_for_status()
+            soup = bs4.BeautifulSoup(res.text, "html.parser")
+            elemsDate = soup.find_all("span", class_="liveDate", text=re.compile("20.*-"))
+            elemsURL = soup.find_all("a", class_="liveTitle", href=re.compile(
+                r"^http://live.nicovideo.jp/gate/lv"))
 
-        sleep(20)
-        #HTMLスクレビング
-        res = requests.get(r"https://com.nicovideo.jp/community/" + community_id)
-        res.raise_for_status()
-        soup = bs4.BeautifulSoup(res.text, "html.parser")
-        elemsDate = soup.find_all("span", class_="liveDate", text=re.compile("20.*-"))
-        elemsURL = soup.find_all("a", class_="liveTitle", href=re.compile(
-            r"^http://live.nicovideo.jp/gate/lv"))
+            listDate = []
+            listURL = []
+            for elemDate in elemsDate:
+                listDate.append(elemDate.string)
 
-        listDate = []
-        listURL = []
-        for elemDate in elemsDate:
-            listDate.append(elemDate.string)
+            for elemURL in elemsURL:
+                listURL.append(elemURL.get("href"))
 
-        for elemURL in elemsURL:
-            listURL.append(elemURL.get("href"))
+            for i in range(len(listDate)):
 
-        for i in range(len(listDate)):
+                #未ツイートの放送IDのみをツイートする。
+                if listURL[i] not in listFinishedURL:
+                    listFinishedURL.append(listURL[i])
+                    strTweet = strTweet.format("放送予約しました。", set_date(listDate[i]), listURL[i]) 
+                    proc_tweet(strTweet)
 
-            #未ツイートの放送IDのみをツイートする。
-            if listURL[i] not in listFinishedURL:
-                listFinishedURL.append(listURL[i])
-                strTweet = strTweet.format("放送予約しました。", set_date(listDate[i]), listURL[i]) 
-                proc_tweet(strTweet)
+                strStart =  listDate[i].translate(str.maketrans({'年':'-', '月':'-', '日':None})).replace(' -','')
+                datetimeStart = datetime.datetime.strptime(strStart, '%Y-%m-%d %H:%M')
+                datetimeNow = datetime.datetime.now()
+                datetimeCompare = datetimeStart - datetimeNow
+                secondCompare = datetimeCompare.total_seconds()
 
-            strStart =  listDate[i].translate(str.maketrans({'年':'-', '月':'-', '日':None})).replace(' -','')
-            datetimeStart = datetime.datetime.strptime(strStart, '%Y-%m-%d %H:%M')
-            datetimeNow = datetime.datetime.now()
-            datetimeCompare = datetimeStart - datetimeNow
-            secondCompare = datetimeCompare.total_seconds()
-            #★
-            print("datetimeStart : " + datetimeStart.strftime('%Y-%m-%d %H:%M:%S'))
-            print("datetimeNow : " + datetimeNow.strftime('%Y-%m-%d %H:%M:%S'))
-            print("datetimeCompare : " + datetimeCompare.strftime('%Y-%m-%d %H:%M:%S'))
-            print("secondCompare : " + secondCompare.strftime('%Y-%m-%d %H:%M:%S'))
-            #★
-
-            # 1時間前にツイート
-            if secondCompare > 59 * 60 and secondCompare <= 62 * 60:
-                strTweet = strTweet.format("1時間後に放送開始します。", set_date(listDate[i]), listURL[i]) 
-                proc_tweet(strTweet)
-                sleep(180)
-            # 5分前にツイート
-            elif secondCompare > 4 * 60 and secondCompare <= 7 * 60:
-                strTweet = strTweet.format("5分後に放送開始します。", set_date(listDate[i]), listURL[i]) 
-                proc_tweet(strTweet)
-                sleep(180)
-                
-        sleep(20)
+                # 1時間前にツイート
+                if secondCompare > 59 * 60 and secondCompare <= 62 * 60:
+                    strTweet = strTweet.format("1時間後に放送開始します。", set_date(listDate[i]), listURL[i]) 
+                    proc_tweet(strTweet)
+                    sleep(180)
+                # 5分前にツイート
+                elif secondCompare > 4 * 60 and secondCompare <= 7 * 60:
+                    strTweet = strTweet.format("5分後に放送開始します。", set_date(listDate[i]), listURL[i]) 
+                    proc_tweet(strTweet)
+                    sleep(180)
+                    
+            sleep(20)
+        except Exception:
+            continue
 
         for i in range(len(listFinishedURL)):
             if listFinishedURL[i] not in listURL:
