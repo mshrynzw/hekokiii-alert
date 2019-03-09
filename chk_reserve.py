@@ -67,6 +67,12 @@ def check_reserve_live():
             datetimeNow = datetime.datetime.now()
             datetimeCompare = datetimeStart - datetimeNow
             secondCompare = datetimeCompare.total_seconds()
+            #★
+            print("datetimeStart : " + datetimeStart)
+            print("datetimeNow : " + datetimeNow)
+            print("datetimeCompare : " + datetimeCompare)
+            print("secondCompare : " + secondCompare)
+            #★
 
             # 1時間前にツイート
             if secondCompare > 59 * 60 and secondCompare <= 62 * 60:
