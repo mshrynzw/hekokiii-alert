@@ -68,10 +68,10 @@ def check_reserve_live():
             datetimeCompare = datetimeStart - datetimeNow
             secondCompare = datetimeCompare.total_seconds()
             #★
-            print("datetimeStart : " + datetimeStart)
-            print("datetimeNow : " + datetimeNow)
-            print("datetimeCompare : " + datetimeCompare)
-            print("secondCompare : " + secondCompare)
+            print("datetimeStart : " + datetimeStart.strftime('%Y-%m-%d %H:%M:%S'))
+            print("datetimeNow : " + datetimeNow.strftime('%Y-%m-%d %H:%M:%S'))
+            print("datetimeCompare : " + datetimeCompare.strftime('%Y-%m-%d %H:%M:%S'))
+            print("secondCompare : " + secondCompare.strftime('%Y-%m-%d %H:%M:%S'))
             #★
 
             # 1時間前にツイート
