@@ -43,4 +43,4 @@ def check_movie():
                 strTweet = strTmp.format(title, videoId)
                 proc_tweet(strTweet)
 
-        sleep(10)
+        sleep(150)
