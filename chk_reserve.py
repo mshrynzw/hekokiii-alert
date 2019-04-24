@@ -59,8 +59,8 @@ def check_reserve_live():
                 #未ツイートの放送IDのみをツイートする。
                 if listURL[i] not in listFinishedURL:
                     listFinishedURL.append(listURL[i])
-                    strTweet = strTweet.format("放送予約しました。", set_date(listDate[i]), listURL[i]) 
-                    proc_tweet(strTweet)
+                    strTweetComp = strTweet.format("放送予約しました。", set_date(listDate[i]), listURL[i]) 
+                    proc_tweet(strTweetComp)
 
                 strStart =  listDate[i].translate(str.maketrans({'年':'-', '月':'-', '日':None})).replace(' -','')
                 datetimeStart = datetime.datetime.strptime(strStart, '%Y-%m-%d %H:%M')
@@ -70,13 +70,13 @@ def check_reserve_live():
 
                 # 1時間前にツイート
                 if secondCompare > 59 * 60 and secondCompare <= 62 * 60:
-                    strTweet = strTweet.format("1時間後に放送開始します。", set_date(listDate[i]), listURL[i]) 
-                    proc_tweet(strTweet)
+                    strTweetComp = strTweet.format("1時間後に放送開始します。", set_date(listDate[i]), listURL[i]) 
+                    proc_tweet(strTweetComp)
                     sleep(180)
                 # 5分前にツイート
                 elif secondCompare > 4 * 60 and secondCompare <= 7 * 60:
-                    strTweet = strTweet.format("5分後に放送開始します。", set_date(listDate[i]), listURL[i]) 
-                    proc_tweet(strTweet)
+                    strTweetComp = strTweet.format("5分後に放送開始します。", set_date(listDate[i]), listURL[i]) 
+                    proc_tweet(strTweetComp)
                     sleep(180)
                     
             sleep(20)
