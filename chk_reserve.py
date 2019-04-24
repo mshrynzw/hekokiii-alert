@@ -44,7 +44,7 @@ def check_reserve_live():
             soup = bs4.BeautifulSoup(res.text, "html.parser")
             elemsDate = soup.find_all("span", class_="liveDate", text=re.compile("20.*-"))
             elemsURL = soup.find_all("a", class_="liveTitle", href=re.compile(
-                r"^http://live.nicovideo.jp/gate/lv"))
+                r"^https://live.nicovideo.jp/gate/lv"))
 
             listDate = []
             listURL = []
