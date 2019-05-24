@@ -19,8 +19,7 @@ strTweet = os.environ["TWEET_TPL_BBS"]
 # 掲示板を確認する
 def check_bbs_count():
     try:
-        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
-        res = requests.get(r"https://www.logsoku.com/r/2ch.sc/streaming/1546776131/", headers=headers)
+        res = requests.get(url + "/l10")
         print(res.status_code)
         print(res)
         sleep(5)
@@ -29,11 +28,11 @@ def check_bbs_count():
         print("★002")
         soup = bs4.BeautifulSoup(res.text, "html.parser")
         print("★003")
-        elCntS = soup.find_all("span", class_="number")
+        elCntS = soup.find_all("dl")
         print("★004")
-        elNames = soup.find_all("span", class_="name")
+        elNames = soup.find_all("b")
         print("★005")
-        elCmtS = soup.find_all("span", class_="escaped")
+        elCmtS = soup.find_all("dd")
         print("★00")
 
         elCntList = []
@@ -41,11 +40,11 @@ def check_bbs_count():
         elCmtList = []
 
         for elCnt in elCntS:
-            elCntList.append(elCnt.text)
+            elCntList.append(elCnt.get("id"))
         for elName in elNames:
             elNameList.append(elName.text)
         for elCmt in elCmtS:
-            elCmtList.append(elCmt.text)
+            elCmtList.append(elCmt.text.lstrip())
     except:
         print("★01")
         raise
