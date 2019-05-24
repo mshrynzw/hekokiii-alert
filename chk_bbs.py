@@ -79,11 +79,7 @@ def tweet(cntList, nmList, cmtList, cntMxDb):
         print(cntList)
         for cnt in cntList:
             print("★041")
-            print("cnt=" + cnt)
-            print(type(cnt))
-            print("cntMxDb" + cntMxDb)
-            print(type(cntMxDb))
-            if cnt > cntMxDb:
+            if int(cnt) > cntMxDb:
                 print("★06")
                 # DB接続
                 arg = db_connect()
@@ -91,7 +87,7 @@ def tweet(cntList, nmList, cmtList, cntMxDb):
                 cur = arg[1]
                 print("★07")
                 # DB（INSERT文）
-                db_insert_bbs(cur, tblName, cnt)
+                db_insert_bbs(cur, tblName, int(cnt))
                 print("★08")
                 # DB切断
                 db_close(conn, cur)
