@@ -71,6 +71,7 @@ def tweet(cntList, nmList, cmtList, cntMxDb):
     try:
         print("★040")
         i = 0
+        print(cntList)
         for cnt in cntList:
             print("★041")
             if cnt > cntMxDb:
