@@ -21,7 +21,7 @@ def check_bbs_count():
     try:
         res = requests.get(url + "/l10")
         print("★001")
-        res.raise_for_status()
+        #res.raise_for_status()
         print("★002")
         soup = bs4.BeautifulSoup(res.text, "html.parser")
         print("★003")
