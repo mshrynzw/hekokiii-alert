@@ -19,9 +19,7 @@ strTweet = os.environ["TWEET_TPL_BBS"]
 # 掲示板を確認する
 def check_bbs_count():
     try:
-        headers = {
-        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0",
-        }
+        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
         res = requests.get(url + "/l10", headers=headers)
         print(res.status_code)
         print(res)
