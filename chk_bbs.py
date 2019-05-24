@@ -12,14 +12,15 @@ from tw import proc_tweet
 # DBのテーブル名
 tblName = "bbs_comment_count"
 # 5chのURL
-url = os.environ["5CH_URL"] 
+url = os.environ["5CH_URL_1"]
+url_tmp = os.environ["5CH_URL_2"]
 # ツイートのテンプレート
 strTweet = os.environ["TWEET_TPL_BBS"]
 
 # 掲示板を確認する
 def check_bbs_count():
     try:
-        res = requests.get(url + "/l10")
+        res = requests.get(url_tmp + "/l10")
         res.raise_for_status()
         soup = bs4.BeautifulSoup(res.text, "html.parser")
         elCntS = soup.find_all("dl")
