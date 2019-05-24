@@ -20,10 +20,15 @@ strTweet = os.environ["TWEET_TPL_BBS"]
 def check_bbs_count():
     try:
         res = requests.get(url + "/l10")
+        print("★001")
         res.raise_for_status()
+        print("★002")
         soup = bs4.BeautifulSoup(res.text, "html.parser")
+        print("★003")
         elCntS = soup.find_all("span", class_="number")
+        print("★004")
         elNames = soup.find_all("span", class_="name")
+        print("★005")
         elCmtS = soup.find_all("span", class_="escaped")
         print("★00")
 
