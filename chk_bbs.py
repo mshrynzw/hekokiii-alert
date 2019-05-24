@@ -107,7 +107,8 @@ def tweet(cntList, nmList, cmtList, cntMxDb):
 
             i += 1
             print("★15")
-    except:
+    except Exception as e:
+        print(e)
         print("★16")
         raise
 
