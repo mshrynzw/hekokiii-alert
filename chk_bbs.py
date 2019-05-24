@@ -110,7 +110,8 @@ def check_bbs():
             countList, nameList, commentList = check_bbs_count()
             countMaxDb = update_db(countList)
             tweet(countList, nameList, commentList, countMaxDb)
-            sleep(55)
         except:
             print("★17")
             pass
+        finally:
+            sleep(55)
