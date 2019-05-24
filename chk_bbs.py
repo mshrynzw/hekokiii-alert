@@ -77,7 +77,7 @@ def tweet(cntList, nmList, cmtList, cntMxDb):
         print(cntList)
         for cnt in cntList:
             print("★041")
-            if cnt > cntMxDb:
+            if cnt > cntMxDb or cntMxDb is None:
                 print("★06")
                 # DB接続
                 arg = db_connect()
