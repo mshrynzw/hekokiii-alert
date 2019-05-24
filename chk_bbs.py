@@ -69,8 +69,10 @@ def update_db(cntList):
 
 def tweet(cntList, nmList, cmtList, cntMxDb):
     try:
+        print("★040")
         i = 0
         for cnt in cntList:
+            print("★041")
             if cnt > cntMxDb:
                 print("★06")
                 # DB接続
@@ -114,4 +116,4 @@ def check_bbs():
             print("★17")
             pass
         finally:
-            sleep(55)
+            sleep(5)
