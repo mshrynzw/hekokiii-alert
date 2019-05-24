@@ -87,9 +87,6 @@ def check_bbs():
     while True:
         try:
             countList, nameList, commentList = check_bbs_count()
-            print(countList)
-            print(nameList)
-            print(commentList)
             countMaxDb = update_db(countList)
             tweet(countList, nameList, commentList, countMaxDb)
         except:
