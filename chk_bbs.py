@@ -20,6 +20,7 @@ strTweet = os.environ["TWEET_TPL_BBS"]
 def check_bbs_count():
     try:
         res = requests.get(url + "/l10")
+        sleep(5)
         print("★001")
         #res.raise_for_status()
         print("★002")
