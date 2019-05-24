@@ -60,6 +60,8 @@ def update_db(cntList):
         print("★02")
         # DB（SELECT文）
         maxCnt = db_check_bbs(cur, tblName)
+        if maxCnt is None:
+            maxCnt = 0
         print("★03")
         # DB切断
         db_close(conn, cur)
@@ -77,7 +79,7 @@ def tweet(cntList, nmList, cmtList, cntMxDb):
         print(cntList)
         for cnt in cntList:
             print("★041")
-            if cnt > cntMxDb or cntMxDb is None:
+            if cnt > cntMxDb:
                 print("★06")
                 # DB接続
                 arg = db_connect()
