@@ -41,8 +41,21 @@ def db_check(cur, tableName, urlValue):
     count = count.rstrip(",)")
     return int(count)
 
+# SELECT文（chk_bbs.py用）
+def db_check_bbs(cur, tableName):
+
+    sql = "SELECT MAX(count) FROM {0}".format(tableName)
+    cur.execute(sql)
+    return cur.fetchone()
+
+
 # INSERT文
 def db_insert(cur, tableName, urlValue):
     sql = "INSERT INTO {0} VALUES ('{1}')".format(tableName, urlValue)
     cur.execute(sql)
-    
+
+
+# INSERT文（chk_bbs.py用）
+def db_insert_bbs(cur, tableName, cnt):
+    sql = "INSERT INTO {0} VALUES ('{1}')".format(tableName, cnt)
+    cur.execute(sql)
