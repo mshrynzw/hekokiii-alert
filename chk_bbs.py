@@ -20,7 +20,7 @@ strTweet = os.environ["TWEET_TPL_BBS"]
 def check_bbs_count():
     try:
         headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
-        res = requests.get(url + "/l10", headers=headers)
+        res = requests.get(r"https://www.logsoku.com/r/2ch.sc/streaming/1546776131/", headers=headers)
         print(res.status_code)
         print(res)
         sleep(5)
