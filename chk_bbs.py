@@ -20,20 +20,11 @@ strTweet = os.environ["TWEET_TPL_BBS"]
 def check_bbs_count():
     try:
         res = requests.get(url + "/l10")
-        print(res.status_code)
-        print(res)
-        sleep(5)
-        print("★001")
-        #res.raise_for_status()
-        print("★002")
+        res.raise_for_status()
         soup = bs4.BeautifulSoup(res.text, "html.parser")
-        print("★003")
         elCntS = soup.find_all("dl")
-        print("★004")
         elNames = soup.find_all("b")
-        print("★005")
         elCmtS = soup.find_all("dd")
-        print("★00")
 
         elCntList = []
         elNameList = []
@@ -46,7 +37,6 @@ def check_bbs_count():
         for elCmt in elCmtS:
             elCmtList.append(elCmt.text.lstrip())
     except:
-        print("★01")
         raise
     return elCntList, elNameList, elCmtList
 
@@ -57,59 +47,39 @@ def update_db(cntList):
         arg = db_connect()
         conn = arg[0]
         cur = arg[1]
-        print("★02")
         # DB（SELECT文）
         maxCnt = db_check_bbs(cur, tblName)[0]
         if maxCnt is None:
             maxCnt = 0
-        print("★03")
         # DB切断
         db_close(conn, cur)
-        print("★04")
     except:
-        print("★05")
         raise
     return maxCnt
 
 
 def tweet(cntList, nmList, cmtList, cntMxDb):
     try:
-        print("★040")
         i = 0
-        print(cntList)
         for cnt in cntList:
-            print("★041")
             if int(cnt) > cntMxDb:
-                print("★06")
                 # DB接続
                 arg = db_connect()
                 conn = arg[0]
                 cur = arg[1]
-                print("★07")
                 # DB（INSERT文）
                 db_insert_bbs(cur, tblName, int(cnt))
-                print("★08")
                 # DB切断
                 db_close(conn, cur)
-                print("★09")
 
                 # Tweet
                 tweet = strTweet.format(cnt, nmList[i], cmtList[i], url)
-                print("★10")
                 if len(tweet) > 260:
-                    print("★11")
                     cntDelStr = len(tweet) - 260
-                    print("★12")
                     tweet = strTweet.format(cnt, nmList[i], cmtList[i][:-cntDelStr], url)
-                    print("★13")
                 proc_tweet(tweet)
-                print("★14")
-
             i += 1
-            print("★15")
-    except Exception as e:
-        print(e)
-        print("★16")
+    except:
         raise
 
 
@@ -123,7 +93,6 @@ def check_bbs():
             countMaxDb = update_db(countList)
             tweet(countList, nameList, commentList, countMaxDb)
         except:
-            print("★17")
             pass
         finally:
-            sleep(5)
+            sleep(55)
