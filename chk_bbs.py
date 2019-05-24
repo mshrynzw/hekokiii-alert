@@ -25,6 +25,7 @@ def check_bbs_count():
         elCntS = soup.find_all("span", class_="number")
         elNames = soup.find_all("span", class_="name")
         elCmtS = soup.find_all("span", class_="escaped")
+        print("★00")
 
         elCntList = []
         elNameList = []
@@ -37,6 +38,7 @@ def check_bbs_count():
         for elCmt in elCmtS:
             elCmtList.append(elCmt.text)
     except:
+        print("★01")
         raise
     return elCntList, elNameList, elCmtList
 
@@ -47,11 +49,15 @@ def update_db(cntList):
         arg = db_connect()
         conn = arg[0]
         cur = arg[1]
+        print("★02")
         # DB（SELECT文）
         maxCnt = db_check_bbs(cur, tblName)
+        print("★03")
         # DB切断
         db_close(conn, cur)
+        print("★04")
     except:
+        print("★05")
         raise
     return maxCnt
 
@@ -61,24 +67,35 @@ def tweet(cntList, nmList, cmtList, cntMxDb):
         i = 0
         for cnt in cntList:
             if cnt > cntMxDb:
+                print("★06")
                 # DB接続
                 arg = db_connect()
                 conn = arg[0]
                 cur = arg[1]
+                print("★07")
                 # DB（INSERT文）
                 db_insert_bbs(cur, tblName, cnt)
+                print("★08")
                 # DB切断
                 db_close(conn, cur)
+                print("★09")
 
                 # Tweet
                 tweet = strTweet.format(cnt, nmList[i], cmtList[i], url)
+                print("★10")
                 if len(tweet) > 260:
+                    print("★11")
                     cntDelStr = len(tweet) - 260
+                    print("★12")
                     tweet = strTweet.format(cnt, nmList[i], cmtList[i][:-cntDelStr], url)
+                    print("★13")
                 proc_tweet(tweet)
+                print("★14")
 
             i += 1
+            print("★15")
     except:
+        print("★16")
         raise
 
 
@@ -90,4 +107,5 @@ def check_bbs():
             tweet(countList, nameList, commentList, countMaxDb)
             sleep(55)
         except:
+            print("★17")
             pass
