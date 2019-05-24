@@ -59,7 +59,7 @@ def update_db(cntList):
         cur = arg[1]
         print("★02")
         # DB（SELECT文）
-        maxCnt = db_check_bbs(cur, tblName)
+        maxCnt = db_check_bbs(cur, tblName)[0]
         if maxCnt is None:
             maxCnt = 0
         print("★03")
