@@ -93,4 +93,4 @@ def check_bbs():
         except:
             pass
         finally:
-            sleep(10)
+            sleep(55)
