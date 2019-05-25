@@ -31,7 +31,9 @@ def check_bbs_count():
         driver = webdriver.Chrome(chrome_options=options)
 
         driver.get(url_tmp)
-        sleep(60)
+        sleep(40)
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        driver.find_element_by_css_selector("a.d-continu").click()
 
         elCntS = driver.find_elements_by_css_selector("h2.is-size-7")
         elNameS = driver.find_elements_by_css_selector("span.clname")
@@ -91,8 +93,8 @@ def tweet(cntList, nmList, cmtList, cntMxDb):
 
                 # Tweet
                 tweet = strTweet.format(cnt, nmList[i], cmtList[i], url)
-                if len(tweet) > 200:
-                    cntDelStr = len(tweet) - 200
+                if len(tweet) > 260:
+                    cntDelStr = len(tweet) - 260
                     tweet = strTweet.format(cnt, nmList[i], cmtList[i][:-cntDelStr], url)
                 proc_tweet(tweet)
                 sleep(60)
