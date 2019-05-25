@@ -30,8 +30,8 @@ def check_bbs_count():
         # Chromeドライバを設定
         driver = webdriver.Chrome(chrome_options=options)
 
-        driver.implicitly_wait(40) 
         driver.get(url_tmp)
+        driver.implicitly_wait(30)
 
         elCntS = driver.find_elements_by_css_selector("h2.is-size-7")
         elNameS = driver.find_elements_by_css_selector("span.clname")
