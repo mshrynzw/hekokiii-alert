@@ -20,7 +20,8 @@ strTweet = os.environ["TWEET_TPL_BBS"]
 # 掲示板を確認する
 def check_bbs_count():
     try:
-        res = requests.get(url_tmp)
+        headers = {'User-Agent': 'whatever'}
+        res = requests.get(url_tmp, headers=headers)
         print(res.status_code)
         res.raise_for_status()
         soup = bs4.BeautifulSoup(res.text, "html.parser")
