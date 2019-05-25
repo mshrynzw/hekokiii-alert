@@ -21,6 +21,7 @@ strTweet = os.environ["TWEET_TPL_BBS"]
 def check_bbs_count():
     try:
         res = requests.get(url_tmp)
+        print(res.status_code)
         res.raise_for_status()
         soup = bs4.BeautifulSoup(res.text, "html.parser")
         elCounts = soup.find_all("a", class_="respop")
