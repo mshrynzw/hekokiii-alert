@@ -25,9 +25,9 @@ def check_bbs_count():
         print(res.status_code)
         res.raise_for_status()
         soup = bs4.BeautifulSoup(res.text, "html.parser")
-        elCounts = soup.find_all("a", class_="respop")
-        elNames = soup.find_all("span", class_="datCAP")
-        elComments = soup.find_all("p", class_="aa0")
+        elCntS = soup.find_all("h2", class_="is-size-7")
+        elNameS = soup.find_all("span", class_="clname")
+        elCmtS = soup.find_all("div", class_="clmess")
 
         elCntList = []
         elNameList = []
@@ -35,7 +35,7 @@ def check_bbs_count():
 
         for elCnt in elCntS:
             elCntList.append(elCnt.text)
-        for elName in elNames:
+        for elName in elNameS:
             elNameList.append(elName.text)
         for elCmt in elCmtS:
             elCmtList.append(elCmt.text.lstrip())
