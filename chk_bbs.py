@@ -91,7 +91,7 @@ def tweet(cntList, nmList, cmtList, cntMxDb):
 
                 # Tweet
                 tweet = strTweet.format(cnt, nmList[i], cmtList[i], url)
-                if len(tweet) > 260:
+                if len(tweet) > 160:
                     cntDelStr = len(tweet) - 260
                     tweet = strTweet.format(cnt, nmList[i], cmtList[i][:-cntDelStr], url)
                 proc_tweet(tweet)
