@@ -20,19 +20,19 @@ strTweet = os.environ["TWEET_TPL_BBS"]
 # 掲示板を確認する
 def check_bbs_count():
     try:
-        res = requests.get(url_tmp + "/l10")
+        res = requests.get(url_tmp)
         res.raise_for_status()
         soup = bs4.BeautifulSoup(res.text, "html.parser")
-        elCntS = soup.find_all("dl")
-        elNames = soup.find_all("b")
-        elCmtS = soup.find_all("dd")
+        elCounts = soup.find_all("a", class_="respop")
+        elNames = soup.find_all("span", class_="datCAP")
+        elComments = soup.find_all("p", class_="aa0")
 
         elCntList = []
         elNameList = []
         elCmtList = []
 
         for elCnt in elCntS:
-            elCntList.append(elCnt.get("id"))
+            elCntList.append(elCnt.text)
         for elName in elNames:
             elNameList.append(elName.text)
         for elCmt in elCmtS:
