@@ -1,14 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import requests
-import bs4
+import logging
 import os
-import re
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from proc_db import db_connect, db_close, db_check_bbs, db_insert_bbs
 from time import sleep
 from tw import proc_tweet
 
+# ログのフォーマットを定義
+logging.basicConfig(level=logging.INFO, format='%(levelname)s : %(asctime)s : %(message)s')
 # DBのテーブル名
 tblName = "bbs_comment_count"
 # 5chのURL
@@ -20,12 +22,20 @@ strTweet = os.environ["TWEET_TPL_BBS"]
 # 掲示板を確認する
 def check_bbs_count():
     try:
-        res = requests.get(url_tmp)
-        res.raise_for_status()
-        soup = bs4.BeautifulSoup(res.text, "html.parser")
-        elCntS = soup.find_all("h2", class_="is-size-7")
-        elNameS = soup.find_all("span", class_="clname")
-        elCmtS = soup.find_all("div", class_="clmess")
+        # 【前処理】
+        # オプション設定用
+        options = Options()
+        # GUI起動OFF（=True）
+        options.set_headless(True)
+        # Chromeドライバを設定
+        driver = webdriver.Chrome(chrome_options=options)
+
+        driver.get(url_tmp)
+        sleep(30)
+
+        elCntS = driver.find_elements_by_class_name("is-size-7").text
+        elNameS = driver.find_elements_by_class_name("clname").text
+        elCmtS = driver.find_elements_by_class_name("clmess").text
 
         elCntList = []
         elNameList = []
@@ -37,7 +47,12 @@ def check_bbs_count():
             elNameList.append(elName.text)
         for elCmt in elCmtS:
             elCmtList.append(elCmt.text.lstrip())
-    except:
+        
+        # 【後処理】
+        driver.close()
+        driver.quit()
+    except Exception as e:
+        logging.info(e)
         raise
     return elCntList, elNameList, elCmtList
 
@@ -54,7 +69,8 @@ def update_db(cntList):
             maxCnt = 0
         # DB切断
         db_close(conn, cur)
-    except:
+    except Exception as e:
+        logging.info(e)
         raise
     return maxCnt
 
@@ -80,7 +96,8 @@ def tweet(cntList, nmList, cmtList, cntMxDb):
                     tweet = strTweet.format(cnt, nmList[i], cmtList[i][:-cntDelStr], url)
                 proc_tweet(tweet)
             i += 1
-    except:
+    except Exception as e:
+        logging.info(e)
         raise
 
 
@@ -90,7 +107,8 @@ def check_bbs():
             countList, nameList, commentList = check_bbs_count()
             countMaxDb = update_db(countList)
             tweet(countList, nameList, commentList, countMaxDb)
-        except:
+        except Exception as e:
+            logging.info(e)
             pass
         finally:
-            sleep(55)
+            sleep(30)
