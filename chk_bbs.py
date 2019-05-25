@@ -31,7 +31,7 @@ def check_bbs_count():
         driver = webdriver.Chrome(chrome_options=options)
 
         driver.get(url_tmp)
-        sleep(30)
+        sleep(60)
 
         elCntS = driver.find_elements_by_css_selector("h2.is-size-7")
         elNameS = driver.find_elements_by_css_selector("span.clname")
