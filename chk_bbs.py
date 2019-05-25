@@ -10,7 +10,7 @@ from time import sleep
 from tw import proc_tweet
 
 # ログのフォーマットを定義
-logging.basicConfig(level=logging.INFO, format='%(levelname)s : %(asctime)s : %(message)s')
+logging.basicConfig(level=logging.WARNING, format='%(levelname)s : %(asctime)s : %(message)s')
 # DBのテーブル名
 tblName = "bbs_comment_count"
 # 5chのURL
@@ -33,9 +33,9 @@ def check_bbs_count():
         driver.get(url_tmp)
         sleep(30)
 
-        elCntS = driver.find_elements_by_class_name("is-size-7").text
-        elNameS = driver.find_elements_by_class_name("clname").text
-        elCmtS = driver.find_elements_by_class_name("clmess").text
+        elCntS = driver.find_elements_by_class_name("is-size-7")
+        elNameS = driver.find_elements_by_class_name("clname")
+        elCmtS = driver.find_elements_by_class_name("clmess")
 
         elCntList = []
         elNameList = []
