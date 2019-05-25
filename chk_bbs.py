@@ -22,7 +22,6 @@ def check_bbs_count():
     try:
         headers = {'User-Agent': 'whatever'}
         res = requests.get(url_tmp, headers=headers)
-        print(res.status_code)
         res.raise_for_status()
         soup = bs4.BeautifulSoup(res.text, "html.parser")
         elCntS = soup.find_all("h2", class_="is-size-7")
