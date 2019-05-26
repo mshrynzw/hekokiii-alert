@@ -96,7 +96,7 @@ def tweet(cntList, nmList, cmtList, cntMxDb):
                 db_close(conn, cur)
 
                 # Tweet
-                if not "http" in cmtList[i] and (len(cmtList[i]) > strCountBoundaryValue or int(cnt) % countMultiple == 0 ):
+                if (len(cmtList[i]) > strCountBoundaryValue or int(cnt) % countMultiple == 0 ):
                     tweet = strTweet.format(cnt, nmList[i], cmtList[i], url)
                     if len(tweet) > 260:
                         cntDelStr = len(tweet) - 260
