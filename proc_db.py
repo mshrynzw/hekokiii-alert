@@ -41,6 +41,7 @@ def db_check(cur, tableName, urlValue):
     count = count.rstrip(",)")
     return int(count)
 
+
 # SELECT文（chk_bbs.py用）
 def db_check_bbs(cur, tableName):
 
@@ -49,13 +50,30 @@ def db_check_bbs(cur, tableName):
     return cur.fetchone()
 
 
+# SELECT文（chk_movie.py用）
+def db_check_movie(cur, tableName, videoId):
+
+    sql = "SELECT COUNT(*) FROM {0} WHERE  video_id = '{1}'".format(tableName, videoId)
+    cur.execute(sql)
+    count = str(cur.fetchone())
+    count = count.lstrip("(")
+    count = count.rstrip(",)")
+    return int(count)
+
+
 # INSERT文
 def db_insert(cur, tableName, urlValue):
     sql = "INSERT INTO {0} VALUES ('{1}')".format(tableName, urlValue)
     cur.execute(sql)
 
 
-# INSERT文（chk_bbs.py用）
+# INSERT文
 def db_insert_bbs(cur, tableName, cnt):
     sql = "INSERT INTO {0} VALUES ('{1}')".format(tableName, cnt)
+    cur.execute(sql)
+
+
+# INSERT文（chk_movie.py用）
+def db_insert_movie(cur, tableName, videoId):
+    sql = "INSERT INTO {0} VALUES ('{1}')".format(tableName, videoId)
     cur.execute(sql)
