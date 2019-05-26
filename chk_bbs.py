@@ -16,6 +16,10 @@ tblName = "bbs_comment_count"
 # 5chのURL
 url = os.environ["5CH_URL_1"]
 url_tmp = os.environ["5CH_URL_2"]
+# ツイート判定用の文字数境界値
+strCountBoundaryValue = int(os.environ["TWEET_BBS_STR_COUNT_BOUNDARY_VALUE"])
+# ツイート判定用のコメント番号の倍数
+countMultiple = int(os.environ["TWEET_BBS_COUNT_MULTIPLE"])
 # ツイートのテンプレート
 strTweet = os.environ["TWEET_TPL_BBS"]
 
@@ -92,12 +96,13 @@ def tweet(cntList, nmList, cmtList, cntMxDb):
                 db_close(conn, cur)
 
                 # Tweet
-                tweet = strTweet.format(cnt, nmList[i], cmtList[i], url)
-                if len(tweet) > 260:
-                    cntDelStr = len(tweet) - 260
-                    tweet = strTweet.format(cnt, nmList[i], cmtList[i][:-cntDelStr], url)
-                proc_tweet(tweet)
-                sleep(60)
+                if not "http" in cmtList[i] and (len(cmtList[i]) > strCountBoundaryValue or cnt % countMultiple == 0 ):
+                    tweet = strTweet.format(cnt, nmList[i], cmtList[i], url)
+                    if len(tweet) > 260:
+                        cntDelStr = len(tweet) - 260
+                        tweet = strTweet.format(cnt, nmList[i], cmtList[i][:-cntDelStr], url)
+                    proc_tweet(tweet)
+                    sleep(30)
             i += 1
     except Exception as e:
         logging.info(e)
