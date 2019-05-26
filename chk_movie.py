@@ -6,9 +6,12 @@ import json
 import os
 import requests
 from datetime import datetime, timedelta, timezone
+from proc_db import db_connect, db_close, db_check_movie, db_insert_movie
 from time import sleep
 from tw import proc_tweet
 
+# DBのテーブル名
+tblName = "movie_id_list"
 # ツイートのテンプレート
 strTmp = os.environ["TWEET_TPL_MOVIE"]
 # YouTubeのチャンネルID
@@ -20,7 +23,7 @@ def check_movie():
 
 
     # 動画IDを格納
-    listVideoId = []
+    # listVideoId = []
 
     while True:
 
@@ -38,8 +41,30 @@ def check_movie():
             videoId = listValue["id"]["videoId"]
             title = listValue["snippet"]["title"]
 
-            if videoId not in listVideoId:
-                listVideoId.append(videoId)
+            # DB接続
+            arg = db_connect()
+            conn = arg[0]
+            cur = arg[1]
+
+            # DB（SELECT文）
+            cnt = db_check_movie(cur, tblName, videoId)
+
+            # DB切断
+            db_close(conn, cur)
+
+            if cnt == 0:
+
+                # DB接続
+                arg = db_connect()
+                conn = arg[0]
+                cur = arg[1]
+
+                # DB（INSERT文）
+                db_insert_movie(cur, tblName, videoId)
+
+                # DB切断
+                db_close(conn, cur)
+
                 strTweet = strTmp.format(title, videoId)
                 proc_tweet(strTweet)
 
