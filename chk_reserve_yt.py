@@ -11,7 +11,7 @@ from time import sleep
 from tw import proc_tweet
 
 # DBのテーブル名
-tblName = "movie_id_list"
+tblName = "youtube_video_id_list"
 # ツイートのテンプレート
 strTmp = os.environ["TWEET_TPL_RESERVE_YOUTUBE"]
 # YouTubeのチャンネルID
@@ -38,7 +38,6 @@ def check_reserve_yt():
         for listValue in listItems:
 
             videoId = listValue["id"]["videoId"]
-            title = listValue["snippet"]["title"]
 
             url = r"https://www.youtube.com/watch?v=" + videoId
 
@@ -66,7 +65,7 @@ def check_reserve_yt():
                 # DB切断
                 db_close(conn, cur)
 
-                strTweet = strTmp.format(title=title, url=url)
+                strTweet = strTmp.format(url=url)
                 proc_tweet(strTweet)
 
         sleep(150)
