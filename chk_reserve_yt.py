@@ -11,7 +11,7 @@ from time import sleep
 from tw import proc_tweet
 
 # DBのテーブル名
-tblName = "reserve_yyoutube_video_id_list"
+tblName = "reserve_youtube_video_id_list"
 # ツイートのテンプレート
 strTmp = os.environ["TWEET_TPL_RESERVE_YOUTUBE"]
 # YouTubeのチャンネルID
