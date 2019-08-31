@@ -27,7 +27,7 @@ def check_reserve_yt():
 
     while True:
 
-        url = r"https://www.googleapis.com/youtube/v3/search?key={key}&part=snippet&channelId={channelId}&type=video&eventType=upcoming"
+        url = r"https://www.googleapis.com/youtube/v3/search?key={key}&part=snippet&channelId={channelId}&type=video&eventType=upcoming&maxResults=50"
         req = requests.get(url.format(key=key, channelId=channelId))
         soup = bs4.BeautifulSoup(req.text, "lxml")
         jsonText = soup.p.string
