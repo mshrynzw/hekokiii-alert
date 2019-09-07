@@ -77,3 +77,8 @@ def db_insert_bbs(cur, tableName, cnt):
 def db_insert_movie(cur, tableName, videoId):
     sql = "INSERT INTO {0} VALUES ('{1}')".format(tableName, videoId)
     cur.execute(sql)
+
+# INSERT文（chk_twitter.py用）
+def db_insert_tweet_id(cur, tableName, tweetId):
+    sql = "INSERT INTO {0} VALUES ('{1}')".format(tableName, tweetId)
+    cur.execute(sql)
