@@ -29,7 +29,7 @@ def check_twitter():
 
     while True:
         # 本日の日付を取得
-        today = datetime.date.today().strftime('%Y-%m-%d')
+        today = (datetime.date.today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
         
         # ツイートポストエンドポイント
         url = "https://api.twitter.com/1.1/search/tweets.json"
