@@ -16,7 +16,7 @@ AT = os.environ["ACCESS_TOKEN"]
 ATS = os.environ["ACCESS_TOKEN_SECRET"]
 
 # Twitter検索の設定
-keyword = os.environ["TWEET_SEARCH_KEYWORD"]
+keyword = os.environ["TWEET_SEARCH_EXCLUSION"]
 from_user = os.environ["TWEET_SEARCH_FROM_USER"]
 
 # DBのテーブル名
@@ -33,7 +33,7 @@ def check_twitter():
         
         # ツイートポストエンドポイント
         url = "https://api.twitter.com/1.1/search/tweets.json"
-        query = keyword + " from:" + from_user + " since:" + today
+        query = "-" + keyword + " from:" + from_user + " since:" + today
         params = {'q' : query, 'count' : 10}
         # 認証処理
         twitter = OAuth1Session(CK, CS, AT, ATS)
