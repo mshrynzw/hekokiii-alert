@@ -6,6 +6,7 @@ from chk_movie import check_movie
 from chk_bbs import check_bbs
 from chk_reserve_yt import check_reserve_yt
 from chk_start_yt import check_start_yt
+from chk_twitter import check_twitter
 
 if __name__ == "__main__":
     thread_1 = threading.Thread(target=check_start_live)
@@ -15,6 +16,7 @@ if __name__ == "__main__":
     thread_5 = threading.Thread(target=check_bbs)
     thread_6 = threading.Thread(target=check_reserve_yt)
     thread_7 = threading.Thread(target=check_start_yt)
+    thread_8 = threading.Thread(target=check_twitter)
     thread_1.start()
     thread_2.start()
     thread_3.start()
@@ -22,3 +24,4 @@ if __name__ == "__main__":
     thread_5.start()
     thread_6.start()
     thread_7.start()
+    thread_8.start()
