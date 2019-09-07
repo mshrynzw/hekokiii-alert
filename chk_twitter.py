@@ -4,7 +4,7 @@
 import datetime
 import json
 import os
-from proc_db import db_connect, db_close, db_check_movie, db_insert_tweet_id
+from proc_db import db_connect, db_close, db_check_twitter, db_insert_tweet_id
 from requests_oauthlib import OAuth1Session
 from time import sleep
 from tw import proc_tweet
@@ -54,7 +54,7 @@ def check_twitter():
                 conn = arg[0]
                 cur = arg[1]
                 #S ELECT処理
-                cnt = db_check_movie(cur, tblName, tweetId)
+                cnt = db_check_twitter(cur, tblName, tweetId)
                 # DB切断
                 db_close(conn, cur)
 

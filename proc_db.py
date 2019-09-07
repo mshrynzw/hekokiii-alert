@@ -49,7 +49,6 @@ def db_check_bbs(cur, tableName):
     cur.execute(sql)
     return cur.fetchone()
 
-
 # SELECT文（chk_movie.py用）
 def db_check_movie(cur, tableName, videoId):
 
@@ -60,6 +59,15 @@ def db_check_movie(cur, tableName, videoId):
     count = count.rstrip(",)")
     return int(count)
 
+# SELECT文（chk_twitter.py用）
+def db_check_twitter(cur, tableName, tweetId):
+
+    sql = "SELECT COUNT(*) FROM {0} WHERE  id = '{1}'".format(tableName, tweetId)
+    cur.execute(sql)
+    count = str(cur.fetchone())
+    count = count.lstrip("(")
+    count = count.rstrip(",)")
+    return int(count)
 
 # INSERT文
 def db_insert(cur, tableName, urlValue):
