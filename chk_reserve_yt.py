@@ -68,4 +68,4 @@ def check_reserve_yt():
                 strTweet = strTmp.format(url=url)
                 proc_tweet(strTweet)
 
-        sleep(150)
+        sleep(3600)
