@@ -68,4 +68,4 @@ def check_start_yt():
                 strTweet = strTmp.format(url=url)
                 proc_tweet(strTweet)
 
-        sleep(600)
+        sleep(150)
