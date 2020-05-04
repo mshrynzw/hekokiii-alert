@@ -34,7 +34,7 @@ def check_start_yt():
         dictText = json.loads(jsonText)
         listItems = dictText.get("items")
 
-        if len(listItems) == 0:
+        if  type(listItems) is 'NoneType':
             sleep(150)
             continue
             
