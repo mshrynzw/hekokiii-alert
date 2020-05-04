@@ -34,6 +34,10 @@ def check_start_yt():
         dictText = json.loads(jsonText)
         listItems = dictText.get("items")
 
+        if len(listItems) == 0:
+            sleep(150)
+            continue
+            
         # 動画IDとタイトルを取得
         for listValue in listItems:
 
