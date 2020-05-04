@@ -33,10 +33,6 @@ def check_reserve_yt():
         jsonText = soup.p.string
         dictText = json.loads(jsonText)
         listItems = dictText.get("items")
-
-        if  type(listItems) is 'NoneType' and len(listItems) == 0:
-            sleep(150)
-            continue
         
         # 動画IDとタイトルを取得
         for listValue in listItems:
