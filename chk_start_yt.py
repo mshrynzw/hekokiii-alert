@@ -4,6 +4,7 @@ import logging
 import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import NoSuchElementException
 from proc_db import db_connect, db_close, db_check_movie, db_insert_movie
 from time import sleep
 from tw import proc_tweet
@@ -65,6 +66,9 @@ def check_start_yt():
                     # ツイート
                     str_tweet = str_tmp.format(url=url)
                     proc_tweet(str_tweet)
+
+        except NoSuchElementException as e:
+            logging.info("Not currently broadcasting...")
 
         except Exception as e:
             logging.error(e)
