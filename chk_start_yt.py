@@ -38,6 +38,7 @@ def check_start_yt():
             driver.get(r"https://www.youtube.com/channel/{channelId}".format(channelId=channelId))
 
             logging.info("40")
+            logging.info(driver.find_element_by_xpath(r'//*[@id="badges"]/div/span').text)
             if driver.find_element_by_xpath(r'//*[@id="badges"]/div/span').text == "ライブ配信中":
 
                 logging.info("43")
