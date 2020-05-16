@@ -32,10 +32,10 @@ def check_start_yt():
         options.set_headless(True)
         # Chromeドライバを設定
         driver = webdriver.Chrome(chrome_options=options)
+        driver.implicitly_wait(10)
 
         try:
             driver.get(r"https://www.youtube.com/channel/{channelId}".format(channelId=channelId))
-            driver.implicitly_wait(10)
 
             if driver.find_element_by_xpath(r'//*[@id="badges"]/div/span').text == "ライブ配信中":
 
