@@ -35,36 +35,36 @@ def check_start_yt():
 
         try:
             driver.get(r"https://www.youtube.com/channel/{channelId}".format(channelId=channelId))
-            if driver.find_element_by_xpath(r'//*[@id="badges"]/div/span') == "ライブ配信中":
+            # if driver.find_element_by_xpath(r'//*[@id="badges"]/div/span') == "ライブ配信中":
 
-                videoId = driver.find_element_by_xpath(r'//*[@id="video-title"]').get_attribute('href').replace(r'/', '')
-                url = r"https://www.youtube.com/" + videoId
+            videoId = driver.find_element_by_xpath(r'//*[@id="video-title"]').get_attribute('href').replace(r'/', '')
+            url = r"https://www.youtube.com/" + videoId
 
+            # DB接続
+            arg = db_connect()
+            conn = arg[0]
+            cur = arg[1]
+
+            # DB（SELECT文）
+            cnt = db_check_movie(cur, tblName, videoId)
+
+            # DB切断
+            db_close(conn, cur)
+
+            if cnt == 0:
                 # DB接続
                 arg = db_connect()
                 conn = arg[0]
                 cur = arg[1]
 
-                # DB（SELECT文）
-                cnt = db_check_movie(cur, tblName, videoId)
+                # DB（INSERT文）
+                db_insert_movie(cur, tblName, videoId)
 
                 # DB切断
                 db_close(conn, cur)
 
-                if cnt == 0:
-                    # DB接続
-                    arg = db_connect()
-                    conn = arg[0]
-                    cur = arg[1]
-
-                    # DB（INSERT文）
-                    db_insert_movie(cur, tblName, videoId)
-
-                    # DB切断
-                    db_close(conn, cur)
-
-                    strTweet = strTmp.format(url=url)
-                    proc_tweet(strTweet)
+                strTweet = strTmp.format(url=url)
+                proc_tweet(strTweet)
 
         except Exception as e:
             logging.error(e)
