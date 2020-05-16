@@ -37,9 +37,12 @@ def check_start_yt():
         try:
             driver.get(r"https://www.youtube.com/channel/{channelId}".format(channelId=channelId))
 
+            logging.info("40")
             if driver.find_element_by_xpath(r'//*[@id="badges"]/div/span').text == "ライブ配信中":
 
+                logging.info("43")
                 videoId = driver.find_element_by_xpath(r'//*[@id="video-title"]').get_attribute('href').replace(r'https://www.youtube.com/watch?v=', '')
+                logging.info("44")
 
                 # DB接続
                 arg = db_connect()
@@ -74,4 +77,5 @@ def check_start_yt():
         finally:
             driver.quit()
 
+        logging.info("80")
         sleep(60)
