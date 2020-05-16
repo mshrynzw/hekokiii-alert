@@ -21,6 +21,7 @@ ICHIBA_TERM_S = int(os.environ["ICHIBA_TERM_S"])
 strItems = os.environ["ICHIBA_ITEMS"]
 listItems = strItems.split(",")
 
+
 def login(driver, mail, pw):
     driver.get("https://account.nicovideo.jp/login")
     driver.find_element_by_id("input__mailtel").send_keys(mail)
@@ -28,13 +29,14 @@ def login(driver, mail, pw):
     driver.find_element_by_id("login__submit").click()
     return driver
 
+
 def proc_ichiba(bloadcast_url):
 
     # 【前処理】
     # オプション設定用
     options = Options()
     # GUI起動OFF（=True）
-    options.set_headless(True)
+    options.headless = True
     # Chromeドライバを設定
     driver = webdriver.Chrome(chrome_options=options)
     

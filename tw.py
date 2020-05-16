@@ -20,6 +20,7 @@ ATS = os.environ["ACCESS_TOKEN_SECRET"]
 # ログのフォーマットを定義
 logging.basicConfig(level=logging.INFO, format='%(levelname)s : %(asctime)s : %(message)s')
 
+
 def proc_tweet(strTweet):
 
     if MODE_SETTING == "PROD":

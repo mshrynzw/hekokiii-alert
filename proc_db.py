@@ -11,6 +11,7 @@ DB_DBNAME = os.environ["DB_NAME"]
 DB_USER = os.environ["DB_USER"]
 DB_PASSWORD = os.environ["DB_PASSWORD"]
 
+
 # DB接続
 def db_connect():
 
@@ -22,6 +23,7 @@ def db_connect():
     except Exception as e:
         raise Exception(e)
 
+
 # DB切断
 def db_close(conn, cur):
 
@@ -30,6 +32,7 @@ def db_close(conn, cur):
         conn.close()
     except Exception as e:
         raise Exception(e)
+
 
 # SELECT文
 def db_check(cur, tableName, urlValue):
@@ -49,6 +52,7 @@ def db_check_bbs(cur, tableName):
     cur.execute(sql)
     return cur.fetchone()
 
+
 # SELECT文（chk_movie.py用）
 def db_check_movie(cur, tableName, videoId):
 
@@ -59,6 +63,7 @@ def db_check_movie(cur, tableName, videoId):
     count = count.rstrip(",)")
     return int(count)
 
+
 # SELECT文（chk_twitter.py用）
 def db_check_twitter(cur, tableName, tweetId):
 
@@ -68,6 +73,7 @@ def db_check_twitter(cur, tableName, tweetId):
     count = count.lstrip("(")
     count = count.rstrip(",)")
     return int(count)
+
 
 # INSERT文
 def db_insert(cur, tableName, urlValue):
@@ -85,6 +91,7 @@ def db_insert_bbs(cur, tableName, cnt):
 def db_insert_movie(cur, tableName, videoId):
     sql = "INSERT INTO {0} VALUES ('{1}')".format(tableName, videoId)
     cur.execute(sql)
+
 
 # INSERT文（chk_twitter.py用）
 def db_insert_tweet_id(cur, tableName, tweetId):

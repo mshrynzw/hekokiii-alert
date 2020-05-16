@@ -23,11 +23,13 @@ else:
 # 曜日の設定
 yobi = ["月", "火", "水", "木", "金", "土", "日"]
 
+
 def set_date(date_reserve):
     date1 = date_reserve[0:10].translate(str.maketrans({"年": "/", "月": "/"}))
     date2 = datetime.datetime.strptime(date1, '%Y/%m/%d')
     date3 = date_reserve[5:10].replace("月", "/") + "(" + yobi[date2.weekday()] + ")" + date_reserve[12:17]
     return date3
+
 
 def check_reserve_live():
 

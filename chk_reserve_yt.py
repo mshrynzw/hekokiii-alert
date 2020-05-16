@@ -19,6 +19,7 @@ channelId = os.environ["YOUTUBE_CHANNEL_ID_HEKOKI"]
 # 「YouTube Data API (v3)」のAPIキー
 key = os.environ["YOUTUBE_DATA_API_KEY"]
 
+
 def check_reserve_yt():
 
 
