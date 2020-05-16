@@ -68,7 +68,7 @@ def check_start_yt():
                     proc_tweet(str_tweet)
 
         except NoSuchElementException as e:
-            logging.info("Not currently broadcasting...")
+            logging.info("Not currently broadcasting YouTube Live ...")
 
         except Exception as e:
             logging.error(e)
