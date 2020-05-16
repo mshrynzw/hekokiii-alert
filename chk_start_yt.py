@@ -35,6 +35,8 @@ def check_start_yt():
 
         try:
             driver.get(r"https://www.youtube.com/channel/{channelId}".format(channelId=channelId))
+            driver.implicitly_wait(10)
+
             if driver.find_element_by_xpath(r'//*[@id="badges"]/div/span').text == "ライブ配信中":
 
                 videoId = driver.find_element_by_xpath(r'//*[@id="video-title"]').get_attribute('href').replace(r'https://www.youtube.com/watch?v=', '')
