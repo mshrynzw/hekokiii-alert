@@ -1,11 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import logging
-import bs4
-import json
 import os
-import requests
-from datetime import datetime, timedelta, timezone
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from proc_db import db_connect, db_close, db_check_movie, db_insert_movie
@@ -13,16 +9,16 @@ from time import sleep
 from tw import proc_tweet
 
 # DBのテーブル名
-tblName = "start_youtube_video_id_list"
+tbl_name = "start_youtube_video_id_list"
 # ツイートのテンプレート
-strTmp = os.environ["TWEET_TPL_START_YOUTUBE"]
-# YouTubeのチャンネルID
-channelId = os.environ["YOUTUBE_CHANNEL_ID_HEKOKI"]
+str_tmp = os.environ["TWEET_TPL_START_YOUTUBE"]
+# YouTubeのチャンネルIDÒ
+channel_id = os.environ["YOUTUBE_CHANNEL_ID_HEKOKI"]
 # 「YouTube Data API (v3)」のAPIキー
 key = os.environ["YOUTUBE_DATA_API_KEY"]
 
-def check_start_yt():
 
+def check_start_yt():
     while True:
 
         # 【前処理】
@@ -35,11 +31,12 @@ def check_start_yt():
         driver.implicitly_wait(10)
 
         try:
-            driver.get(r"https://www.youtube.com/channel/{channelId}".format(channelId=channelId))
+            driver.get(r"https://www.youtube.com/channel/{channel_id}".format(channel_id=channel_id))
 
             if driver.find_element_by_xpath(r'//*[@id="badges"]/div/span').text == "LIVE NOW":
 
-                videoId = driver.find_element_by_xpath(r'//*[@id="video-title"]').get_attribute('href').replace(r'https://www.youtube.com/watch?v=', '')
+                url = driver.find_element_by_xpath(r'//*[@id="video-title"]').get_attribute('href')
+                video_id = url.replace(r'https://www.youtube.com/watch?v=', '')
 
                 # DB接続
                 arg = db_connect()
@@ -47,7 +44,7 @@ def check_start_yt():
                 cur = arg[1]
 
                 # DB（SELECT文）
-                cnt = db_check_movie(cur, tblName, videoId)
+                cnt = db_check_movie(cur, tbl_name, video_id)
 
                 # DB切断
                 db_close(conn, cur)
@@ -59,14 +56,14 @@ def check_start_yt():
                     cur = arg[1]
 
                     # DB（INSERT文）
-                    db_insert_movie(cur, tblName, videoId)
+                    db_insert_movie(cur, tbl_name, video_id)
 
                     # DB切断
                     db_close(conn, cur)
 
-                    url = r"https://www.youtube.com/watch?v=" + videoId
-                    strTweet = strTmp.format(url=url)
-                    proc_tweet(strTweet)
+                    # ツイート
+                    str_tweet = str_tmp.format(url=url)
+                    proc_tweet(str_tweet)
 
         except Exception as e:
             logging.error(e)
