@@ -25,7 +25,7 @@ def check_start_yt():
         # オプション設定用
         options = Options()
         # GUI起動OFF（=True）
-        options.setter(True)
+        options.set_headless(True)
         # Chromeドライバを設定
         driver = webdriver.Chrome(chrome_options=options)
         driver.implicitly_wait(10)
