@@ -23,10 +23,6 @@ key = os.environ["YOUTUBE_DATA_API_KEY"]
 
 def check_start_yt():
 
-
-    # 動画IDを格納
-    # listVideoId = []
-
     while True:
 
         # 【前処理】
