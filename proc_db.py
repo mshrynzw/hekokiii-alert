@@ -109,7 +109,7 @@ def db_insert_message(cur, tableName, messages):
             author_external_channel_id=message['author_external_channel_id'],
             video_id=message['video_id'],
             time_stamp=message['time_stamp'],
-            purchase_amount=['purchase_amount']
+            purchase_amount=message['purchase_amount']
         )
         sql += data
 
