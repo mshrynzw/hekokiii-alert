@@ -118,6 +118,7 @@ def check_message_yt():
             break
 
         if message_data:
+            logging.info(message_data)
             insert_messages(message_data)
         else:
             logging.info("There was no message.")
