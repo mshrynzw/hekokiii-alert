@@ -7,7 +7,7 @@ from chk_notice import check_notice
 # from chk_bbs import check_bbs
 # from chk_reserve_yt import check_reserve_yt
 from chk_start_yt import check_start_yt
-from chk_message_yt import check_message_yt
+from chk_message_yt import select_all_messages
 from chk_twitter import check_twitter
 
 
@@ -25,7 +25,7 @@ if __name__ == "__main__":
         # thread_4 = threading.Thread(target=check_movie)
         # thread_5 = threading.Thread(target=check_reserve_yt)
         thread_6 = threading.Thread(target=check_start_yt)
-        thread_60 = threading.Thread(target=check_message_yt)
+        thread_60 = threading.Thread(target=select_all_messages)
         # thread_4.start()
         # thread_5.start()
         thread_6.start()
