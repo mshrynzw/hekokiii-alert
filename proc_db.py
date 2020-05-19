@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
- 
+
+import logging
 import os
 import psycopg2
 
@@ -114,4 +115,5 @@ def db_insert_message(cur, tableName, messages):
         sql += data
 
     sql.rstrip(', ')
+    logging.info(sql)
     cur.execute(sql)
