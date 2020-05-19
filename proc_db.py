@@ -104,7 +104,7 @@ def db_insert_message(cur, tableName, messages):
     sql = "INSERT INTO {0} VALUES ".format(tableName)
 
     for message in messages:
-        data = "('{id}', '{author_external_channel_id}', '{video_id}', {time_stamp}, {purchase_amount}), ".format(
+        data = "('{id}', '{author_external_channel_id}', '{video_id}', '{time_stamp}', {purchase_amount}), ".format(
             id=message['id'],
             author_external_channel_id=message['author_external_channel_id'],
             video_id=message['video_id'],
