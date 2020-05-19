@@ -71,33 +71,17 @@ def check_message_yt():
                     "continuation"]
             next_url = "https://www.youtube.com/live_chat_replay?continuation=" + continue_url
 
-            index = 0
             # dics["continuationContents"]["liveChatContinuation"]["actions"]がコメントデータのリスト。先頭はノイズデータなので[1:]で保存
             for samp in dics["continuationContents"]["liveChatContinuation"]["actions"][1:]:
-                index += 1
-                logging.info("------------------" + str(index) + "------------------")
                 action_0 = samp["replayChatItemAction"]["actions"][0]
 
-                # メンバー登録の場合
-                if "addLiveChatTickerItemAction" in action_0:
-                    item = action_0["addLiveChatTickerItemAction"]["item"]
-                # 通常メッセージの場合
-                elif "addChatItemAction" in action_0:
+                if "addChatItemAction" in action_0:
                     item = action_0["addChatItemAction"]["item"]
                 # 例外メッセージの場合
                 else:
                     continue
 
-                # Super Chatの場合
-                if "liveChatPaidMessageRenderer" in item:
-                    live_chat_paid_message_renderer = item["liveChatPaidMessageRenderer"]
-                elif "liveChatTickerPaidMessageItemRenderer" in item:
-                    live_chat_paid_message_renderer = \
-                    item["liveChatTickerPaidMessageItemRenderer"]["showItemEndpoint"]["showLiveChatItemEndpoint"][
-                        "renderer"]["liveChatPaidMessageRenderer"]
-
-                else:
-                    continue
+                live_chat_paid_message_renderer = item["liveChatPaidMessageRenderer"]
 
                 # Super Chatの場合
                 super_chat_id = live_chat_paid_message_renderer["id"]
