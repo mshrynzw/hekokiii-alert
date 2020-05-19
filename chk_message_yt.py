@@ -71,8 +71,11 @@ def check_message_yt():
                     "continuation"]
             next_url = "https://www.youtube.com/live_chat_replay?continuation=" + continue_url
 
+            index = 0
             # dics["continuationContents"]["liveChatContinuation"]["actions"]がコメントデータのリスト。先頭はノイズデータなので[1:]で保存
             for samp in dics["continuationContents"]["liveChatContinuation"]["actions"][1:]:
+                index += 1
+                logging.info("------------------" + index + "------------------")
                 action_0 = samp["replayChatItemAction"]["actions"][0]
 
                 # メンバー登録の場合
