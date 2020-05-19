@@ -124,8 +124,7 @@ def db_select_all_videos(cur, table_name):
     cur.execute(sql)
 
     for row in cur.fetchall():
-        row = row.lstrip("('")
-        row = row.rstrip("')")
+        logging.info(row)
         videos.append(row)
 
     return videos
