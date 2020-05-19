@@ -97,3 +97,21 @@ def db_insert_movie(cur, tableName, videoId):
 def db_insert_tweet_id(cur, tableName, tweetId):
     sql = "INSERT INTO {0} VALUES ('{1}')".format(tableName, tweetId)
     cur.execute(sql)
+
+
+# INSERT文（chk_message_yt.py用）
+def db_insert_message(cur, tableName, messages):
+    sql = "INSERT INTO {0} VALUES ".format(tableName)
+
+    for message in messages:
+        data = "('{id}', '{author_external_channel_id}', '{video_id}', {time_stamp}, {purchase_amount}), ".format(
+            id=message['id'],
+            author_external_channel_id=message['author_external_channel_id'],
+            video_id=message['video_id'],
+            time_stamp=message['time_stamp'],
+            purchase_amount=['purchase_amount']
+        )
+        sql += data
+
+    sql.rstrip(', ')
+    cur.execute(sql)
