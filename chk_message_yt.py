@@ -122,7 +122,9 @@ def select_all_messages():
     videos = db_select_all_videos(cur, "start_youtube_video_id_list")
 
     for video in videos:
+        logging.info("Start check message from video_id (" + video + ")")
         check_message_yt(video)
+        logging.info("finish check message from video_id (" + video + ")")
 
     # DB切断
     db_close(conn, cur)
