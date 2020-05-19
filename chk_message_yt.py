@@ -3,11 +3,7 @@ import logging
 import re
 import requests
 from bs4 import BeautifulSoup
-from proc_db import db_connect, db_close, db_insert_message
-
-# DBのテーブル名
-tbl_name = "youtube_super_chat"
-video_id = "8ViucSjZlPo"
+from proc_db import db_connect, db_close, db_insert_message, db_select_all_videos
 
 
 def insert_messages(data):
@@ -17,14 +13,14 @@ def insert_messages(data):
     cur = arg[1]
 
     # DB（INSERT文）
-    db_insert_message(cur, tbl_name, data)
+    db_insert_message(cur, "youtube_super_chat", data)
 
     # DB切断
     db_close(conn, cur)
 
 
-def check_message_yt():
-    target_url = r"https://www.youtube.com/watch?v=" + video_id
+def check_message_yt(video):
+    target_url = r"https://www.youtube.com/watch?v=" + video
     next_url = ""
     message_data = []
     session = requests.Session()
@@ -97,7 +93,7 @@ def check_message_yt():
                 message = {
                     "id": super_chat_id,
                     "author_external_channel_id": author_external_channel_id,
-                    "video_id": video_id,
+                    "video_id": video,
                     "time_stamp": time_stamp,
                     "purchase_amount": purchase_amount
                 }
@@ -114,3 +110,19 @@ def check_message_yt():
         insert_messages(message_data)
     else:
         logging.info("There was no message.")
+
+
+def select_all_messages():
+    # DB接続
+    arg = db_connect()
+    conn = arg[0]
+    cur = arg[1]
+
+    # DB（INSERT文）
+    videos = db_select_all_videos(cur, "start_youtube_video_id_list")
+
+    for video in videos:
+        check_message_yt(video)
+
+    # DB切断
+    db_close(conn, cur)

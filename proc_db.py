@@ -115,3 +115,17 @@ def db_insert_message(cur, tableName, messages):
         sql += data
 
     cur.execute(sql.rstrip(','))
+
+
+# SELECT文（chk_message_yt.py用）
+def db_select_all_videos(cur, table_name):
+    videos = []
+    sql = "SELECT * FROM {0}".format(table_name)
+    cur.execute(sql)
+
+    for row in cur.fetchall():
+        row = row.lstrip("('")
+        row = row.rstrip("')")
+        videos.append(row)
+
+    return videos
