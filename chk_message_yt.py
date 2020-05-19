@@ -1,4 +1,5 @@
 import datetime
+import logging
 import re
 import requests
 from bs4 import BeautifulSoup
@@ -116,4 +117,7 @@ def check_message_yt():
             print(e)
             break
 
-        insert_messages(message_data)
+        if message_data:
+            insert_messages(message_data)
+        else:
+            logging.info("There was no message.")
