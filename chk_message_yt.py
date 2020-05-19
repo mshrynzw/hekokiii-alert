@@ -75,13 +75,18 @@ def check_message_yt():
             for samp in dics["continuationContents"]["liveChatContinuation"]["actions"][1:]:
                 action_0 = samp["replayChatItemAction"]["actions"][0]
 
+                # メンバー登録の場合
                 if "addChatItemAction" in action_0:
                     item = action_0["addChatItemAction"]["item"]
                 # 例外メッセージの場合
                 else:
                     continue
 
-                live_chat_paid_message_renderer = item["liveChatPaidMessageRenderer"]
+                # Super Chatの場合
+                if "liveChatPaidMessageRenderer" in item:
+                    live_chat_paid_message_renderer = item["liveChatPaidMessageRenderer"]
+                else:
+                    continue
 
                 # Super Chatの場合
                 super_chat_id = live_chat_paid_message_renderer["id"]
