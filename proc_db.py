@@ -114,6 +114,6 @@ def db_insert_message(cur, tableName, messages):
         )
         sql += data
 
-    sql.rstrip().rstrip(',')
+    sql.rstrip()
     logging.info(sql)
     cur.execute(sql)
