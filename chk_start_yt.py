@@ -20,7 +20,6 @@ key = os.environ["YOUTUBE_DATA_API_KEY"]
 
 
 def check_start_yt():
-
     while True:
 
         # 【前処理】
@@ -68,7 +67,7 @@ def check_start_yt():
                     proc_tweet(str_tweet)
 
         except NoSuchElementException as e:
-            logging.info("Not currently broadcasting YouTube Live ...")
+            logging.info("Not currently broadcasting YouTube Live.")
 
         except Exception as e:
             logging.error(e)

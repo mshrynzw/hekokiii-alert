@@ -3,26 +3,60 @@ import logging
 import re
 import requests
 from bs4 import BeautifulSoup
-from proc_db import db_connect, db_close, db_insert_message, db_select_all_videos
+from proc_db import db_connect, db_close, db_insert_user, db_insert_paid_chat, db_insert_chat_text, \
+    db_select_all_videos, db_select_user_id_list
 
 
-def insert_messages(data):
+def select_user_id_list():
     # DB接続
     arg = db_connect()
     conn = arg[0]
     cur = arg[1]
 
     # DB（INSERT文）
-    db_insert_message(cur, "youtube_super_chat", data)
+    user_ids = db_select_user_id_list(cur, "youtube_user")
+
+    # DB切断
+    db_close(conn, cur)
+
+    return user_ids
+
+
+def insert_messages(paid_data, text_data):
+    # DB接続
+    arg = db_connect()
+    conn = arg[0]
+    cur = arg[1]
+
+    # DB（INSERT文）
+    db_insert_paid_chat(cur, "youtube_super_chat", paid_data)
+    db_insert_chat_text(cur, "youtube_message", text_data)
+
+    # DB切断
+    db_close(conn, cur)
+
+
+def insert_user(user_id, user_name):
+    # DB接続
+    arg = db_connect()
+    conn = arg[0]
+    cur = arg[1]
+
+    # DB（INSERT文）
+    db_insert_user(cur, "youtube_user", user_id, user_name)
 
     # DB切断
     db_close(conn, cur)
 
 
 def check_message_yt(video):
-    target_url = r"https://www.youtube.com/watch?v=" + video
     next_url = ""
-    message_data = []
+    paid_chat_data = []
+    chat_text_data = []
+
+    user_id_list = select_user_id_list()
+
+    target_url = r"https://www.youtube.com/watch?v=" + video
     session = requests.Session()
     headers = {
         'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -71,45 +105,103 @@ def check_message_yt(video):
             for samp in dics["continuationContents"]["liveChatContinuation"]["actions"][1:]:
                 action_0 = samp["replayChatItemAction"]["actions"][0]
 
-                # メンバー登録の場合
+                # メッセージの場合
                 if "addChatItemAction" in action_0:
                     item = action_0["addChatItemAction"]["item"]
+
+                    # Paid Chatの場合
+                    if "liveChatPaidMessageRenderer" in item:
+                        live_chat_paid_message_renderer = item["liveChatPaidMessageRenderer"]
+
+                        runs = live_chat_paid_message_renderer["message"]["runs"]
+                        message = None
+                        for text in runs:
+                            message += text
+
+                        super_chat_id = live_chat_paid_message_renderer["id"]
+                        author_external_channel_id = live_chat_paid_message_renderer["authorExternalChannelId"]
+                        time_stamp = datetime.datetime.fromtimestamp(
+                            int(live_chat_paid_message_renderer["timestampUsec"][:-6]))
+                        video_time_stamp = live_chat_paid_message_renderer["timestampText"]["simpleText"]
+
+                        # 日本円のみ対応
+                        simple_text = live_chat_paid_message_renderer["purchaseAmountText"]["simpleText"]
+                        if simple_text.startswith(r"¥"):
+                            purchase_amount = re.sub(r'\D', '', simple_text)
+
+                            paid_chat = {
+                                "id": super_chat_id,
+                                "author_external_channel_id": author_external_channel_id,
+                                "video_id": video,
+                                "time_stamp": time_stamp,
+                                "video_time_stamp": video_time_stamp,
+                                "purchase_amount": purchase_amount
+                            }
+                            paid_chat_data.append(paid_chat)
+
+                            chat_text = {
+                                "id": super_chat_id,
+                                "author_external_channel_id": author_external_channel_id,
+                                "video_id": video,
+                                "time_stamp": time_stamp,
+                                "video_time_stamp": video_time_stamp,
+                                "message": message
+                            }
+                            chat_text_data.append(chat_text)
+
+                            if not (author_external_channel_id in user_id_list):
+                                insert_user(
+                                    author_external_channel_id,
+                                    live_chat_paid_message_renderer["authorName"]["simpleText"]
+                                )
+
+                    # Chat Textの場合
+                    elif "liveChatTextMessageRenderer" in item:
+                        live_chat_text_message_renderer = item["liveChatTextMessageRenderer"]
+
+                        runs = live_chat_text_message_renderer["message"]["runs"]
+                        message = None
+                        for text in runs:
+                            message += text
+
+                        chat_id = live_chat_text_message_renderer["id"]
+                        author_external_channel_id = live_chat_text_message_renderer["authorExternalChannelId"]
+                        time_stamp = datetime.datetime.fromtimestamp(
+                            int(live_chat_text_message_renderer["timestampUsec"][:-6]))
+                        video_time_stamp = live_chat_text_message_renderer["timestampText"]["simpleText"]
+
+                        chat_text = {
+                            "id": chat_id,
+                            "author_external_channel_id": author_external_channel_id,
+                            "video_id": video,
+                            "time_stamp": time_stamp,
+                            "video_time_stamp": video_time_stamp,
+                            "message": message
+                        }
+                        chat_text_data.append(chat_text)
+
+                        if not (author_external_channel_id in user_id_list):
+                            insert_user(
+                                author_external_channel_id,
+                                live_chat_text_message_renderer["authorName"]["simpleText"]
+                            )
+
+                    else:
+                        continue
+
                 # 例外メッセージの場合
                 else:
                     continue
-
-                # Super Chatの場合
-                if "liveChatPaidMessageRenderer" in item:
-                    live_chat_paid_message_renderer = item["liveChatPaidMessageRenderer"]
-                else:
-                    continue
-
-                # Super Chatの場合
-                super_chat_id = live_chat_paid_message_renderer["id"]
-                author_external_channel_id = live_chat_paid_message_renderer["authorExternalChannelId"]
-                time_stamp = datetime.datetime.fromtimestamp(int(live_chat_paid_message_renderer["timestampUsec"][:-6]))
-                purchase_amount = re.sub(r'\D', '', live_chat_paid_message_renderer["purchaseAmountText"]["simpleText"])
-
-                message = {
-                    "id": super_chat_id,
-                    "author_external_channel_id": author_external_channel_id,
-                    "video_id": video,
-                    "time_stamp": time_stamp,
-                    "purchase_amount": purchase_amount
-                }
-
-                message_data.append(message)
 
         # next_urlが入手できなくなったら終わり
         except Exception as e:
             print(e)
             break
 
-    if message_data:
-        logging.info(message_data)
-        insert_messages(message_data)
+    if paid_chat_data:
+        insert_messages(paid_chat_data, chat_text_data)
     else:
-        logging.info("There was no message.")
+        logging.info("There was no message. (video_id: " + video + ")")
 
 
 def select_all_messages():
@@ -122,9 +214,9 @@ def select_all_messages():
     videos = db_select_all_videos(cur, "start_youtube_video_id_list")
 
     for video in videos:
-        logging.info("Start check message from video_id (" + video + ")")
+        logging.info("Start check message.  (video_id: " + video + ")")
         check_message_yt(video)
-        logging.info("finish check message from video_id (" + video + ")")
+        logging.info("finish check message. (video_id: " + video + ")")
 
     # DB切断
     db_close(conn, cur)
