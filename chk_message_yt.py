@@ -154,6 +154,7 @@ def check_message_yt(video):
                                     author_external_channel_id,
                                     live_chat_paid_message_renderer["authorName"]["simpleText"]
                                 )
+                                user_id_list.append(author_external_channel_id)
 
                     # Chat Textの場合
                     elif "liveChatTextMessageRenderer" in item:
@@ -185,6 +186,7 @@ def check_message_yt(video):
                                 author_external_channel_id,
                                 live_chat_text_message_renderer["authorName"]["simpleText"]
                             )
+                            user_id_list.append(author_external_channel_id)
 
                     else:
                         continue
