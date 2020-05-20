@@ -136,17 +136,17 @@ def db_insert_paid_chat(cur, table_name, super_chats):
 # INSERT文（chk_message_yt.py用）
 def db_insert_chat_text(messages):
     stmt = "INSERT INTO youtube_message VALUES (" \
-          "'(%id)', " \
-          "'(%author_external_channel_id)', " \
-          "'(%video_id)', " \
-          "'(%time_stamp)', " \
-          "'(%video_time_stamp)', " \
-          "'(%message)')"
+          "'(%%id)', " \
+          "'(%%author_external_channel_id)', " \
+          "'(%%video_id)', " \
+          "'(%%time_stamp)', " \
+          "'(%%video_time_stamp)', " \
+          "'(%%message)')"
 
     with get_connection() as conn:
         with conn.cursor() as cur:
             for message in messages:
-                cur.execute(stmt.format(), [
+                cur.execute(stmt.fo, [
                     message['id'],
                     message['author_external_channel_id'],
                     message['video_id'],
