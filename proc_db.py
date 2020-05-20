@@ -129,7 +129,7 @@ def db_insert_chat_text(cur, table_name, messages):
     sql = "INSERT INTO {0} VALUES ".format(table_name)
 
     for message in messages:
-        data = "('{id}', '{author_external_channel_id}', '{video_id}', '{time_stamp}', '{video_time_stamp}', {message}),".format(
+        data = "('{id}', '{author_external_channel_id}', '{video_id}', '{time_stamp}', '{video_time_stamp}', '{message}'),".format(
             id=message['id'],
             author_external_channel_id=message['author_external_channel_id'],
             video_id=message['video_id'],
