@@ -107,17 +107,17 @@ def db_insert_user(cur, table_name, user_id, user_name):
 
 
 # INSERT文（chk_message_yt.py用）
-def db_insert_paid_chat(cur, table_name, messages):
+def db_insert_paid_chat(cur, table_name, super_chats):
     sql = "INSERT INTO {0} VALUES ".format(table_name)
 
-    for message in messages:
+    for super_chat in super_chats:
         data = "('{id}', '{author_external_channel_id}', '{video_id}', '{time_stamp}', '{video_time_stamp}', {purchase_amount}),".format(
-            id=message['id'],
-            author_external_channel_id=message['author_external_channel_id'],
-            video_id=message['video_id'],
-            time_stamp=message['time_stamp'],
-            video_time_stamp=message['video_time_stamp'],
-            purchase_amount=message['purchase_amount']
+            id=super_chat['id'],
+            author_external_channel_id=super_chat['author_external_channel_id'],
+            video_id=super_chat['video_id'],
+            time_stamp=super_chat['time_stamp'],
+            video_time_stamp=super_chat['video_time_stamp'],
+            purchase_amount=super_chat['purchase_amount']
         )
         sql += data
 
