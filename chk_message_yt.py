@@ -2,6 +2,7 @@ import datetime
 import logging
 import re
 import requests
+import traceback
 from bs4 import BeautifulSoup
 from proc_db import db_connect, db_close, db_insert_user, db_insert_paid_chat, db_insert_chat_text, \
     db_select_all_videos, db_select_user_id_list
@@ -128,7 +129,7 @@ def check_message_yt(video):
                         runs = live_chat_paid_message_renderer["message"]["runs"]
                         message = ''
                         for run in runs:
-                            if run["text"]:
+                            if "text" in run:
                                 message += run["text"]
 
                         super_chat_id = live_chat_paid_message_renderer["id"]
@@ -176,7 +177,7 @@ def check_message_yt(video):
                         runs = live_chat_text_message_renderer["message"]["runs"]
                         message = ''
                         for run in runs:
-                            if run["text"]:
+                            if "text" in run:
                                 message += run["text"]
 
                         chat_id = live_chat_text_message_renderer["id"]
@@ -210,8 +211,16 @@ def check_message_yt(video):
                     continue
 
         # next_urlが入手できなくなったら終わり
+        except KeyError as e:
+            if e == "liveChatReplayContinuationData":
+                logging.info("Finished getting messages. (video_id: " + video + ")")
+            else:
+                logging.error(traceback.print_exc())
+            break
+
         except Exception as e:
-            print(e)
+            logging.error(e)
+            logging.error(traceback.print_exc())
             break
 
     if paid_chat_data:
