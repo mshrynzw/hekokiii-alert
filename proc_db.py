@@ -146,7 +146,7 @@ def db_insert_chat_text(messages):
     with get_connection() as conn:
         with conn.cursor() as cur:
             for message in messages:
-                cur.execute(stmt, [
+                cur.execute(stmt.format(), [
                     message['id'],
                     message['author_external_channel_id'],
                     message['video_id'],
