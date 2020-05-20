@@ -114,7 +114,7 @@ def check_message_yt(video):
                         live_chat_paid_message_renderer = item["liveChatPaidMessageRenderer"]
 
                         runs = live_chat_paid_message_renderer["message"]["runs"]
-                        message = None
+                        message = ''
                         for run in runs:
                             message += run["text"]
 
@@ -160,7 +160,7 @@ def check_message_yt(video):
                         live_chat_text_message_renderer = item["liveChatTextMessageRenderer"]
 
                         runs = live_chat_text_message_renderer["message"]["runs"]
-                        message = None
+                        message = ''
                         for run in runs:
                             message += run["text"]
 
