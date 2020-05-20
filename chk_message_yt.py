@@ -128,7 +128,8 @@ def check_message_yt(video):
                         runs = live_chat_paid_message_renderer["message"]["runs"]
                         message = ''
                         for run in runs:
-                            message += run["text"]
+                            if run["text"]:
+                                message += run["text"]
 
                         super_chat_id = live_chat_paid_message_renderer["id"]
                         author_external_channel_id = live_chat_paid_message_renderer["authorExternalChannelId"]
@@ -175,7 +176,8 @@ def check_message_yt(video):
                         runs = live_chat_text_message_renderer["message"]["runs"]
                         message = ''
                         for run in runs:
-                            message += run["text"]
+                            if run["text"]:
+                                message += run["text"]
 
                         chat_id = live_chat_text_message_renderer["id"]
                         author_external_channel_id = live_chat_text_message_renderer["authorExternalChannelId"]
