@@ -38,15 +38,15 @@ def insert_youtube_super_chat(data):
 
 def insert_youtube_message(data):
     # DB接続
-    arg = db_connect()
-    conn = arg[0]
-    cur = arg[1]
+    # arg = db_connect()
+    # conn = arg[0]
+    # cur = arg[1]
 
     # DB（INSERT文）
-    db_insert_chat_text(cur, "youtube_message", data)
+    db_insert_chat_text(data)
 
     # DB切断
-    db_close(conn, cur)
+    # db_close(conn, cur)
 
 
 def insert_user(user_id, user_name):

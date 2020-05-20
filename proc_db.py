@@ -26,6 +26,15 @@ def db_connect():
         raise Exception(e)
 
 
+def get_connection():
+    try:
+        return psycopg2.connect(
+            "host={0} port={1} dbname={2} user={3} password={4}".format(DB_HOST, DB_PORT, DB_DBNAME, DB_USER,
+                                                                        DB_PASSWORD))
+    except Exception as e:
+        raise Exception(e)
+
+
 # DB切断
 def db_close(conn, cur):
     try:
@@ -125,21 +134,27 @@ def db_insert_paid_chat(cur, table_name, super_chats):
 
 
 # INSERT文（chk_message_yt.py用）
-def db_insert_chat_text(cur, table_name, messages):
-    sql = "INSERT INTO {0} VALUES ".format(table_name)
+def db_insert_chat_text(messages):
+    stmt = "INSERT INTO youtube_message VALUES (" \
+          "'(%id)', " \
+          "'(%author_external_channel_id)', " \
+          "'(%video_id)', " \
+          "'(%time_stamp)', " \
+          "'(%video_time_stamp)', " \
+          "'(%message)')"
 
-    for message in messages:
-        data = "('{id}', '{author_external_channel_id}', '{video_id}', '{time_stamp}', '{video_time_stamp}', '{message}'),".format(
-            id=message['id'],
-            author_external_channel_id=message['author_external_channel_id'],
-            video_id=message['video_id'],
-            time_stamp=message['time_stamp'],
-            video_time_stamp=message['video_time_stamp'],
-            message=message['message']
-        )
-        sql += data
-
-    cur.execute(sql.rstrip(','))
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            for message in messages:
+                cur.execute(stmt, [
+                    message['id'],
+                    message['author_external_channel_id'],
+                    message['video_id'],
+                    message['time_stamp'],
+                    message['video_time_stamp'],
+                    message['message']
+                ])
+            conn.commit()
 
 
 # SELECT文（chk_message_yt.py用）
