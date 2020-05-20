@@ -115,8 +115,8 @@ def check_message_yt(video):
 
                         runs = live_chat_paid_message_renderer["message"]["runs"]
                         message = None
-                        for text in runs:
-                            message += text
+                        for run in runs:
+                            message += run["text"]
 
                         super_chat_id = live_chat_paid_message_renderer["id"]
                         author_external_channel_id = live_chat_paid_message_renderer["authorExternalChannelId"]
@@ -161,8 +161,8 @@ def check_message_yt(video):
 
                         runs = live_chat_text_message_renderer["message"]["runs"]
                         message = None
-                        for text in runs:
-                            message += text
+                        for run in runs:
+                            message += run["text"]
 
                         chat_id = live_chat_text_message_renderer["id"]
                         author_external_channel_id = live_chat_text_message_renderer["authorExternalChannelId"]
@@ -198,7 +198,7 @@ def check_message_yt(video):
             print(e)
             break
 
-    if paid_chat_data:
+    if paid_chat_data or chat_text_data:
         insert_messages(paid_chat_data, chat_text_data)
     else:
         logging.info("There was no message. (video_id: " + video + ")")
