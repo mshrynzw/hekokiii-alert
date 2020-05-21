@@ -30,7 +30,7 @@ def check_message_yt(video):
         if "live_chat_replay" in iframe["src"]:
             next_url = iframe["src"]
 
-    while 1:
+    while True:
 
         try:
             html = session.get(next_url, headers=headers)
@@ -54,10 +54,12 @@ def check_message_yt(video):
             dics = eval(dict_str)
 
             # "https://www.youtube.com/live_chat_replay?continuation=" + continue_url が次のlive_chat_replayのurl
-            continue_url = \
-                dics["continuationContents"]["liveChatContinuation"]["continuations"][0][
-                    "liveChatReplayContinuationData"][
-                    "continuation"]
+            continuation = dics["continuationContents"]["liveChatContinuation"]["continuations"][0]
+            if not ("liveChatReplayContinuationData" in continuation):
+                logging.info("There was not liveChatReplayContinuationData. (video_id: " + video + ")")
+                break
+
+            continue_url = continuation["liveChatReplayContinuationData"]["continuation"]
             next_url = "https://www.youtube.com/live_chat_replay?continuation=" + continue_url
 
             # dics["continuationContents"]["liveChatContinuation"]["actions"]がコメントデータのリスト。先頭はノイズデータなので[1:]で保存
@@ -163,15 +165,6 @@ def check_message_yt(video):
                 # 例外メッセージの場合
                 else:
                     continue
-
-        # next_urlが入手できなくなったら終わり
-        except KeyError as e:
-            logging.info(e)
-            if e == "liveChatReplayContinuationData":
-                logging.info("Finished getting messages. (video_id: " + video + ")")
-            else:
-                logging.error(traceback.print_exc())
-            break
 
         except Exception as e:
             logging.error(e)
