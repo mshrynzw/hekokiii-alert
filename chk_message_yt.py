@@ -23,45 +23,6 @@ def select_user_id_list():
     return user_ids
 
 
-def insert_youtube_super_chat(data):
-    # DB接続
-    arg = db_connect()
-    conn = arg[0]
-    cur = arg[1]
-
-    # DB（INSERT文）
-    db_insert_paid_chat(cur, "youtube_super_chat", data)
-
-    # DB切断
-    db_close(conn, cur)
-
-
-def insert_youtube_message(data):
-    # DB接続
-    # arg = db_connect()
-    # conn = arg[0]
-    # cur = arg[1]
-
-    # DB（INSERT文）
-    db_insert_chat_text(data)
-
-    # DB切断
-    # db_close(conn, cur)
-
-
-def insert_user(user_id, user_name):
-    # DB接続
-    arg = db_connect()
-    conn = arg[0]
-    cur = arg[1]
-
-    # DB（INSERT文）
-    db_insert_user(cur, "youtube_user", user_id, user_name)
-
-    # DB切断
-    db_close(conn, cur)
-
-
 def check_message_yt(video):
     next_url = ""
     paid_chat_data = []
@@ -164,7 +125,7 @@ def check_message_yt(video):
                             chat_text_data.append(chat_text)
 
                             if not (author_external_channel_id in user_id_list):
-                                insert_user(
+                                db_insert_user(
                                     author_external_channel_id,
                                     live_chat_paid_message_renderer["authorName"]["simpleText"]
                                 )
@@ -224,12 +185,12 @@ def check_message_yt(video):
             break
 
     if paid_chat_data:
-        insert_youtube_super_chat(paid_chat_data)
+        db_insert_paid_chat(paid_chat_data)
     else:
         logging.info("There was no Super Chat. (video_id: " + video + ")")
 
     if chat_text_data:
-        insert_youtube_message(chat_text_data)
+        db_insert_chat_text(chat_text_data)
     else:
         logging.info("There was no message. (video_id: " + video + ")")
 

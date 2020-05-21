@@ -106,31 +106,34 @@ def db_insert_tweet_id(cur, tableName, tweetId):
 
 
 # INSERT文（chk_message_yt.py用）
-def db_insert_user(cur, table_name, user_id, user_name):
-    sql = "INSERT INTO {table_name} VALUES ('{id}', '{name}')".format(
-        table_name=table_name,
-        id=user_id,
-        name=user_name
-    )
-    cur.execute(sql)
+def db_insert_user(user_id, user_name):
+    stmt = "INSERT INTO youtube_user VALUES (%s, %s);"
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(stmt, (
+                user_id,
+                user_name
+            ))
+            conn.commit()
 
 
 # INSERT文（chk_message_yt.py用）
-def db_insert_paid_chat(cur, table_name, super_chats):
-    sql = "INSERT INTO {0} VALUES ".format(table_name)
+def db_insert_paid_chat(super_chats):
+    stmt = "INSERT INTO youtube_super_chat VALUES (%s, %s, %s, %s, %s, %s);"
 
-    for super_chat in super_chats:
-        data = "('{id}', '{author_external_channel_id}', '{video_id}', '{time_stamp}', '{video_time_stamp}', {purchase_amount}),".format(
-            id=super_chat['id'],
-            author_external_channel_id=super_chat['author_external_channel_id'],
-            video_id=super_chat['video_id'],
-            time_stamp=super_chat['time_stamp'],
-            video_time_stamp=super_chat['video_time_stamp'],
-            purchase_amount=super_chat['purchase_amount']
-        )
-        sql += data
-
-    cur.execute(sql.rstrip(','))
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            for super_chat in super_chats:
+                cur.execute(stmt, (
+                    super_chat['id'],
+                    super_chat['author_external_channel_id'],
+                    super_chat['video_id'],
+                    super_chat['time_stamp'],
+                    super_chat['video_time_stamp'],
+                    super_chat['purchase_amount']
+                ))
+            conn.commit()
 
 
 # INSERT文（chk_message_yt.py用）
