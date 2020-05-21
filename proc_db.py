@@ -45,8 +45,8 @@ def db_close(conn, cur):
 
 
 # SELECT文
-def db_check(cur, tableName, urlValue):
-    sql = "SELECT COUNT(*) FROM {0} WHERE  url = '{1}'".format(tableName, urlValue)
+def db_check(cur, table_name, url_value):
+    sql = "SELECT COUNT(*) FROM {0} WHERE  url = '{1}'".format(table_name, url_value)
     cur.execute(sql)
     count = str(cur.fetchone())
     count = count.lstrip("(")
@@ -55,15 +55,15 @@ def db_check(cur, tableName, urlValue):
 
 
 # SELECT文（chk_bbs.py用）
-def db_check_bbs(cur, tableName):
-    sql = "SELECT MAX(count) FROM {0}".format(tableName)
+def db_check_bbs(cur, table_name):
+    sql = "SELECT MAX(count) FROM {0}".format(table_name)
     cur.execute(sql)
     return cur.fetchone()
 
 
 # SELECT文（chk_movie.py用）
-def db_check_movie(cur, tableName, videoId):
-    sql = "SELECT COUNT(*) FROM {0} WHERE  video_id = '{1}'".format(tableName, videoId)
+def db_check_movie(cur, table_name, video_id):
+    sql = "SELECT COUNT(*) FROM {0} WHERE  video_id = '{1}'".format(table_name, video_id)
     cur.execute(sql)
     count = str(cur.fetchone())
     count = count.lstrip("(")
@@ -72,8 +72,8 @@ def db_check_movie(cur, tableName, videoId):
 
 
 # SELECT文（chk_twitter.py用）
-def db_check_twitter(cur, tableName, tweetId):
-    sql = "SELECT COUNT(*) FROM {0} WHERE  id = '{1}'".format(tableName, tweetId)
+def db_check_twitter(cur, table_name, tweet_id):
+    sql = "SELECT COUNT(*) FROM {0} WHERE  id = '{1}'".format(table_name, tweet_id)
     cur.execute(sql)
     count = str(cur.fetchone())
     count = count.lstrip("(")
@@ -82,32 +82,32 @@ def db_check_twitter(cur, tableName, tweetId):
 
 
 # INSERT文
-def db_insert(cur, tableName, urlValue):
-    sql = "INSERT INTO {0} VALUES ('{1}')".format(tableName, urlValue)
+def db_insert(cur, table_name, url_value):
+    sql = "INSERT INTO {0} VALUES ('{1}')".format(table_name, url_value)
     cur.execute(sql)
 
 
 # INSERT文
-def db_insert_bbs(cur, tableName, cnt):
-    sql = "INSERT INTO {0} VALUES ('{1}')".format(tableName, cnt)
+def db_insert_bbs(cur, table_name, cnt):
+    sql = "INSERT INTO {0} VALUES ('{1}')".format(table_name, cnt)
     cur.execute(sql)
 
 
 # INSERT文（chk_movie.py用）
-def db_insert_movie(cur, tableName, videoId):
-    sql = "INSERT INTO {0} VALUES ('{1}')".format(tableName, videoId)
+def db_insert_movie(cur, table_name, video_id):
+    sql = "INSERT INTO {0} VALUES ('{1}')".format(table_name, video_id)
     cur.execute(sql)
 
 
 # INSERT文（chk_twitter.py用）
-def db_insert_tweet_id(cur, tableName, tweetId):
-    sql = "INSERT INTO {0} VALUES ('{1}')".format(tableName, tweetId)
+def db_insert_tweet_id(cur, table_name, tweet_id):
+    sql = "INSERT INTO {0} VALUES ('{1}')".format(table_name, tweet_id)
     cur.execute(sql)
 
 
 # INSERT文（chk_message_yt.py用）
 def db_insert_user(user_id, user_name):
-    stmt = "INSERT INTO youtube_user VALUES (%s, %s);"
+    stmt = "INSERT INTO youtube_user VALUES (%s, %s) ON CONFLICT DO NOTHING;"
 
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -120,7 +120,7 @@ def db_insert_user(user_id, user_name):
 
 # INSERT文（chk_message_yt.py用）
 def db_insert_paid_chat(super_chats):
-    stmt = "INSERT INTO youtube_super_chat VALUES (%s, %s, %s, %s, %s, %s);"
+    stmt = "INSERT INTO youtube_super_chat VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING;"
 
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -138,7 +138,7 @@ def db_insert_paid_chat(super_chats):
 
 # INSERT文（chk_message_yt.py用）
 def db_insert_chat_text(messages):
-    stmt = "INSERT INTO youtube_message VALUES (%s, %s, %s, %s, %s, %s);"
+    stmt = "INSERT INTO youtube_message VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING;"
 
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -155,24 +155,32 @@ def db_insert_chat_text(messages):
 
 
 # SELECT文（chk_message_yt.py用）
-def db_select_all_videos(cur, table_name):
+def db_select_all_videos():
     videos = []
-    sql = "SELECT * FROM {0}".format(table_name)
-    cur.execute(sql)
+    stmt = "SELECT * FROM start_youtube_video_id_list"
 
-    for row in cur.fetchall():
-        videos.append(row[0])
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(stmt)
+            conn.commit()
+
+            for row in cur.fetchall():
+                videos.append(row[0])
 
     return videos
 
 
 # SELECT文（chk_message_yt.py用）
-def db_select_user_id_list(cur, table_name):
+def db_select_user_id_list():
     user_ids = []
-    sql = "SELECT id FROM {0}".format(table_name)
-    cur.execute(sql)
+    stmt = "SELECT id FROM youtube_user"
 
-    for row in cur.fetchall():
-        user_ids.append(row[0])
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(stmt)
+            conn.commit()
+
+            for row in cur.fetchall():
+                user_ids.append(row[0])
 
     return user_ids
