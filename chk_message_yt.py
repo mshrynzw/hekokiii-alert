@@ -74,7 +74,7 @@ def check_message_yt(video):
                     if "liveChatPaidMessageRenderer" in item:
                         live_chat_paid_message_renderer = item["liveChatPaidMessageRenderer"]
 
-                        if not live_chat_paid_message_renderer["message"]:
+                        if not ("message" in live_chat_paid_message_renderer):
                             continue
 
                         runs = live_chat_paid_message_renderer["message"]["runs"]
@@ -126,7 +126,7 @@ def check_message_yt(video):
                     elif "liveChatTextMessageRenderer" in item:
                         live_chat_text_message_renderer = item["liveChatTextMessageRenderer"]
 
-                        if not live_chat_text_message_renderer["message"]:
+                        if not ("message" in live_chat_text_message_renderer):
                             continue
 
                         runs = live_chat_text_message_renderer["message"]["runs"]
