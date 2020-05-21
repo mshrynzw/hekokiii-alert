@@ -33,7 +33,6 @@ def check_message_yt(video):
     while 1:
 
         try:
-            logging.info("next_url変数：" + next_url)
             html = session.get(next_url, headers=headers)
             soup = BeautifulSoup(html.text, "lxml")
             # 次に飛ぶurlのデータがある部分をfind_allで探してsplitで整形
