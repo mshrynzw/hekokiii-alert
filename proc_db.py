@@ -106,6 +106,18 @@ def db_insert_tweet_id(cur, table_name, tweet_id):
 
 
 # INSERT文（chk_message_yt.py用）
+def db_update_video_has_got_messages(video_id):
+    stmt = "UPDATE youtube_video SET has_got_messages = TRUE WHERE id = '%s';"
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(stmt, (
+                video_id
+            ))
+            conn.commit()
+
+
+# INSERT文（chk_message_yt.py用）
 def db_insert_user(user_id, user_name):
     stmt = "INSERT INTO youtube_user VALUES (%s, %s) ON CONFLICT DO NOTHING;"
 
@@ -157,7 +169,7 @@ def db_insert_chat_text(messages):
 # SELECT文（chk_message_yt.py用）
 def db_select_all_videos():
     videos = []
-    stmt = "SELECT * FROM start_youtube_video_id_list"
+    stmt = "SELECT id FROM youtube_video WHERE has_got_messages = FALSE"
 
     with get_connection() as conn:
         with conn.cursor() as cur:
