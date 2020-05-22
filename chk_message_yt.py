@@ -9,7 +9,6 @@ from proc_db import db_insert_user, db_insert_paid_chat, db_insert_chat_text, db
 
 
 def check_message_yt(video):
-    retry_times = 0
     next_url = ""
     paid_chat_data = []
     chat_text_data = []
@@ -36,17 +35,7 @@ def check_message_yt(video):
     while True:
 
         try:
-            try:
-                html = session.get(next_url, headers=headers)
-            except requests.exceptions.MissingSchema:
-                retry_times += 1
-                if retry_times <= 10:
-                    logging.info("Retry times: " + str(retry_times))
-                    continue
-                else:
-                    logging.error("Over max retry times")
-                    break
-
+            html = session.get(next_url, headers=headers)
             soup = BeautifulSoup(html.text, "lxml")
             # 次に飛ぶurlのデータがある部分をfind_allで探してsplitで整形
             # for scrp in soup.find_all("script"):
