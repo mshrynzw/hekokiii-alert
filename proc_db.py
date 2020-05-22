@@ -107,7 +107,7 @@ def db_insert_tweet_id(cur, table_name, tweet_id):
 
 # INSERT文（chk_message_yt.py用）
 def db_update_video_has_got_messages(video_id):
-    stmt = "UPDATE youtube_video SET has_got_messages = TRUE WHERE id = '%s';"
+    stmt = "UPDATE youtube_video SET has_got_messages = TRUE WHERE id = %s;"
 
     with get_connection() as conn:
         with conn.cursor() as cur:
