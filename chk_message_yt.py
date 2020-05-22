@@ -5,7 +5,7 @@ import requests
 import traceback
 from bs4 import BeautifulSoup
 from proc_db import db_insert_user, db_insert_paid_chat, db_insert_chat_text, db_select_all_videos, \
-    db_select_user_id_list
+    db_select_user_id_list, db_update_video_has_got_messages
 
 
 def check_message_yt(video):
@@ -68,6 +68,7 @@ def check_message_yt(video):
             continuation = dics["continuationContents"]["liveChatContinuation"]["continuations"][0]
             if not ("liveChatReplayContinuationData" in continuation):
                 logging.info("There was not liveChatReplayContinuationData. (video_id: " + video + ")")
+                db_update_video_has_got_messages(video)
                 break
 
             continue_url = continuation["liveChatReplayContinuationData"]["continuation"]
