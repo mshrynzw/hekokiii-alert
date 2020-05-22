@@ -29,7 +29,7 @@ def check_message_yt(video):
     for iframe in soup.find_all("iframe"):
 
         if "live_chat_replay" in iframe["src"]:
-            next_url = requests.compat.urljoin(r"https://www.youtube.com/", iframe["src"])
+            next_url = r"https://www.youtube.com" + iframe["src"]
 
     while True:
 
