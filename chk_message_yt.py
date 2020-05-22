@@ -26,15 +26,14 @@ def check_message_yt(video):
     soup = BeautifulSoup(html.text, "html.parser")
 
     for iframe in soup.find_all("iframe"):
-
         if "live_chat_replay" in iframe["src"]:
             next_url = iframe["src"]
+
+    while True:
+        try:
             if not (r"https://www.youtube.com" in next_url):
                 next_url = requests.compat.urljoin(r"https://www.youtube.com", iframe["src"])
 
-    while True:
-
-        try:
             html = session.get(next_url, headers=headers)
             soup = BeautifulSoup(html.text, "lxml")
             # 次に飛ぶurlのデータがある部分をfind_allで探してsplitで整形
