@@ -63,7 +63,7 @@ def db_check_bbs(cur, table_name):
 
 # SELECT文（chk_movie.py用）
 def db_check_movie(video_id):
-    stmt = "SELECT COUNT(*) FROM youtube_video WHERE id = '{0}'".format(video_id)
+    stmt = "SELECT COUNT(*) FROM youtube_video"
 
     with get_connection() as conn:
         with conn.cursor() as cur:
