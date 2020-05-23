@@ -67,7 +67,7 @@ def db_check_movie(video_id):
 
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute(stmt, (video_id,))
+            cur.execute(stmt, [video_id])
             count = str(cur.fetchone())
             conn.commit()
 
