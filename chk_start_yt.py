@@ -9,8 +9,6 @@ from proc_db import db_connect, db_close, db_check_movie, db_insert_movie
 from time import sleep
 from tw import proc_tweet
 
-# DBのテーブル名
-tbl_name = "start_youtube_video_id_list"
 # ツイートのテンプレート
 str_tmp = os.environ["TWEET_TPL_START_YOUTUBE"]
 # YouTubeのチャンネルIDÒ
@@ -39,28 +37,12 @@ def check_start_yt():
                 url = driver.find_element_by_xpath(r'//*[@id="video-title"]').get_attribute('href')
                 video_id = url.replace(r'https://www.youtube.com/watch?v=', '')
 
-                # DB接続
-                arg = db_connect()
-                conn = arg[0]
-                cur = arg[1]
-
                 # DB（SELECT文）
-                cnt = db_check_movie(cur, tbl_name, video_id)
-
-                # DB切断
-                db_close(conn, cur)
+                cnt = db_check_movie(video_id)
 
                 if cnt == 0:
-                    # DB接続
-                    arg = db_connect()
-                    conn = arg[0]
-                    cur = arg[1]
-
                     # DB（INSERT文）
-                    db_insert_movie(cur, tbl_name, video_id)
-
-                    # DB切断
-                    db_close(conn, cur)
+                    db_insert_movie(video_id)
 
                     # ツイート
                     str_tweet = str_tmp.format(url=url)

@@ -62,12 +62,20 @@ def db_check_bbs(cur, table_name):
 
 
 # SELECT文（chk_movie.py用）
-def db_check_movie(cur, table_name, video_id):
-    sql = "SELECT COUNT(*) FROM {0} WHERE  video_id = '{1}'".format(table_name, video_id)
-    cur.execute(sql)
-    count = str(cur.fetchone())
+def db_check_movie(video_id):
+    stmt = "SELECT COUNT(id) FROM youtube_video WHERE id = '{video_id}'".format(
+        video_id=video_id
+    )
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(stmt)
+            count = str(cur.fetchone())
+            conn.commit()
+
     count = count.lstrip("(")
     count = count.rstrip(",)")
+
     return int(count)
 
 
@@ -94,9 +102,15 @@ def db_insert_bbs(cur, table_name, cnt):
 
 
 # INSERT文（chk_movie.py用）
-def db_insert_movie(cur, table_name, video_id):
-    sql = "INSERT INTO {0} VALUES ('{1}')".format(table_name, video_id)
-    cur.execute(sql)
+def db_insert_movie(video_id):
+    stmt = "INSERT INTO youtube_video (id) VALUES (%s)"
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(stmt, (
+                video_id
+            ))
+            conn.commit()
 
 
 # INSERT文（chk_twitter.py用）
@@ -105,7 +119,7 @@ def db_insert_tweet_id(cur, table_name, tweet_id):
     cur.execute(sql)
 
 
-# INSERT文（chk_message_yt.py用）
+# UPDATE文（chk_message_yt.py用）
 def db_update_video_has_got_messages(video_id):
     stmt = "UPDATE youtube_video SET has_got_messages = TRUE WHERE id = '{video_id}';"
 
