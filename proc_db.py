@@ -67,13 +67,11 @@ def db_check_movie(video_id):
         video_id=video_id
     )
 
-    logging.info(stmt)
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(stmt)
             count = cur.fetchone()
 
-    logging.info("proc001.5")
     return count[0]
 
 

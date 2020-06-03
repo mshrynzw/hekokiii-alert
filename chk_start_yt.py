@@ -38,15 +38,17 @@ def check_start_yt():
                 video_id = url.replace(r'https://www.youtube.com/watch?v=', '')
 
                 # DB（SELECT文）
-                logging.info("proc001")
                 if db_check_movie(video_id) == 0:
-                    logging.info("proc002")
                     # DB（INSERT文）
+                    logging.info("001")
                     db_insert_movie(video_id)
+                    logging.info("002")
 
                     # ツイート
                     str_tweet = str_tmp.format(url=url)
+                    logging.info("003")
                     proc_tweet(str_tweet)
+                    logging.info("004")
 
         except NoSuchElementException as e:
             logging.info("Not currently broadcasting YouTube Live.")
