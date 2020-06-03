@@ -71,13 +71,13 @@ def db_check_movie(video_id):
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(stmt)
-            count = str(cur.fetchone())
+            count = cur.fetchone()
             conn.commit()
 
     # count = count.lstrip("(")
     # count = count.rstrip(",)")
 
-    return int(count)
+    return int(count[0])
 
 
 # SELECT文（chk_twitter.py用）
