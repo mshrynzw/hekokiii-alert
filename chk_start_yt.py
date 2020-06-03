@@ -38,9 +38,9 @@ def check_start_yt():
                 video_id = url.replace(r'https://www.youtube.com/watch?v=', '')
 
                 # DB（SELECT文）
-                cnt = db_check_movie(video_id)
-
-                if cnt == 0:
+                logging.info("proc001")
+                if db_check_movie(video_id) == 0:
+                    logging.info("proc002")
                     # DB（INSERT文）
                     db_insert_movie(video_id)
 

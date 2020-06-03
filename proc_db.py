@@ -73,6 +73,7 @@ def db_check_movie(video_id):
             cur.execute(stmt)
             count = cur.fetchone()
 
+    logging.info("proc001.5")
     return count[0]
 
 
