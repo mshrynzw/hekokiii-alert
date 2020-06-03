@@ -72,10 +72,8 @@ def db_check_movie(video_id):
         with conn.cursor() as cur:
             cur.execute(stmt)
             count = cur.fetchone()
-            logging.info(type(count))
-            conn.commit()
 
-    return int(count[0])
+    return int(count)
 
 
 # SELECT文（chk_twitter.py用）
