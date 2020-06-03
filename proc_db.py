@@ -73,7 +73,7 @@ def db_check_movie(video_id):
             cur.execute(stmt)
             count = cur.fetchone()
 
-    return int(count)
+    return int(count[0])
 
 
 # SELECT文（chk_twitter.py用）
