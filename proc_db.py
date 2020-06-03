@@ -74,8 +74,8 @@ def db_check_movie(video_id):
             count = str(cur.fetchone())
             conn.commit()
 
-    count = count.lstrip("(")
-    count = count.rstrip(",)")
+    # count = count.lstrip("(")
+    # count = count.rstrip(",)")
 
     return int(count)
 
