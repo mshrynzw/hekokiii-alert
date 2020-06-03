@@ -99,7 +99,7 @@ def db_insert_bbs(cur, table_name, cnt):
 
 # INSERT文（chk_movie.py用）
 def db_insert_movie(video_id):
-    stmt = "INSERT INTO youtube_video (id, has_got_messages) VALUES (%s, false)"
+    stmt = "INSERT INTO youtube_video (id) VALUES (%s)"
 
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -135,7 +135,7 @@ def db_insert_user(user_id, user_name):
         with conn.cursor() as cur:
             cur.execute(stmt, (
                 user_id,
-                user_name
+                user_name,
             ))
             conn.commit()
 

@@ -40,15 +40,11 @@ def check_start_yt():
                 # DB（SELECT文）
                 if db_check_movie(video_id) == 0:
                     # DB（INSERT文）
-                    logging.info("001")
                     db_insert_movie(video_id)
-                    logging.info("002")
 
                     # ツイート
                     str_tweet = str_tmp.format(url=url)
-                    logging.info("003")
                     proc_tweet(str_tweet)
-                    logging.info("004")
 
         except NoSuchElementException as e:
             logging.info("Not currently broadcasting YouTube Live.")
