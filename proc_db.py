@@ -72,10 +72,8 @@ def db_check_movie(video_id):
         with conn.cursor() as cur:
             cur.execute(stmt)
             count = cur.fetchone()
+            logging.info(type(count))
             conn.commit()
-
-    # count = count.lstrip("(")
-    # count = count.rstrip(",)")
 
     return int(count[0])
 
