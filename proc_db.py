@@ -104,7 +104,7 @@ def db_insert_movie(video_id):
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(stmt, (
-                video_id
+                video_id,
             ))
             conn.commit()
 
