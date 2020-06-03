@@ -70,13 +70,9 @@ def db_check_movie(video_id):
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(stmt)
-            count = str(cur.fetchone())
-            conn.commit()
+            count = cur.fetchone()
 
-    count = count.lstrip("(")
-    count = count.rstrip(",)")
-
-    return int(count)
+    return count[0]
 
 
 # SELECT文（chk_twitter.py用）
@@ -108,7 +104,7 @@ def db_insert_movie(video_id):
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(stmt, (
-                video_id
+                video_id,
             ))
             conn.commit()
 
@@ -139,7 +135,7 @@ def db_insert_user(user_id, user_name):
         with conn.cursor() as cur:
             cur.execute(stmt, (
                 user_id,
-                user_name
+                user_name,
             ))
             conn.commit()
 
